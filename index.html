@@ -1,268 +1,571 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Meera &amp; Arjun — Wedding Invitation</title>
-<meta name="description" content="Join us in celebrating the wedding of Meera & Arjun">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wedding Invitation | Meera & Arjun</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@300;400;600&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+  
+  <!-- Animation & QR Utilities -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
-<!-- PWA -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#5C0511">
-<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <style>
+    /* ==========================================================================
+       1. CORE DESIGN & RESET
+       ========================================================================== */
+    :root {
+      --bg-dark: #2A0409;
+      --bg-crimson: #4C020B;
+      --gold-primary: #D4AF37;
+      --gold-foil: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fbf5b7 75%, #aa771c 100%);
+      --text-light: #F4E5A1;
+      --font-serif: 'Cinzel', serif;
+      --font-cursive: 'Mrs Saint Delafield', cursive;
+      --font-sans: 'Poppins', sans-serif;
+      --shadow-premium: 0 15px 35px rgba(0, 0, 0, 0.5);
+    }
 
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Cinzel:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-family: var(--font-sans); background: var(--bg-dark); color: #ffffff; overflow-x: hidden; }
+    body { min-height: 100vh; position: relative; }
 
-<!-- AOS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    /* ==========================================================================
+       2. CINEMATIC CURTAIN (TEMPLE DOORS)
+       ========================================================================== */
+    #temple-doors {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100vh;
+      z-index: 9999;
+      display: flex;
+      cursor: pointer;
+    }
+    .door {
+      position: absolute; top: 0; width: 50%; height: 100%;
+      background: var(--bg-crimson);
+      display: flex; align-items: center;
+      transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+    .door-left { left: 0; border-right: 2px solid var(--gold-primary); justify-content: flex-end; }
+    .door-right { right: 0; border-left: 2px solid var(--gold-primary); justify-content: flex-start; }
+    
+    .door-content-wrapper {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      width: 100%;
+      pointer-events: none;
+      z-index: 10000;
+      transition: opacity 0.6s ease;
+    }
+    .door-instruction {
+      font-family: var(--font-serif);
+      color: var(--text-light);
+      letter-spacing: 3px;
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      margin-top: 20px;
+      animation: pulse 2s infinite;
+    }
 
-<link rel="stylesheet" href="css/style.css">
+    /* ==========================================================================
+       3. TEXT ALIGNMENT & PREMIUM SECTIONS
+       ========================================================================== */
+    section {
+      padding: 80px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center; /* Enforces absolute center layout */
+      position: relative;
+      z-index: 5;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      background: var(--gold-foil);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    /* Hero Center Main Title */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-top: 40px;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-serif);
+      color: var(--text-light);
+      letter-spacing: 4px;
+      font-size: clamp(0.9rem, 2vw, 1.3rem);
+      text-transform: uppercase;
+    }
+    #hero-names {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 9vw, 6.5rem);
+      line-height: 1.1;
+      margin: 25px 0;
+      background: var(--gold-foil);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-cursive {
+      font-family: var(--font-cursive);
+      font-size: clamp(4rem, 10vw, 7rem);
+      display: block;
+      -webkit-text-fill-color: var(--text-light);
+      margin: -10px 0;
+    }
+
+    /* ==========================================================================
+       4. HIGH-END LAYOUT CARDS & CONTROLS
+       ========================================================================== */
+    .venue-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 40px;
+    }
+    .premium-card {
+      flex: 1;
+      min-width: 320px;
+      max-width: 500px;
+      background: rgba(76, 2, 11, 0.4);
+      border: 1.5px solid rgba(212, 175, 55, 0.3);
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-premium);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .premium-card h3 {
+      font-family: var(--font-serif);
+      color: var(--text-light);
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+    .premium-card p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #ffffff;
+      margin-bottom: 20px;
+      opacity: 0.9;
+    }
+
+    /* Dynamic Countdowns Layout */
+    .countdown-display {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    .time-unit {
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px solid var(--gold-primary);
+      padding: 10px 15px;
+      border-radius: 8px;
+      min-width: 70px;
+    }
+    .time-unit .num {
+      display: block;
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      color: var(--text-light);
+      font-weight: bold;
+    }
+    .time-unit .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    /* Media/Maps Framework */
+    .map-frame {
+      width: 100%;
+      height: 230px;
+      border-radius: 10px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      margin-bottom: 20px;
+    }
+
+    /* ==========================================================================
+       5. COMPREHENSIVE LUXURY GALLERY
+       ========================================================================== */
+    .gallery-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+    .gallery-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      box-shadow: var(--shadow-premium);
+      aspect-ratio: 4/5;
+      background: #3d050c;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Decorative Lighting elements */
+    .lamp {
+      position: absolute; bottom: 30px;
+      width: clamp(60px, 10vw, 110px);
+      z-index: 2;
+    }
+    .lamp-l { left: 5%; }
+    .lamp-r { right: 5%; }
+
+    /* Buttons Configuration */
+    .gold-btn {
+      background: var(--gold-foil);
+      color: var(--bg-dark);
+      font-family: var(--font-serif);
+      font-weight: bold;
+      padding: 12px 32px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 15px rgba(212,175,55,0.3);
+      margin-top: auto;
+    }
+    .gold-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(212,175,55,0.5);
+    }
+
+    /* Ambient Elements Canvas layer */
+    #petals-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 10;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+    @media(max-width: 768px) {
+      .lamp { display: none; }
+      section { padding: 60px 15px; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- ================= TEMPLE DOOR PRELOADER ================= -->
-<div id="temple-doors" aria-hidden="true">
-  <div class="gopuram">
-    <svg viewBox="0 0 400 140" class="gopuram-svg">
-      <polygon points="200,0 60,140 340,140" fill="url(#goldGrad)"/>
-      <polygon points="200,20 90,140 310,140" fill="#5C0511"/>
-      <circle cx="200" cy="70" r="14" fill="#D4AF37"/>
-      <polygon points="200,45 208,68 232,68 212,82 220,105 200,90 180,105 188,82 168,68 192,68" fill="#FFCB6B"/>
-    </svg>
-    <defs>
-      <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#F4E5A1"/>
-        <stop offset="50%" stop-color="#D4AF37"/>
-        <stop offset="100%" stop-color="#9C7A1E"/>
-      </linearGradient>
-    </defs>
-  </div>
-  <div class="door door-left">
-    <div class="door-panel">
-      <div class="door-carving"></div>
-      <div class="door-handle"></div>
+  <!-- Background Environment Layer -->
+  <canvas id="petals-canvas"></canvas>
+
+  <!-- Opening Cinematic Curtain -->
+  <div id="temple-doors">
+    <div class="door door-left"></div>
+    <div class="door-content-wrapper" id="door-info">
+      <div class="door-instruction">TAP TO OPEN INVITATION</div>
     </div>
-  </div>
-  <div class="door door-right">
-    <div class="door-panel">
-      <div class="door-carving"></div>
-      <div class="door-handle"></div>
-    </div>
-  </div>
-  <div class="preloader-caption">
-    <span>Meera &amp; Arjun</span>
-    <small>the doors of celebration are opening…</small>
-  </div>
-</div>
-
-<!-- ================= PETALS CANVAS ================= -->
-<canvas id="petals-canvas"></canvas>
-
-<!-- ================= SOUND CONTROL ================= -->
-<button id="sound-toggle" aria-label="Toggle background music">
-  <svg id="icon-muted" viewBox="0 0 24 24"><path d="M3 10v4h4l5 5V5L7 10H3z"/><line x1="16" y1="9" x2="22" y2="15" stroke="currentColor" stroke-width="2"/><line x1="22" y1="9" x2="16" y2="15" stroke="currentColor" stroke-width="2"/></svg>
-  <svg id="icon-unmuted" viewBox="0 0 24 24" style="display:none"><path d="M3 10v4h4l5 5V5L7 10H3z"/><path d="M16 8a5 5 0 0 1 0 8" stroke="currentColor" stroke-width="2" fill="none"/><path d="M18.5 5.5a9 9 0 0 1 0 13" stroke="currentColor" stroke-width="2" fill="none"/></svg>
-</button>
-<audio id="bgm" loop preload="none">
-  <source src="assets/audio/bgm.mp3" type="audio/mpeg">
-</audio>
-
-<!-- ================= NAV DOTS ================= -->
-<nav id="dot-nav">
-  <a href="#hero" class="dot active" data-label="Home"></a>
-  <a href="#countdown" class="dot" data-label="Countdown"></a>
-  <a href="#story" class="dot" data-label="Our Story"></a>
-  <a href="#events" class="dot" data-label="Events"></a>
-  <a href="#gallery" class="dot" data-label="Gallery"></a>
-  <a href="#venue" class="dot" data-label="Venue"></a>
-  <a href="#rsvp" class="dot" data-label="RSVP"></a>
-</nav>
-
-<!-- ================= HERO ================= -->
-<header id="hero">
-  <div class="vilakku vilakku-left" aria-hidden="true">
-    <svg viewBox="0 0 100 220">
-      <ellipse cx="50" cy="205" rx="34" ry="8" fill="#3a2a05" opacity=".35"/>
-      <path d="M20 200 L80 200 L65 178 L35 178 Z" fill="url(#lampGrad)"/>
-      <rect x="46" y="70" width="8" height="112" fill="url(#lampGrad)"/>
-      <path d="M18 70 L82 70 L60 50 L40 50 Z" fill="url(#lampGrad)"/>
-      <ellipse cx="50" cy="50" rx="20" ry="6" fill="#D4AF37"/>
-      <g class="flame-group">
-        <ellipse class="flame-outer" cx="50" cy="24" rx="10" ry="20" fill="#FF9E2C"/>
-        <ellipse class="flame-inner" cx="50" cy="30" rx="5" ry="11" fill="#FFE082"/>
-      </g>
-      <circle class="glow" cx="50" cy="26" r="30" fill="#FFCB6B" opacity=".25"/>
-      <defs>
-        <linearGradient id="lampGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#F4E5A1"/>
-          <stop offset="100%" stop-color="#B8860B"/>
-        </linearGradient>
-      </defs>
-    </svg>
+    <div class="door door-right"></div>
   </div>
 
-  <div class="hero-content">
-    <p class="eyebrow" data-aos="fade-down">With the blessings of our families</p>
-    <h1 class="gold-foil" id="hero-names" data-aos="fade-up" data-aos-delay="150">Meera <span class="amp">&amp;</span> Arjun</h1>
-    <p class="hero-sub" data-aos="fade-up" data-aos-delay="300">are tying the knot</p>
-    <div class="hero-date" data-aos="fade-up" data-aos-delay="450">
-      <span id="hero-date-text">14th December 2026 · Chennai</span>
-    </div>
-    <a href="#countdown" class="scroll-cue" aria-label="Scroll down">
-      <span></span>
-    </a>
-  </div>
+  <!-- Hero Section -->
+  <header id="hero">
+    <div class="hero-eyebrow">Together with our Families</div>
+    <h1 id="hero-names">
+      Meera 
+      <span class="hero-cursive">and</span> 
+      Arjun
+    </h1>
+    <div class="hero-eyebrow" style="margin-top: 10px;">Are Getting Married</div>
+    
+    <!-- Decorative side lamps placement inside hero context -->
+    <svg class="lamp lamp-l" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 20v130M30 150h40v10H30z" stroke="#D4AF37" stroke-width="4"/><circle cx="50" cy="90" r="25" fill="#D4AF37" opacity="0.2"/><path d="M50 65c-12 0-20 10-20 25s20 35 20 35 20-20 20-35-8-35-20-35z" fill="url(#gold-grad)"/><defs><linearGradient id="gold-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#bf953f"/><stop offset="50%" stop-color="#fcf6ba"/><stop offset="100%" stop-color="#aa771c"/></linearGradient></defs></svg>
+    <svg class="lamp lamp-r" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 20v130M30 150h40v10H30z" stroke="#D4AF37" stroke-width="4"/><circle cx="50" cy="90" r="25" fill="#D4AF37" opacity="0.2"/><path d="M50 65c-12 0-20 10-20 25s20 35 20 35 20-20 20-35-8-35-20-35z" fill="url(#gold-grad)"/></svg>
+  </header>
 
-  <div class="vilakku vilakku-right" aria-hidden="true">
-    <svg viewBox="0 0 100 220">
-      <ellipse cx="50" cy="205" rx="34" ry="8" fill="#3a2a05" opacity=".35"/>
-      <path d="M20 200 L80 200 L65 178 L35 178 Z" fill="url(#lampGrad2)"/>
-      <rect x="46" y="70" width="8" height="112" fill="url(#lampGrad2)"/>
-      <path d="M18 70 L82 70 L60 50 L40 50 Z" fill="url(#lampGrad2)"/>
-      <ellipse cx="50" cy="50" rx="20" ry="6" fill="#D4AF37"/>
-      <g class="flame-group">
-        <ellipse class="flame-outer" cx="50" cy="24" rx="10" ry="20" fill="#FF9E2C"/>
-        <ellipse class="flame-inner" cx="50" cy="30" rx="5" ry="11" fill="#FFE082"/>
-      </g>
-      <circle class="glow" cx="50" cy="26" r="30" fill="#FFCB6B" opacity=".25"/>
-      <defs>
-        <linearGradient id="lampGrad2" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stop-color="#F4E5A1"/>
-          <stop offset="100%" stop-color="#B8860B"/>
-        </linearGradient>
-      </defs>
-    </svg>
-  </div>
-</header>
-
-<!-- ================= COUNTDOWN ================= -->
-<section id="countdown" class="section">
-  <div class="kolam-divider" aria-hidden="true"></div>
-  <h2 class="section-title" data-aos="fade-up">The Auspicious Hours Await</h2>
-
-  <div class="countdown-grid">
-    <div class="countdown-card" data-aos="zoom-in">
-      <h3 id="cd-wedding-label">Muhurtham</h3>
-      <p class="cd-sub" id="cd-wedding-sub">14 Dec 2026 · 7:00 AM</p>
-      <div class="timer" id="timer-wedding" data-target="2026-12-14T07:00:00+05:30">
-        <div><span class="num">00</span><label>Days</label></div>
-        <div><span class="num">00</span><label>Hrs</label></div>
-        <div><span class="num">00</span><label>Min</label></div>
-        <div><span class="num">00</span><label>Sec</label></div>
-      </div>
-    </div>
-    <div class="countdown-card" data-aos="zoom-in" data-aos-delay="150">
-      <h3 id="cd-reception-label">Reception</h3>
-      <p class="cd-sub" id="cd-reception-sub">14 Dec 2026 · 7:00 PM</p>
-      <div class="timer" id="timer-reception" data-target="2026-12-14T19:00:00+05:30">
-        <div><span class="num">00</span><label>Days</label></div>
-        <div><span class="num">00</span><label>Hrs</label></div>
-        <div><span class="num">00</span><label>Min</label></div>
-        <div><span class="num">00</span><label>Sec</label></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= OUR STORY / PARALLAX ================= -->
-<section id="story" class="section parallax-section">
-  <div class="parallax-bg" data-speed="0.4"></div>
-  <div class="story-content">
-    <p class="eyebrow" data-aos="fade-up">Our Story</p>
-    <h2 class="section-title light" data-aos="fade-up">Two Families, One Beginning</h2>
-    <p class="story-text" data-aos="fade-up" data-aos-delay="150">
-      What began as a quiet introduction has blossomed into a lifetime promise.
-      We are overjoyed to begin this new chapter surrounded by the people we love most —
-      and we would be honoured to have you bless us as we do.
+  <!-- Story & Timeline Section -->
+  <section id="story">
+    <h2 class="section-title">Our Story</h2>
+    <p style="max-width: 750px; margin: 0 auto 40px; line-height: 1.8; opacity: 0.9;">
+      What began as a quiet introduction has blossomed into a lifetime promise. We are overjoyed to begin this new chapter surrounded by the people we love most — and we would be honored to have you bless us as we do.
     </p>
-  </div>
-</section>
+  </section>
 
-<!-- ================= EVENTS ================= -->
-<section id="events" class="section">
-  <div class="kolam-divider" aria-hidden="true"></div>
-  <h2 class="section-title" data-aos="fade-up">Celebrations</h2>
-  <div class="events-grid">
-    <div class="event-card" data-aos="fade-up">
-      <span class="event-icon">🪔</span>
-      <h3 id="ev-wedding-label">Muhurtham</h3>
-      <p id="ev-wedding-date">14 December 2026 &middot; 7:00 AM</p>
-      <p class="event-venue" id="ev-wedding-venue">Sri Meenakshi Kalyana Mandapam, Chennai</p>
-      <button class="btn-outline add-to-cal" data-event="wedding">+ Add to Calendar</button>
+  <!-- Celebrations / Cards & Live Countdowns -->
+  <section id="events">
+    <h2 class="section-title">Celebrations</h2>
+    <div class="venue-grid">
+      
+      <!-- Card 1: The Muhurtham -->
+      <div class="premium-card">
+        <div>
+          <h3>The Wedding</h3>
+          <p>Monday, December 14, 2026<br>7:00 AM onwards</p>
+          <p style="font-style: italic; font-size: 0.9rem; color: var(--text-light);">Sri Meenakshi Kalyana Mandapam, Chennai</p>
+        </div>
+        
+        <!-- Interactive Countdown Submodule -->
+        <div class="countdown-display" id="timer-wedding">
+          <div class="time-unit"><span class="num">00</span><span class="label">Days</span></div>
+          <div class="time-unit"><span class="num">00</span><span class="label">Hrs</span></div>
+          <div class="time-unit"><span class="num">00</span><span class="label">Min</span></div>
+        </div>
+
+        <a href="https://maps.google.com" target="_blank" class="gold-btn">View Route Map</a>
+      </div>
+
+      <!-- Card 2: The Reception -->
+      <div class="premium-card">
+        <div>
+          <h3>The Reception</h3>
+          <p>Monday, December 14, 2026<br>7:00 PM onwards</p>
+          <p style="font-style: italic; font-size: 0.9rem; color: var(--text-light);">The Grand Ballroom, Taj Coromandel, Chennai</p>
+        </div>
+
+        <!-- Interactive Countdown Submodule -->
+        <div class="countdown-display" id="timer-reception">
+          <div class="time-unit"><span class="num">00</span><span class="label">Days</span></div>
+          <div class="time-unit"><span class="num">00</span><span class="label">Hrs</span></div>
+          <div class="time-unit"><span class="num">00</span><span class="label">Min</span></div>
+        </div>
+
+        <a href="https://maps.google.com" target="_blank" class="gold-btn">View Route Map</a>
+      </div>
+
     </div>
-    <div class="event-card" data-aos="fade-up" data-aos-delay="150">
-      <span class="event-icon">💍</span>
-      <h3 id="ev-reception-label">Reception</h3>
-      <p id="ev-reception-date">14 December 2026 &middot; 7:00 PM</p>
-      <p class="event-venue" id="ev-reception-venue">The Grand Ballroom, Taj Coromandel, Chennai</p>
-      <button class="btn-outline add-to-cal" data-event="reception">+ Add to Calendar</button>
+  </section>
+
+  <!-- Gallery Showcase -->
+  <section id="gallery">
+    <h2 class="section-title">Moments We Cherish</h2>
+    <p style="margin-bottom: 30px; opacity: 0.8;">A glimpse into our journey together</p>
+    <div class="gallery-container">
+      <!-- Standardized placeholder paths - update src directly as needed -->
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=600" alt="Moment 1"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=600" alt="Moment 2"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600" alt="Moment 3"></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ================= GALLERY ================= -->
-<section id="gallery" class="section">
-  <div class="kolam-divider" aria-hidden="true"></div>
-  <h2 class="section-title" data-aos="fade-up">Moments We Cherish</h2>
-  <p class="section-note" data-aos="fade-up">Replace the images in <code>assets/photos</code> with your own — same filenames, any aspect ratio.</p>
-  <div class="gallery-grid" id="gallery-grid">
-    <!-- populated by JS -->
-  </div>
-</section>
+  <!-- Secure Single Instance Location Layout -->
+  <section id="location">
+    <h2 class="section-title">Find Us</h2>
+    <div class="venue-grid">
+      
+      <!-- Map Block -->
+      <div class="premium-card">
+        <h3>Venue Location</h3>
+        <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.2851046244463!2d80.24641977596568!3d13.04928231320499!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a526644483737b3%3A0x6b26d36ea1f8f946!2sTaj%20Coromandel%2C%20Chennai!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+        <a href="https://maps.app.goo.gl/wRjV7p4QxJg4PZpU6" target="_blank" class="gold-btn">Get Directions</a>
+      </div>
 
-<!-- lightbox -->
-<div id="lightbox" class="lightbox">
-  <button id="lightbox-close" aria-label="Close">&times;</button>
-  <img id="lightbox-img" src="" alt="">
-</div>
+      <!-- Single QR Generation Block -->
+      <div class="premium-card">
+        <h3>Scan to Share</h3>
+        <p style="font-size: 0.9rem;">Share this beautiful invitation page instantly with family and friends</p>
+        <div id="qrcode"></div>
+        <button id="whatsapp-share" class="gold-btn" style="margin-top: 20px;">Share via WhatsApp</button>
+      </div>
 
-<!-- ================= VENUE ================= -->
-<section id="venue" class="section">
-  <div class="kolam-divider" aria-hidden="true"></div>
-  <h2 class="section-title" data-aos="fade-up">Find Us</h2>
-  <div class="venue-grid">
-    <div class="venue-map" data-aos="fade-right">
-      <iframe
-        title="Venue location"
-        src="https://www.google.com/maps?q=Taj+Coromandel+Chennai&output=embed"
-        loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
-      <a class="btn-gold" id="directions-link" href="https://www.google.com/maps/search/?api=1&query=Taj+Coromandel+Chennai" target="_blank" rel="noopener">Get Directions</a>
     </div>
-    <div class="venue-qr" data-aos="fade-left">
-      <h3>Scan to Open This Invite</h3>
-      <div id="qrcode"></div>
-      <p>Share this page instantly with anyone by scanning the code.</p>
-      <button id="whatsapp-share" class="btn-outline">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1-.1.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.2-.4.1-.2 0-.3 0-.5s-.6-1.5-.9-2c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.6 1.4 5.2L2 22l4.9-1.3C8.4 21.5 10.1 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.3c-1.7 0-3.3-.5-4.7-1.3l-.3-.2-3.5.9.9-3.4-.2-.3C3.5 14.6 3 13.3 3 12c0-5 4-9 9-9s9 4 9 9-4 9-9 9z"/></svg>
-        Share on WhatsApp
-      </button>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- ================= RSVP / FOOTER ================= -->
-<section id="rsvp" class="section rsvp-section">
-  <div class="kolam-divider" aria-hidden="true"></div>
-  <h2 class="section-title" data-aos="fade-up">We Can't Wait to Celebrate With You</h2>
-  <p class="rsvp-sub" data-aos="fade-up">Kindly confirm your presence at your earliest convenience.</p>
-  <a href="https://wa.me/919999999999?text=I%27m%20delighted%20to%20confirm%20my%20presence%20at%20Meera%20%26%20Arjun%27s%20wedding!" target="_blank" rel="noopener" class="btn-gold" data-aos="zoom-in">RSVP via WhatsApp</a>
-  <footer>
-    <p class="footer-quote">"Wherever you go, whatever you do, I will be right here waiting for you."</p>
-    <p class="footer-names">Meera &amp; Arjun · 14.12.2026</p>
+  <!-- Footer Context -->
+  <footer style="text-align: center; padding: 60px 20px; border-top: 1px solid rgba(212,175,55,0.2); font-family: var(--font-serif); color: var(--text-light);">
+    <h3>We Can't Wait To Celebrate With You</h3>
+    <p style="font-family: var(--font-sans); font-size: 0.9rem; opacity: 0.6; margin-top: 10px;">Meera & Arjun &bull; 14.12.2026</p>
   </footer>
-</section>
 
-<!-- ================= SCRIPTS ================= -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="js/config.js"></script>
-<script src="js/script.js"></script>
+  <!-- ==========================================================================
+     6. CORE EXECUTION ENGINE
+     ========================================================================== */ -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // Configuration parameters setup
+      const targetWedding = new Date("2026-12-14T07:00:00+05:30").getTime();
+      const targetReception = new Date("2026-12-14T19:00:00+05:30").getTime();
+
+      // Setup initial visibility states for text sequences to prepare GSAP entry rules
+      gsap.set("#hero .hero-eyebrow, #hero-names, .lamp", { opacity: 0, y: 30 });
+
+      // ==========================================
+      // A. DOOR SPLIT & CINEMATIC TITLE ENTRANCE
+      // ==========================================
+      const triggerOpeningAnimation = () => {
+        document.getElementById('door-info').style.opacity = '0';
+        
+        // Split Left & Right Panels smoothly
+        gsap.to(".door-left", { xPercent: -100, duration: 1.4, ease: "power4.inOut" });
+        gsap.to(".door-right", { xPercent: 100, duration: 1.4, ease: "power4.inOut" });
+        
+        // Fade curtain layer fully after split ends
+        gsap.to("#temple-doors", { opacity: 0, display: "none", duration: 0.4, delay: 1.2 });
+
+        // High-end cinematic name fade and float sequence
+        const tl = gsap.timeline({ delay: 0.8 });
+        tl.to("#hero-names", { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" })
+          .to("#hero .hero-eyebrow", { opacity: 1, y: 0, duration: 0.8, stagger: 0.3 }, "-=0.6")
+          .to(".lamp", { opacity: 1, y: 0, duration: 1 }, "-=0.4");
+      };
+
+      document.getElementById('temple-doors').addEventListener('click', triggerOpeningAnimation);
+
+      // Fail-Safe: Automatically reveal page text elements if visitor misses clicking doors
+      setTimeout(() => {
+        if(document.getElementById('temple-doors').style.display !== 'none') {
+          triggerOpeningAnimation();
+        }
+      }, 5000);
+
+      // ==========================================
+      // B. 3D NATURAL FLUTTERING PETALS PHYSICS
+      // ==========================================
+      const canvas = document.getElementById('petals-canvas');
+      const ctx = canvas.getContext('2d');
+      let petalArray = [];
+
+      const setCanvasSize = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      };
+      window.addEventListener('resize', setCanvasSize);
+      setCanvasSize();
+
+      class LuxuryPetal {
+        constructor() { this.init(true); }
+        init(randomY = false) {
+          this.x = Math.random() * canvas.width;
+          this.y = randomY ? Math.random() * canvas.height : -20;
+          this.size = Math.random() * 8 + 8;
+          this.speedY = Math.random() * 0.8 + 0.6;
+          this.speedX = Math.random() * 0.6 - 0.3;
+          this.isRose = Math.random() > 0.4;
+          this.colors = this.isRose ? ['#FFB6C1', '#E85D75'] : ['#FFFFF0', '#F4E5A1'];
+          this.angle = Math.random() * 360;
+          this.spin = Math.random() * 1.2 - 0.6;
+          this.flutterVelocity = Math.random() * 0.02 + 0.01;
+          this.phase = Math.random() * 50;
+          this.opacity = Math.random() * 0.4 + 0.5;
+          this.depthScale = Math.random() * 0.4 + 0.6;
+        }
+        update() {
+          this.y += this.speedY;
+          this.phase += this.flutterVelocity;
+          this.x += this.speedX + Math.sin(this.phase) * 0.5;
+          this.angle += this.spin;
+          this.depthScale = Math.sin(this.phase * 1.2) * 0.3 + 0.7;
+
+          if (this.y > canvas.height + 20 || this.x < -20 || this.x > canvas.width + 20) {
+            this.init(false);
+          }
+        }
+        draw() {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.angle * Math.PI / 180);
+          ctx.scale(1, this.depthScale);
+          
+          let grad = ctx.createRadialGradient(0, 0, 1, 0, 0, this.size);
+          grad.addColorStop(0, this.colors[0]);
+          grad.addColorStop(1, this.colors[1]);
+          
+          ctx.fillStyle = grad;
+          ctx.globalAlpha = this.opacity;
+          ctx.beginPath();
+          if(this.isRose) {
+            ctx.moveTo(0, 0);
+            ctx.bezierCurveTo(-this.size, -this.size, -this.size * 1.4, this.size/2, 0, this.size * 1.1);
+            ctx.bezierCurveTo(this.size * 1.4, this.size/2, this.size, -this.size, 0, 0);
+          } else {
+            ctx.ellipse(0, 0, this.size * 1.2, this.size * 0.5, 0, 0, 2 * Math.PI);
+          }
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      for(let i=0; i < 40; i++) petalArray.push(new LuxuryPetal());
+      const runEngine = () => {
+        ctx.clearRect(0,0, canvas.width, canvas.height);
+        petalArray.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(runEngine);
+      };
+      runEngine();
+
+      // ==========================================
+      // C. SECURE LIVE COUNTDOWNS
+      // ==========================================
+      const operateClock = (elementId, timestamp) => {
+        const block = document.getElementById(elementId);
+        const boxes = block.querySelectorAll('.num');
+        
+        const refresh = () => {
+          const gap = timestamp - new Date().getTime();
+          if (gap <= 0) {
+            block.innerHTML = "<div style='color:var(--text-light); font-family:var(--font-serif);'>Events Underway!</div>";
+            return;
+          }
+          const d = Math.floor(gap / 86400000);
+          const h = Math.floor((gap % 86400000) / 3600000);
+          const m = Math.floor((gap % 3600000) / 60000);
+          
+          boxes[0].textContent = String(d).padStart(2, '0');
+          boxes[1].textContent = String(h).padStart(2, '0');
+          boxes[2].textContent = String(m).padStart(2, '0');
+        };
+        refresh();
+        setInterval(refresh, 60000);
+      };
+      operateClock('timer-wedding', targetWedding);
+      operateClock('timer-reception', targetReception);
+
+      // ==========================================
+      // D. INSTANCE-CONTROLLED SINGLE QR CONTAINER
+      // ==========================================
+      const qrTarget = document.getElementById('qrcode');
+      if(qrTarget) {
+        qrTarget.innerHTML = ""; // Clear existing blocks entirely
+        new QRCode(qrTarget, {
+          text: window.location.href,
+          width: 140,
+          height: 140,
+          colorDark : "#2A0409",
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.H
+        });
+      }
+
+      // WhatsApp Share Configuration
+      document.getElementById('whatsapp-share').addEventListener('click', () => {
+        const textOut = encodeURIComponent(`We invite you to celebrate our wedding milestone! View the live invitation itinerary details here: ${window.location.href}`);
+        window.open(`https://api.whatsapp.com/send?text=${textOut}`, '_blank');
+      });
+    });
+  </script>
 </body>
 </html>
