@@ -81,11 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('temple-doors').style.display = 'none';
           document.body.classList.add('doors-open');
         }
-      }, 2.6)
-      .from('.hero-content', { scale: 0.92, opacity: 0, duration: 1.1, ease: 'power2.out' }, 2.5)
-      .from('.hero-content > *', { y: 30, opacity: 0, stagger: 0.15, duration: 0.9, ease: 'power2.out' }, 2.6)
-      .from('.vilakku-left', { x: -80, opacity: 0, duration: 1.1, ease: 'power2.out' }, 2.6)
-      .from('.vilakku-right', { x: 80, opacity: 0, duration: 1.1, ease: 'power2.out' }, 2.6);
+      }, 2.6);
   } catch (err) {
     // GSAP unavailable (blocked CDN, offline, etc.) — open doors immediately with a plain CSS fade.
     clearTimeout(safetyTimer);
