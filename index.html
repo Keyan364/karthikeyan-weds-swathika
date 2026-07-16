@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wedding Invitation | Meera & Arjun</title>
+  <title>Wedding Invitation | Karthikeyan & Swathika</title>
   
   <!-- Premium Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@300;400;600&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
   
-  <!-- Animation & QR Utilities -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <!-- QR Code Generation Utility -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <style>
     /* ==========================================================================
-       1. CORE DESIGN & RESET
+       1. VARIABLES & PALETTE SETUP
        ========================================================================== */
     :root {
       --bg-dark: #2A0409;
@@ -27,7 +26,7 @@
       --font-serif: 'Cinzel', serif;
       --font-cursive: 'Mrs Saint Delafield', cursive;
       --font-sans: 'Poppins', sans-serif;
-      --shadow-premium: 0 15px 35px rgba(0, 0, 0, 0.5);
+      --shadow-premium: 0 15px 40px rgba(0, 0, 0, 0.6);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -35,7 +34,7 @@
     body { min-height: 100vh; position: relative; }
 
     /* ==========================================================================
-       2. CINEMATIC CURTAIN (TEMPLE DOORS)
+       2. CINEMATIC CURTAIN INTERFACE (DOORS)
        ========================================================================== */
     #temple-doors {
       position: fixed;
@@ -43,15 +42,17 @@
       z-index: 9999;
       display: flex;
       cursor: pointer;
+      overflow: hidden;
     }
     .door {
       position: absolute; top: 0; width: 50%; height: 100%;
       background: var(--bg-crimson);
-      display: flex; align-items: center;
-      transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+      transition: transform 1.6s cubic-bezier(0.77, 0, 0.175, 1);
+      border-bottom: 4px solid var(--gold-primary);
+      border-top: 4px solid var(--gold-primary);
     }
-    .door-left { left: 0; border-right: 2px solid var(--gold-primary); justify-content: flex-end; }
-    .door-right { right: 0; border-left: 2px solid var(--gold-primary); justify-content: flex-start; }
+    .door-left { left: 0; border-right: 2px solid var(--gold-primary); }
+    .door-right { right: 0; border-left: 2px solid var(--gold-primary); }
     
     .door-content-wrapper {
       position: absolute;
@@ -61,92 +62,119 @@
       width: 100%;
       pointer-events: none;
       z-index: 10000;
-      transition: opacity 0.6s ease;
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
     .door-instruction {
       font-family: var(--font-serif);
       color: var(--text-light);
-      letter-spacing: 3px;
-      font-size: clamp(1rem, 2.5vw, 1.5rem);
-      margin-top: 20px;
-      animation: pulse 2s infinite;
+      letter-spacing: 4px;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      margin-top: 25px;
+      animation: pulsePulse 2s infinite;
+    }
+
+    /* Ganesha Icon Styling */
+    .ganesha-icon {
+      width: clamp(80px, 15vw, 130px);
+      height: auto;
+      margin: 0 auto 20px;
+      display: block;
     }
 
     /* ==========================================================================
-       3. TEXT ALIGNMENT & PREMIUM SECTIONS
+       3. ENTER-REVEAL ANIMATION STATES (PURE PERFORMANCE CSS)
+       ========================================================================== */
+    .reveal-hidden {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1.2s cubic-bezier(0.215, 0.610, 0.355, 1), transform 1.2s cubic-bezier(0.215, 0.610, 0.355, 1);
+    }
+    
+    .start-reveal .reveal-hidden {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .delay-1 { transition-delay: 0.3s; }
+    .delay-2 { transition-delay: 0.6s; }
+    .delay-3 { transition-delay: 0.9s; }
+    .delay-4 { transition-delay: 1.2s; }
+
+    /* ==========================================================================
+       4. ABSOLUTE CENTER DESIGN LAYOUTS
        ========================================================================== */
     section {
-      padding: 80px 20px;
+      padding: 90px 20px;
       max-width: 1200px;
       margin: 0 auto;
-      text-align: center; /* Enforces absolute center layout */
+      text-align: center;
       position: relative;
       z-index: 5;
     }
 
     .section-title {
       font-family: var(--font-serif);
-      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
       background: var(--gold-foil);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 20px;
-      letter-spacing: 2px;
+      margin-bottom: 25px;
+      letter-spacing: 3px;
     }
 
-    /* Hero Center Main Title */
     #hero {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding-top: 40px;
+      padding: 60px 20px;
     }
     .hero-eyebrow {
       font-family: var(--font-serif);
       color: var(--text-light);
-      letter-spacing: 4px;
-      font-size: clamp(0.9rem, 2vw, 1.3rem);
+      letter-spacing: 5px;
+      font-size: clamp(0.85rem, 2vw, 1.25rem);
       text-transform: uppercase;
     }
     #hero-names {
       font-family: var(--font-serif);
-      font-size: clamp(3rem, 9vw, 6.5rem);
-      line-height: 1.1;
-      margin: 25px 0;
+      font-size: clamp(2.5rem, 7vw, 5.5rem);
+      line-height: 1.2;
+      margin: 30px 0;
       background: var(--gold-foil);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      font-weight: 700;
     }
     .hero-cursive {
       font-family: var(--font-cursive);
-      font-size: clamp(4rem, 10vw, 7rem);
+      font-size: clamp(3.5rem, 9vw, 6.5rem);
       display: block;
       -webkit-text-fill-color: var(--text-light);
-      margin: -10px 0;
+      margin: -5px 0;
     }
 
     /* ==========================================================================
-       4. HIGH-END LAYOUT CARDS & CONTROLS
+       5. LAYOUT GRID CARDS SYSTEM
        ========================================================================== */
     .venue-grid {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 40px;
-      margin-top: 40px;
+      margin-top: 45px;
     }
     .premium-card {
       flex: 1;
       min-width: 320px;
-      max-width: 500px;
-      background: rgba(76, 2, 11, 0.4);
-      border: 1.5px solid rgba(212, 175, 55, 0.3);
-      padding: 40px 30px;
+      max-width: 520px;
+      background: rgba(76, 2, 11, 0.45);
+      border: 1.5px solid rgba(212, 175, 55, 0.35);
+      padding: 45px 30px;
       border-radius: 16px;
       box-shadow: var(--shadow-premium);
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -155,67 +183,73 @@
     .premium-card h3 {
       font-family: var(--font-serif);
       color: var(--text-light);
-      font-size: 1.8rem;
+      font-size: 1.9rem;
       margin-bottom: 15px;
+      letter-spacing: 1px;
     }
     .premium-card p {
       font-size: 1rem;
-      line-height: 1.6;
+      line-height: 1.7;
       color: #ffffff;
-      margin-bottom: 20px;
-      opacity: 0.9;
+      margin-bottom: 25px;
     }
 
-    /* Dynamic Countdowns Layout */
+    /* ==========================================================================
+       6. SMOOTH UPDATE DYNAMIC TIME COUNTERS
+       ========================================================================== */
     .countdown-display {
       display: flex;
-      gap: 15px;
+      gap: 12px;
       justify-content: center;
-      margin: 20px 0;
+      margin: 25px 0;
+      width: 100%;
     }
     .time-unit {
-      background: rgba(212, 175, 55, 0.15);
-      border: 1px solid var(--gold-primary);
-      padding: 10px 15px;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.7);
+      padding: 12px 10px;
       border-radius: 8px;
-      min-width: 70px;
+      flex: 1;
+      max-width: 80px;
+      transition: transform 0.2s ease;
     }
     .time-unit .num {
       display: block;
       font-family: var(--font-serif);
-      font-size: 1.8rem;
+      font-size: 1.7rem;
       color: var(--text-light);
-      font-weight: bold;
+      font-weight: 700;
     }
     .time-unit .label {
-      font-size: 0.75rem;
+      display: block;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      opacity: 0.7;
+      opacity: 0.8;
+      margin-top: 2px;
+      letter-spacing: 1px;
     }
 
-    /* Media/Maps Framework */
+    /* Maps Block Configuration */
     .map-frame {
       width: 100%;
-      height: 230px;
+      height: 250px;
       border-radius: 10px;
       border: 1px solid rgba(212, 175, 55, 0.4);
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
-    /* ==========================================================================
-       5. COMPREHENSIVE LUXURY GALLERY
-       ========================================================================== */
+    /* Showcase Photo Gallery */
     .gallery-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      margin-top: 30px;
+      gap: 30px;
+      margin-top: 40px;
     }
     .gallery-item {
       position: relative;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
-      border: 1px solid rgba(212, 175, 55, 0.3);
+      border: 1px solid rgba(212, 175, 55, 0.35);
       box-shadow: var(--shadow-premium);
       aspect-ratio: 4/5;
       background: #3d050c;
@@ -224,28 +258,19 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.6s ease;
+      transition: transform 0.8s ease;
     }
     .gallery-item:hover img {
-      transform: scale(1.05);
+      transform: scale(1.06);
     }
 
-    /* Decorative Lighting elements */
-    .lamp {
-      position: absolute; bottom: 30px;
-      width: clamp(60px, 10vw, 110px);
-      z-index: 2;
-    }
-    .lamp-l { left: 5%; }
-    .lamp-r { right: 5%; }
-
-    /* Buttons Configuration */
+    /* Action Buttons Layer */
     .gold-btn {
       background: var(--gold-foil);
       color: var(--bg-dark);
       font-family: var(--font-serif);
-      font-weight: bold;
-      padding: 12px 32px;
+      font-weight: 700;
+      padding: 13px 35px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
@@ -255,138 +280,176 @@
       justify-content: center;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       box-shadow: 0 4px 15px rgba(212,175,55,0.3);
-      margin-top: auto;
+      letter-spacing: 1px;
     }
     .gold-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(212,175,55,0.5);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 22px rgba(212,175,55,0.55);
     }
 
-    /* Ambient Elements Canvas layer */
+    #qrcode {
+      background: white;
+      padding: 14px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      margin: 20px auto;
+      display: inline-block;
+    }
+
+    /* Lamps */
+    .lamp {
+      position: absolute; bottom: 40px;
+      width: clamp(65px, 9vw, 110px);
+      z-index: 2;
+      opacity: 0.8;
+    }
+    .lamp-l { left: 6%; }
+    .lamp-r { right: 6%; }
+
     #petals-canvas {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none; z-index: 10;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.6; }
-      50% { opacity: 1; }
+    @keyframes pulsePulse {
+      0%, 100% { opacity: 0.5; transform: scale(0.98); }
+      50% { opacity: 1; transform: scale(1); }
     }
     @media(max-width: 768px) {
       .lamp { display: none; }
-      section { padding: 60px 15px; }
+      section { padding: 65px 15px; }
+      .countdown-display { gap: 8px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Background Environment Layer -->
+  <!-- Falling Flora Particle Simulation Environment Layer -->
   <canvas id="petals-canvas"></canvas>
 
-  <!-- Opening Cinematic Curtain -->
+  <!-- Opening Door Split Screen Curtain -->
   <div id="temple-doors">
     <div class="door door-left"></div>
     <div class="door-content-wrapper" id="door-info">
-      <div class="door-instruction">TAP TO OPEN INVITATION</div>
+      <!-- Premium Lord Ganesha SVG Symbol Centered in Loader -->
+      <svg class="ganesha-icon" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 5C38 5 33 14 33 22C33 32 44 33 41 45C39 52 30 50 26 44C22 38 25 31 22 26C19 21 10 26 14 33C17 38 15 45 20 50C25 55 23 61 28 66C33 71 42 69 46 76C50 83 45 91 52 95C58 98 67 92 65 83C63 74 74 76 78 68C82 60 76 54 79 46C82 38 90 40 89 31C88 22 79 16 71 21C65 25 64 32 59 34C55 36 54 28 56 22C58 14 62 5 50 5Z" stroke="url(#gold-foil-grad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="44" cy="22" r="2" fill="#D4AF37"/>
+        <path d="M47 12H53" stroke="#D4AF37" stroke-width="2"/>
+        <defs>
+          <linearGradient id="gold-foil-grad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#bf953f"/><stop offset="25%" stop-color="#fcf6ba"/>
+            <stop offset="50%" stop-color="#b38728"/><stop offset="100%" stop-color="#aa771c"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      <div class="door-instruction">TAP TO ENTER INVITATION</div>
     </div>
     <div class="door door-right"></div>
   </div>
 
-  <!-- Hero Section -->
+  <!-- Main Hero Context Interface Area -->
   <header id="hero">
-    <div class="hero-eyebrow">Together with our Families</div>
-    <h1 id="hero-names">
-      Meera 
-      <span class="hero-cursive">and</span> 
-      Arjun
-    </h1>
-    <div class="hero-eyebrow" style="margin-top: 10px;">Are Getting Married</div>
+    <!-- Ganesha Placement on First Page Content Arena -->
+    <svg class="ganesha-icon reveal-hidden" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-bottom:25px;">
+      <path d="M50 5C38 5 33 14 33 22C33 32 44 33 41 45C39 52 30 50 26 44C22 38 25 31 22 26C19 21 10 26 14 33C17 38 15 45 20 50C25 55 23 61 28 66C33 71 42 69 46 76C50 83 45 91 52 95C58 98 67 92 65 83C63 74 74 76 78 68C82 60 76 54 79 46C82 38 90 40 89 31C88 22 79 16 71 21C65 25 64 32 59 34C55 36 54 28 56 22C58 14 62 5 50 5Z" stroke="url(#gold-foil-grad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="44" cy="22" r="1.5" fill="#D4AF37"/>
+    </svg>
     
-    <!-- Decorative side lamps placement inside hero context -->
-    <svg class="lamp lamp-l" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 20v130M30 150h40v10H30z" stroke="#D4AF37" stroke-width="4"/><circle cx="50" cy="90" r="25" fill="#D4AF37" opacity="0.2"/><path d="M50 65c-12 0-20 10-20 25s20 35 20 35 20-20 20-35-8-35-20-35z" fill="url(#gold-grad)"/><defs><linearGradient id="gold-grad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#bf953f"/><stop offset="50%" stop-color="#fcf6ba"/><stop offset="100%" stop-color="#aa771c"/></linearGradient></defs></svg>
-    <svg class="lamp lamp-r" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 20v130M30 150h40v10H30z" stroke="#D4AF37" stroke-width="4"/><circle cx="50" cy="90" r="25" fill="#D4AF37" opacity="0.2"/><path d="M50 65c-12 0-20 10-20 25s20 35 20 35 20-20 20-35-8-35-20-35z" fill="url(#gold-grad)"/></svg>
+    <div class="hero-eyebrow reveal-hidden delay-1">Together with our Families</div>
+    <h1 id="hero-names" class="reveal-hidden delay-2">
+      Karthikeyan R 
+      <span class="hero-cursive">and</span> 
+      Swathika M
+    </h1>
+    <div class="hero-eyebrow reveal-hidden delay-3" style="margin-top: 10px;">Are Getting Married</div>
+    
+    <!-- Traditional deepam elements -->
+    <svg class="lamp lamp-l reveal-hidden delay-4" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 20v130M30 150h40v10H30z" stroke="#D4AF37" stroke-width="4"/><circle cx="50" cy="90" r="25" fill="#D4AF37" opacity="0.15"/><path d="M50 65c-12 0-20 10-20 25s20 35 20 35 20-20 20-35-8-35-20-35z" fill="url(#gold-foil-grad)"/></svg>
+    <svg class="lamp lamp-r reveal-hidden delay-4" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 20v130M30 150h40v10H30z" stroke="#D4AF37" stroke-width="4"/><circle cx="50" cy="90" r="25" fill="#D4AF37" opacity="0.15"/><path d="M50 65c-12 0-20 10-20 25s20 35 20 35 20-20 20-35-8-35-20-35z" fill="url(#gold-foil-grad)"/></svg>
   </header>
 
-  <!-- Story & Timeline Section -->
+  <!-- Introduction Overview Section -->
   <section id="story">
     <h2 class="section-title">Our Story</h2>
-    <p style="max-width: 750px; margin: 0 auto 40px; line-height: 1.8; opacity: 0.9;">
+    <p style="max-width: 800px; margin: 0 auto; line-height: 1.9; opacity: 0.95; font-size: 1.05rem;">
       What began as a quiet introduction has blossomed into a lifetime promise. We are overjoyed to begin this new chapter surrounded by the people we love most — and we would be honored to have you bless us as we do.
     </p>
   </section>
 
-  <!-- Celebrations / Cards & Live Countdowns -->
+  <!-- Celebrations Layout Area & Countdown Timers with High Fidelity Seconds Tracking -->
   <section id="events">
     <h2 class="section-title">Celebrations</h2>
     <div class="venue-grid">
       
-      <!-- Card 1: The Muhurtham -->
+      <!-- Event 1: The Sacred Wedding Ceremony -->
       <div class="premium-card">
         <div>
           <h3>The Wedding</h3>
           <p>Monday, December 14, 2026<br>7:00 AM onwards</p>
-          <p style="font-style: italic; font-size: 0.9rem; color: var(--text-light);">Sri Meenakshi Kalyana Mandapam, Chennai</p>
+          <p style="font-style: italic; font-size: 0.95rem; color: var(--text-light);">Sri Meenakshi Kalyana Mandapam, Chennai</p>
         </div>
         
-        <!-- Interactive Countdown Submodule -->
+        <!-- Live Precision Module -->
         <div class="countdown-display" id="timer-wedding">
           <div class="time-unit"><span class="num">00</span><span class="label">Days</span></div>
           <div class="time-unit"><span class="num">00</span><span class="label">Hrs</span></div>
           <div class="time-unit"><span class="num">00</span><span class="label">Min</span></div>
+          <div class="time-unit" style="border-color: var(--text-light);"><span class="num" style="color: #fff;">00</span><span class="label">Sec</span></div>
         </div>
 
-        <a href="https://maps.google.com" target="_blank" class="gold-btn">View Route Map</a>
+        <a href="https://maps.app.goo.gl/QQxxedGjsjvB81QB7" target="_blank" class="gold-btn">View Route Map</a>
       </div>
 
-      <!-- Card 2: The Reception -->
+      <!-- Event 2: The Reception Celebration -->
       <div class="premium-card">
         <div>
           <h3>The Reception</h3>
           <p>Monday, December 14, 2026<br>7:00 PM onwards</p>
-          <p style="font-style: italic; font-size: 0.9rem; color: var(--text-light);">The Grand Ballroom, Taj Coromandel, Chennai</p>
+          <p style="font-style: italic; font-size: 0.95rem; color: var(--text-light);">The Grand Ballroom, Taj Coromandel, Chennai</p>
         </div>
 
-        <!-- Interactive Countdown Submodule -->
+        <!-- Live Precision Module -->
         <div class="countdown-display" id="timer-reception">
           <div class="time-unit"><span class="num">00</span><span class="label">Days</span></div>
           <div class="time-unit"><span class="num">00</span><span class="label">Hrs</span></div>
           <div class="time-unit"><span class="num">00</span><span class="label">Min</span></div>
+          <div class="time-unit" style="border-color: var(--text-light);"><span class="num" style="color: #fff;">00</span><span class="label">Sec</span></div>
         </div>
 
-        <a href="https://maps.google.com" target="_blank" class="gold-btn">View Route Map</a>
+        <a href="https://maps.app.goo.gl/QQxxedGjsjvB81QB7" target="_blank" class="gold-btn">View Route Map</a>
       </div>
 
     </div>
   </section>
 
-  <!-- Gallery Showcase -->
+  <!-- Gallery Grid Showcase Components -->
   <section id="gallery">
     <h2 class="section-title">Moments We Cherish</h2>
-    <p style="margin-bottom: 30px; opacity: 0.8;">A glimpse into our journey together</p>
+    <p style="margin-bottom: 35px; opacity: 0.85;">A glimpse into our beautiful journey</p>
     <div class="gallery-container">
-      <!-- Standardized placeholder paths - update src directly as needed -->
       <div class="gallery-item"><img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=600" alt="Moment 1"></div>
       <div class="gallery-item"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=600" alt="Moment 2"></div>
       <div class="gallery-item"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=600" alt="Moment 3"></div>
     </div>
   </section>
 
-  <!-- Secure Single Instance Location Layout -->
+  <!-- Location Vectors and Validated External Navigation Maps -->
   <section id="location">
     <h2 class="section-title">Find Us</h2>
     <div class="venue-grid">
       
-      <!-- Map Block -->
+      <!-- Safe Verified Dynamic Map Frame Embedded -->
       <div class="premium-card">
-        <h3>Venue Location</h3>
+        <h3>Venue Directional Map</h3>
         <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3886.2851046244463!2d80.24641977596568!3d13.04928231320499!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a526644483737b3%3A0x6b26d36ea1f8f946!2sTaj%20Coromandel%2C%20Chennai!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
-        <a href="https://maps.app.goo.gl/wRjV7p4QxJg4PZpU6" target="_blank" class="gold-btn">Get Directions</a>
+        <a href="https://maps.app.goo.gl/QQxxedGjsjvB81QB7" target="_blank" class="gold-btn">Get Directions</a>
       </div>
 
-      <!-- Single QR Generation Block -->
+      <!-- Isolated QR Component Container block -->
       <div class="premium-card">
         <h3>Scan to Share</h3>
-        <p style="font-size: 0.9rem;">Share this beautiful invitation page instantly with family and friends</p>
+        <p style="font-size: 0.95rem; opacity:0.85;">Scan to open or share this dynamic luxury invitation page instantly</p>
         <div id="qrcode"></div>
         <button id="whatsapp-share" class="gold-btn" style="margin-top: 20px;">Share via WhatsApp</button>
       </div>
@@ -394,107 +457,103 @@
     </div>
   </section>
 
-  <!-- Footer Context -->
-  <footer style="text-align: center; padding: 60px 20px; border-top: 1px solid rgba(212,175,55,0.2); font-family: var(--font-serif); color: var(--text-light);">
-    <h3>We Can't Wait To Celebrate With You</h3>
-    <p style="font-family: var(--font-sans); font-size: 0.9rem; opacity: 0.6; margin-top: 10px;">Meera & Arjun &bull; 14.12.2026</p>
+  <!-- Footer Info Layout -->
+  <footer style="text-align: center; padding: 70px 20px; border-top: 1px solid rgba(212,175,55,0.25); font-family: var(--font-serif); color: var(--text-light);">
+    <h2>We Can't Wait To Celebrate With You</h2>
+    <p style="font-family: var(--font-sans); font-size: 0.95rem; opacity: 0.7; margin-top: 12px;">Karthikeyan & Swathika &bull; 14.12.2026</p>
   </footer>
 
   <!-- ==========================================================================
-     6. CORE EXECUTION ENGINE
-     ========================================================================== */ -->
+     7. CONTROL INTERACTION SCRIPT ENGINE
+     ========================================================================== -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       
-      // Configuration parameters setup
+      // Target event dates setup
       const targetWedding = new Date("2026-12-14T07:00:00+05:30").getTime();
       const targetReception = new Date("2026-12-14T19:00:00+05:30").getTime();
 
-      // Setup initial visibility states for text sequences to prepare GSAP entry rules
-      gsap.set("#hero .hero-eyebrow, #hero-names, .lamp", { opacity: 0, y: 30 });
-
       // ==========================================
-      // A. DOOR SPLIT & CINEMATIC TITLE ENTRANCE
+      // A. CINEMATIC CURTAIN SPLIT INTERACTION
       // ==========================================
-      const triggerOpeningAnimation = () => {
+      const triggerOpeningReveal = () => {
         document.getElementById('door-info').style.opacity = '0';
+        document.getElementById('door-info').style.transform = 'translate(-50%, -60%)';
         
-        // Split Left & Right Panels smoothly
-        gsap.to(".door-left", { xPercent: -100, duration: 1.4, ease: "power4.inOut" });
-        gsap.to(".door-right", { xPercent: 100, duration: 1.4, ease: "power4.inOut" });
+        // Displace curtains along X axis smoothly
+        document.querySelector('.door-left').style.transform = 'translateX(-100%)';
+        document.querySelector('.door-right').style.transform = 'translateX(100%)';
         
-        // Fade curtain layer fully after split ends
-        gsap.to("#temple-doors", { opacity: 0, display: "none", duration: 0.4, delay: 1.2 });
-
-        // High-end cinematic name fade and float sequence
-        const tl = gsap.timeline({ delay: 0.8 });
-        tl.to("#hero-names", { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" })
-          .to("#hero .hero-eyebrow", { opacity: 1, y: 0, duration: 0.8, stagger: 0.3 }, "-=0.6")
-          .to(".lamp", { opacity: 1, y: 0, duration: 1 }, "-=0.4");
+        // Remove door blocker overlay container
+        setTimeout(() => {
+          document.getElementById('temple-doors').style.display = 'none';
+          // Trigger the coordinated CSS entry animations
+          document.body.classList.add('start-reveal');
+        }, 1200);
       };
 
-      document.getElementById('temple-doors').addEventListener('click', triggerOpeningAnimation);
+      document.getElementById('temple-doors').addEventListener('click', triggerOpeningReveal);
 
-      // Fail-Safe: Automatically reveal page text elements if visitor misses clicking doors
+      // Fail-Safe Auto Bypass: Triggers automatically if interaction layer isn't selected
       setTimeout(() => {
         if(document.getElementById('temple-doors').style.display !== 'none') {
-          triggerOpeningAnimation();
+          triggerOpeningReveal();
         }
-      }, 5000);
+      }, 4500);
 
       // ==========================================
-      // B. 3D NATURAL FLUTTERING PETALS PHYSICS
+      // B. 3D DEEP ORGANIC DRIFTING PETALS ENGINE
       // ==========================================
       const canvas = document.getElementById('petals-canvas');
       const ctx = canvas.getContext('2d');
-      let petalArray = [];
+      let basePetals = [];
 
-      const setCanvasSize = () => {
+      const syncCanvasBounds = () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
       };
-      window.addEventListener('resize', setCanvasSize);
-      setCanvasSize();
+      window.addEventListener('resize', syncCanvasBounds);
+      syncCanvasBounds();
 
-      class LuxuryPetal {
-        constructor() { this.init(true); }
-        init(randomY = false) {
+      class LuxuryPetalNode {
+        constructor() { this.spawn(true); }
+        spawn(randomY = false) {
           this.x = Math.random() * canvas.width;
-          this.y = randomY ? Math.random() * canvas.height : -20;
-          this.size = Math.random() * 8 + 8;
-          this.speedY = Math.random() * 0.8 + 0.6;
-          this.speedX = Math.random() * 0.6 - 0.3;
-          this.isRose = Math.random() > 0.4;
+          this.y = randomY ? Math.random() * canvas.height : -25;
+          this.size = Math.random() * 9 + 8;
+          this.speedY = Math.random() * 0.9 + 0.6;
+          this.speedX = Math.random() * 0.5 - 0.25;
+          this.isRose = Math.random() > 0.45;
           this.colors = this.isRose ? ['#FFB6C1', '#E85D75'] : ['#FFFFF0', '#F4E5A1'];
           this.angle = Math.random() * 360;
-          this.spin = Math.random() * 1.2 - 0.6;
-          this.flutterVelocity = Math.random() * 0.02 + 0.01;
-          this.phase = Math.random() * 50;
-          this.opacity = Math.random() * 0.4 + 0.5;
-          this.depthScale = Math.random() * 0.4 + 0.6;
+          this.spinSpeed = Math.random() * 1.4 - 0.7;
+          this.flutterPhase = Math.random() * 40;
+          this.frequency = Math.random() * 0.02 + 0.015;
+          this.opacity = Math.random() * 0.35 + 0.55;
+          this.foldVal = Math.random() * 0.4 + 0.6;
         }
-        update() {
+        process() {
           this.y += this.speedY;
-          this.phase += this.flutterVelocity;
-          this.x += this.speedX + Math.sin(this.phase) * 0.5;
-          this.angle += this.spin;
-          this.depthScale = Math.sin(this.phase * 1.2) * 0.3 + 0.7;
+          this.flutterPhase += this.frequency;
+          this.x += this.speedX + Math.sin(this.flutterPhase) * 0.5;
+          this.angle += this.spinSpeed;
+          this.foldVal = Math.sin(this.flutterPhase * 1.4) * 0.35 + 0.65;
 
-          if (this.y > canvas.height + 20 || this.x < -20 || this.x > canvas.width + 20) {
-            this.init(false);
+          if (this.y > canvas.height + 25 || this.x < -25 || this.x > canvas.width + 25) {
+            this.spawn(false);
           }
         }
-        draw() {
+        render() {
           ctx.save();
           ctx.translate(this.x, this.y);
           ctx.rotate(this.angle * Math.PI / 180);
-          ctx.scale(1, this.depthScale);
+          ctx.scale(1, this.foldVal);
           
-          let grad = ctx.createRadialGradient(0, 0, 1, 0, 0, this.size);
-          grad.addColorStop(0, this.colors[0]);
-          grad.addColorStop(1, this.colors[1]);
+          let gradient = ctx.createRadialGradient(0, 0, 2, 0, 0, this.size);
+          gradient.addColorStop(0, this.colors[0]);
+          gradient.addColorStop(1, this.colors[1]);
           
-          ctx.fillStyle = grad;
+          ctx.fillStyle = gradient;
           ctx.globalAlpha = this.opacity;
           ctx.beginPath();
           if(this.isRose) {
@@ -509,61 +568,64 @@
         }
       }
 
-      for(let i=0; i < 40; i++) petalArray.push(new LuxuryPetal());
-      const runEngine = () => {
-        ctx.clearRect(0,0, canvas.width, canvas.height);
-        petalArray.forEach(p => { p.update(); p.draw(); });
-        requestAnimationFrame(runEngine);
+      for(let i=0; i < 35; i++) basePetals.push(new LuxuryPetalNode());
+      const renderCycle = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        basePetals.forEach(p => { p.process(); p.render(); });
+        requestAnimationFrame(renderCycle);
       };
-      runEngine();
+      renderCycle();
 
       // ==========================================
-      // C. SECURE LIVE COUNTDOWNS
+      // C. HIGH-FIDELITY DYNAMIC COUNTDOWNS (WITH SECONDS)
       // ==========================================
-      const operateClock = (elementId, timestamp) => {
-        const block = document.getElementById(elementId);
-        const boxes = block.querySelectorAll('.num');
+      const initializeClockNode = (targetElementId, targetTimeMs) => {
+        const container = document.getElementById(targetElementId);
+        const boxes = container.querySelectorAll('.num');
         
-        const refresh = () => {
-          const gap = timestamp - new Date().getTime();
-          if (gap <= 0) {
-            block.innerHTML = "<div style='color:var(--text-light); font-family:var(--font-serif);'>Events Underway!</div>";
+        const tick = () => {
+          const delta = targetTimeMs - new Date().getTime();
+          if (delta <= 0) {
+            container.innerHTML = "<div style='color:var(--text-light); font-family:var(--font-serif); font-size:1.2rem;'>The Auspicious Event Has Begun!</div>";
             return;
           }
-          const d = Math.floor(gap / 86400000);
-          const h = Math.floor((gap % 86400000) / 3600000);
-          const m = Math.floor((gap % 3600000) / 60000);
+          
+          const d = Math.floor(delta / 86400000);
+          const h = Math.floor((delta % 86400000) / 3600000);
+          const m = Math.floor((delta % 3600000) / 60000);
+          const s = Math.floor((delta % 60000) / 1000);
           
           boxes[0].textContent = String(d).padStart(2, '0');
           boxes[1].textContent = String(h).padStart(2, '0');
           boxes[2].textContent = String(m).padStart(2, '0');
+          boxes[3].textContent = String(s).padStart(2, '0');
         };
-        refresh();
-        setInterval(refresh, 60000);
+        tick();
+        setInterval(tick, 1000); // 1-second interval execution loop
       };
-      operateClock('timer-wedding', targetWedding);
-      operateClock('timer-reception', targetReception);
+      initializeClockNode('timer-wedding', targetWedding);
+      initializeClockNode('timer-reception', targetReception);
 
       // ==========================================
-      // D. INSTANCE-CONTROLLED SINGLE QR CONTAINER
+      // D. INSTANCE-CONTROLLED SINGLE QR CODE GENERATION
       // ==========================================
-      const qrTarget = document.getElementById('qrcode');
-      if(qrTarget) {
-        qrTarget.innerHTML = ""; // Clear existing blocks entirely
-        new QRCode(qrTarget, {
+      const qrContainerBox = document.getElementById('qrcode');
+      if(qrContainerBox) {
+        qrContainerBox.innerHTML = ""; // Clear existing elements to guarantee a single code block
+        new QRCode(qrContainerBox, {
           text: window.location.href,
-          width: 140,
-          height: 140,
+          width: 150,
+          height: 150,
           colorDark : "#2A0409",
           colorLight : "#ffffff",
           correctLevel : QRCode.CorrectLevel.H
         });
       }
 
-      // WhatsApp Share Configuration
+      // WhatsApp Message Distribution Event Link
       document.getElementById('whatsapp-share').addEventListener('click', () => {
-        const textOut = encodeURIComponent(`We invite you to celebrate our wedding milestone! View the live invitation itinerary details here: ${window.location.href}`);
-        window.open(`https://api.whatsapp.com/send?text=${textOut}`, '_blank');
+        const customText = encodeURIComponent(`We cordially invite you to join us for our wedding celebration! View the full interactive itinerary details here: ${window.location.href}`);
+        window.open(`https://api.whatsapp.com/send?text=${customText}`, '_blank');
       });
     });
   </script>
