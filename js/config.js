@@ -2,10 +2,10 @@
    EDIT ME — all the details a couple needs to change live here.
    Nothing below this file needs to be touched for basic customisation.
    ========================================================= */
-const WEDDING_CONFIG = {
+window.WEDDING_CONFIG = {
   coupleNames: "Meera & Arjun",
   heroDateText: "14th December 2026 · Chennai",
-
+ 
   wedding: {
     label: "Muhurtham",
     dateISO: "2026-12-14T07:00:00+05:30", // include timezone offset
@@ -13,7 +13,7 @@ const WEDDING_CONFIG = {
     venueName: "Sri Meenakshi Kalyana Mandapam, Chennai",
     mapsQuery: "Sri Meenakshi Kalyana Mandapam Chennai"
   },
-
+ 
   reception: {
     label: "Reception",
     dateISO: "2026-12-14T19:00:00+05:30",
@@ -21,22 +21,22 @@ const WEDDING_CONFIG = {
     venueName: "The Grand Ballroom, Taj Coromandel, Chennai",
     mapsQuery: "Taj Coromandel Chennai"
   },
-
+ 
   // Used for the main map + directions button + QR share link
   primaryVenueMapsQuery: "Taj Coromandel Chennai",
-
+ 
   // The URL guests land on when they scan the QR / click share.
   // Set this to your real GitHub Pages URL once published, e.g.
   // "https://yourusername.github.io/wedding-invite/"
   siteUrl: window.location.href,
-
+ 
   whatsapp: {
     // Country code + number, no spaces or symbols, e.g. 919999999999
     number: "919999999999",
     rsvpMessage: "I'm delighted to confirm my presence at Meera & Arjun's wedding!",
     shareMessage: "You're invited! 🪔 Meera & Arjun are getting married — view the invitation here:"
   },
-
+ 
   // Filenames inside assets/photos/ — drop your own images with these
   // names (or edit this list) and they'll appear in the gallery.
   gallery: [
