@@ -270,7 +270,11 @@ body.doors-open #temple-doors{ pointer-events: none; }
 .hero-content{
   position:relative; z-index:2; max-width: 640px;
   padding: 3rem 2.2rem;
+  opacity: 0;
+  transform: translateY(24px) scale(0.97);
+  transition: opacity 1.1s ease, transform 1.1s ease;
 }
+body.doors-open .hero-content{ opacity: 1; transform: translateY(0) scale(1); }
 .hero-content::before, .hero-content::after{
   content:"";
   position:absolute; top:0; bottom:0; left:0; right:0;
@@ -327,9 +331,13 @@ body.doors-open #temple-doors{ pointer-events: none; }
 }
 
 /* vilakku lamps */
-.vilakku{ position:absolute; bottom:0; width: 90px; z-index:1; opacity:.9; }
-.vilakku-left{ left: 2%; }
-.vilakku-right{ right: 2%; }
+.vilakku{
+  position:absolute; bottom:0; width: 90px; z-index:1; opacity:0;
+  transition: opacity 1.2s ease 0.3s, transform 1.2s ease 0.3s;
+}
+.vilakku-left{ left: 2%; transform: translateX(-40px); }
+.vilakku-right{ right: 2%; transform: translateX(40px); }
+body.doors-open .vilakku{ opacity: .9; transform: translateX(0); }
 .vilakku svg{ width:100%; }
 .flame-outer{ animation: flicker 1.3s ease-in-out infinite alternate; transform-origin: 50px 30px; }
 .flame-inner{ animation: flicker 1.1s ease-in-out infinite alternate-reverse; transform-origin: 50px 30px; }
