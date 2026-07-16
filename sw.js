@@ -1,4 +1,4 @@
-const CACHE_NAME = 'meera-arjun-wedding-v1';
+const CACHE_NAME = 'meera-arjun-wedding-v2';
 const CORE_ASSETS = [
   './',
   './index.html',
@@ -26,15 +26,37 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
+// Network-first for HTML/CSS/JS so updates to the site always show up
+// immediately for returning visitors. Falls back to cache only when offline.
+// Images/fonts/icons still use cache-first for speed since they rarely change.
+const NETWORK_FIRST_EXTENSIONS = ['.html', '.js', '.css'];
+
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  const url = event.request.url;
+  const isCoreAsset = NETWORK_FIRST_EXTENSIONS.some(ext => url.includes(ext)) || url.endsWith('/');
+
+  if (isCoreAsset) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response && response.status === 200 && url.startsWith(self.location.origin)) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((cached) => {
       if (cached) return cached;
       return fetch(event.request)
         .then((response) => {
-          // Cache successful same-origin responses for offline use
-          if (response && response.status === 200 && event.request.url.startsWith(self.location.origin)) {
+          if (response && response.status === 200 && url.startsWith(self.location.origin)) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           }
