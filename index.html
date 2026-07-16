@@ -315,6 +315,35 @@
       pointer-events: none; z-index: 10;
     }
 
+    /* ==========================================================================
+       AUDIO FLOATING ACTION BUTTON SYSTEM
+       ========================================================================== */
+    .audio-control-btn {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 1000;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--gold-foil);
+      border: none;
+      box-shadow: var(--shadow-premium);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    }
+    .audio-control-btn:hover {
+      transform: scale(1.1);
+    }
+    .audio-control-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--bg-dark);
+    }
+
     @keyframes pulsePulse {
       0%, 100% { opacity: 0.5; transform: scale(0.98); }
       50% { opacity: 1; transform: scale(1); }
@@ -324,6 +353,7 @@
       section { padding: 65px 15px; }
       .countdown-display { gap: 8px; }
       .time-unit .num { font-size: 1.6rem; }
+      .audio-control-btn { bottom: 20px; right: 20px; width: 44px; height: 44px; }
     }
   </style>
 </head>
@@ -331,6 +361,17 @@
 
   <!-- Falling Flora Particle Simulation Environment Layer -->
   <canvas id="petals-canvas"></canvas>
+
+  <!-- Audio Node Element to Host BGM Sound File -->
+  <audio id="bgm-player" src="bgm.mp3" loop></audio>
+
+  <!-- Floating Media Controller Button -->
+  <button id="music-toggle" class="audio-control-btn" aria-label="Toggle Background Music">
+    <!-- Speaker Muted Icon (Default State) -->
+    <svg id="music-icon" viewBox="0 0 24 24">
+      <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM12 4L9.91 6.09 12 8.18V4zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.03c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3z"/>
+    </svg>
+  </button>
 
   <!-- Opening Door Split Screen Curtain -->
   <div id="temple-doors">
@@ -386,13 +427,13 @@
     </div>
 
     <div class="venue-grid">
-      <!-- Event 1: The Reception Celebration (Now First) -->
+      <!-- Event 1: The Reception Celebration -->
       <div class="premium-card">
         <h3>The Reception</h3>
         <p>Monday, December 14, 2026<br>7:00 PM onwards</p>
       </div>
 
-      <!-- Event 2: The Sacred Wedding Ceremony (Now Second) -->
+      <!-- Event 2: The Sacred Wedding Ceremony -->
       <div class="premium-card">
         <h3>The Wedding</h3>
         <p>Monday, December 14, 2026<br>7:00 AM onwards</p>
@@ -449,6 +490,15 @@
       // Target event date setup (Wedding start time)
       const targetCelebrationTime = new Date("2026-12-14T07:00:00+05:30").getTime();
 
+      // Audio Elements
+      const bgm = document.getElementById('bgm-player');
+      const musicBtn = document.getElementById('music-toggle');
+      const musicIcon = document.getElementById('music-icon');
+
+      // SVG Icon paths for states
+      const iconMuted = 'M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM12 4L9.91 6.09 12 8.18V4zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.03c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3z';
+      const iconPlaying = 'M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z';
+
       // ==========================================
       // A. CINEMATIC CURTAIN SPLIT INTERACTION
       // ==========================================
@@ -459,6 +509,13 @@
         document.querySelector('.door-left').style.transform = 'translateX(-100%)';
         document.querySelector('.door-right').style.transform = 'translateX(100%)';
         
+        // Unmute and trigger music play upon interaction
+        bgm.play().then(() => {
+          musicIcon.innerHTML = `<path d="${iconPlaying}"/>`;
+        }).catch((err) => {
+          console.log("Autoplay was prevented. User needs to tap the toggle button manually.", err);
+        });
+
         setTimeout(() => {
           document.getElementById('temple-doors').style.display = 'none';
           document.body.classList.add('start-reveal');
@@ -475,7 +532,20 @@
       }, 5000);
 
       // ==========================================
-      // B. 3D DEEP ORGANIC DRIFTING PETALS ENGINE
+      // B. BGM MUSIC CONTROLLER LOGIC
+      // ==========================================
+      musicBtn.addEventListener('click', () => {
+        if (bgm.paused) {
+          bgm.play();
+          musicIcon.innerHTML = `<path d="${iconPlaying}"/>`;
+        } else {
+          bgm.pause();
+          musicIcon.innerHTML = `<path d="${iconMuted}"/>`;
+        }
+      });
+
+      // ==========================================
+      // C. 3D DEEP ORGANIC DRIFTING PETALS ENGINE
       // ==========================================
       const canvas = document.getElementById('petals-canvas');
       const ctx = canvas.getContext('2d');
@@ -550,7 +620,7 @@
       renderCycle();
 
       // ==========================================
-      // C. HIGH-FIDELITY UNIFIED COUNTDOWN
+      // D. HIGH-FIDELITY UNIFIED COUNTDOWN
       // ==========================================
       const initializeUnifiedClock = (targetElementId, targetTimeMs) => {
         const container = document.getElementById(targetElementId);
@@ -579,7 +649,7 @@
       initializeUnifiedClock('unified-timer', targetCelebrationTime);
 
       // ==========================================
-      // D. QR CODE GENERATION
+      // E. QR CODE GENERATION
       // ==========================================
       const qrContainerBox = document.getElementById('qrcode');
       if(qrContainerBox) {
