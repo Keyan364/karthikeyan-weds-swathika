@@ -3,12 +3,12 @@
    Vanilla JS + GSAP + AOS. All content driven by js/config.js
    ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
-
+ 
   const cfg = window.WEDDING_CONFIG;
-
+ 
   /* ---------------- populate content from config ---------------- */
   const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
-
+ 
   setText('hero-date-text', cfg.heroDateText);
   setText('cd-wedding-label', cfg.wedding.label);
   setText('cd-wedding-sub', cfg.wedding.dateDisplay);
@@ -20,35 +20,58 @@ document.addEventListener('DOMContentLoaded', () => {
   setText('ev-reception-label', cfg.reception.label);
   setText('ev-reception-date', cfg.reception.dateDisplay);
   setText('ev-reception-venue', cfg.reception.venueName);
-
+ 
   document.getElementById('timer-wedding').dataset.target = cfg.wedding.dateISO;
   document.getElementById('timer-reception').dataset.target = cfg.reception.dateISO;
-
+ 
   const mapsEmbed = document.querySelector('.venue-map iframe');
   if (mapsEmbed) mapsEmbed.src = `https://www.google.com/maps?q=${encodeURIComponent(cfg.primaryVenueMapsQuery)}&output=embed`;
   const dirLink = document.getElementById('directions-link');
   if (dirLink) dirLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cfg.primaryVenueMapsQuery)}`;
-
+ 
   const rsvpLink = document.querySelector('#rsvp a.btn-gold');
   if (rsvpLink) rsvpLink.href = `https://wa.me/${cfg.whatsapp.number}?text=${encodeURIComponent(cfg.whatsapp.rsvpMessage)}`;
-
+ 
   /* ================= TEMPLE DOOR OPENING ANIMATION ================= */
-  const tl = gsap.timeline({ delay: 0.3 });
-  tl.to('.gopuram', { y: -30, opacity: 1, duration: 0.8, ease: 'power2.out' }, 0)
-    .from('.gopuram', { y: -60, opacity: 0, duration: 0.8 }, 0)
-    .to('.door-left', { xPercent: -100, duration: 1.4, ease: 'power3.inOut' }, 1.1)
-    .to('.door-right', { xPercent: 100, duration: 1.4, ease: 'power3.inOut' }, 1.1)
-    .to('.preloader-caption', { opacity: 0, duration: 0.4 }, 1.1)
-    .to('#temple-doors', {
-      opacity: 0, duration: 0.5, onComplete: () => {
-        document.getElementById('temple-doors').style.display = 'none';
-        document.body.classList.add('doors-open');
-      }
-    }, 2.3)
-    .from('.hero-content > *', { y: 30, opacity: 0, stagger: 0.15, duration: 0.9, ease: 'power2.out' }, 2.2)
-    .from('.vilakku-left', { x: -80, opacity: 0, duration: 1 }, 2.3)
-    .from('.vilakku-right', { x: 80, opacity: 0, duration: 1 }, 2.3);
-
+  function forceOpenDoors() {
+    const doors = document.getElementById('temple-doors');
+    if (!doors || doors.style.display === 'none') return;
+    doors.style.transition = 'opacity 0.6s ease';
+    doors.style.opacity = '0';
+    setTimeout(() => {
+      doors.style.display = 'none';
+      document.body.classList.add('doors-open');
+    }, 600);
+  }
+ 
+  // Absolute safety net: no matter what happens with GSAP/CDNs,
+  // the doors are forced open after 4.5s so the page is never stuck.
+  const safetyTimer = setTimeout(forceOpenDoors, 4500);
+ 
+  try {
+    if (typeof gsap === 'undefined') throw new Error('GSAP not loaded');
+    const tl = gsap.timeline({ delay: 0.3 });
+    tl.to('.gopuram', { y: -30, opacity: 1, duration: 0.8, ease: 'power2.out' }, 0)
+      .from('.gopuram', { y: -60, opacity: 0, duration: 0.8 }, 0)
+      .to('.door-left', { xPercent: -100, duration: 1.4, ease: 'power3.inOut' }, 1.1)
+      .to('.door-right', { xPercent: 100, duration: 1.4, ease: 'power3.inOut' }, 1.1)
+      .to('.preloader-caption', { opacity: 0, duration: 0.4 }, 1.1)
+      .to('#temple-doors', {
+        opacity: 0, duration: 0.5, onComplete: () => {
+          clearTimeout(safetyTimer);
+          document.getElementById('temple-doors').style.display = 'none';
+          document.body.classList.add('doors-open');
+        }
+      }, 2.3)
+      .from('.hero-content > *', { y: 30, opacity: 0, stagger: 0.15, duration: 0.9, ease: 'power2.out' }, 2.2)
+      .from('.vilakku-left', { x: -80, opacity: 0, duration: 1 }, 2.3)
+      .from('.vilakku-right', { x: 80, opacity: 0, duration: 1 }, 2.3);
+  } catch (err) {
+    // GSAP unavailable (blocked CDN, offline, etc.) — open doors immediately with a plain CSS fade.
+    clearTimeout(safetyTimer);
+    forceOpenDoors();
+  }
+ 
   /* ================= FALLING PETALS ================= */
   const canvas = document.getElementById('petals-canvas');
   const ctx = canvas.getContext('2d');
@@ -56,11 +79,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
   resize();
   window.addEventListener('resize', resize);
-
+ 
   const PETAL_COUNT = window.innerWidth < 700 ? 18 : 32;
   const colors = ['#FFF8E7', '#FFE3EC', '#FFC1D6', '#FFD86B'];
   const petals = Array.from({ length: PETAL_COUNT }, () => makePetal());
-
+ 
   function makePetal() {
     return {
       x: Math.random() * W,
@@ -75,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
       color: colors[Math.floor(Math.random() * colors.length)]
     };
   }
-
+ 
   function drawPetal(p) {
     ctx.save();
     ctx.translate(p.x, p.y);
@@ -88,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fill();
     ctx.restore();
   }
-
+ 
   let animating = true;
   function animatePetals() {
     if (!animating) return;
@@ -108,14 +131,14 @@ document.addEventListener('DOMContentLoaded', () => {
     animating = !document.hidden;
     if (animating) animatePetals();
   });
-
+ 
   /* ================= SOUND TOGGLE ================= */
   const bgm = document.getElementById('bgm');
   const soundBtn = document.getElementById('sound-toggle');
   const iconMuted = document.getElementById('icon-muted');
   const iconUnmuted = document.getElementById('icon-unmuted');
   let playing = false;
-
+ 
   soundBtn.addEventListener('click', () => {
     if (!bgm.src || bgm.readyState === 0) bgm.load();
     if (playing) {
@@ -128,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
     iconMuted.style.display = playing ? 'none' : 'block';
     iconUnmuted.style.display = playing ? 'block' : 'none';
   });
-
+ 
   /* ================= COUNTDOWN TIMERS ================= */
   function startTimer(el) {
     const target = new Date(el.dataset.target).getTime();
@@ -147,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(tick, 1000);
   }
   document.querySelectorAll('.timer').forEach(startTimer);
-
+ 
   /* ================= GALLERY ================= */
   const galleryGrid = document.getElementById('gallery-grid');
   cfg.gallery.forEach((src, i) => {
@@ -170,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     item.addEventListener('click', () => openLightbox(src));
     galleryGrid.appendChild(item);
   });
-
+ 
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   function openLightbox(src) {
@@ -179,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   document.getElementById('lightbox-close').addEventListener('click', () => lightbox.classList.remove('active'));
   lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('active'); });
-
+ 
   /* ================= ADD TO CALENDAR ================= */
   function pad(n) { return String(n).padStart(2, '0'); }
   function toICSDate(iso) {
@@ -218,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
     link.download = ev.title.replace(/\s+/g, '_') + '.ics';
     link.click();
   }
-
+ 
   document.querySelectorAll('.add-to-cal').forEach(btn => {
     btn.addEventListener('click', (e) => {
       document.querySelectorAll('.cal-menu').forEach(m => m.remove());
@@ -244,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
       e.stopPropagation();
     });
   });
-
+ 
   /* ================= QR CODE ================= */
   if (window.QRCode) {
     new QRCode(document.getElementById('qrcode'), {
@@ -254,16 +277,21 @@ document.addEventListener('DOMContentLoaded', () => {
       colorLight: '#ffffff'
     });
   }
-
+ 
   /* ================= WHATSAPP SHARE ================= */
   document.getElementById('whatsapp-share').addEventListener('click', () => {
     const msg = `${cfg.whatsapp.shareMessage} ${cfg.siteUrl}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
   });
-
+ 
   /* ================= AOS + SCROLL / PARALLAX ================= */
-  AOS.init({ duration: 800, once: true, offset: 60, easing: 'ease-out-cubic' });
-
+  if (typeof AOS !== 'undefined') {
+    AOS.init({ duration: 800, once: true, offset: 60, easing: 'ease-out-cubic' });
+  } else {
+    // AOS blocked/unavailable — make sure scroll-reveal content is still visible.
+    document.querySelectorAll('[data-aos]').forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+  }
+ 
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
     gsap.to('.parallax-bg', {
@@ -272,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollTrigger: { trigger: '.parallax-section', start: 'top bottom', end: 'bottom top', scrub: true }
     });
   }
-
+ 
   /* ================= DOT NAV ACTIVE STATE ================= */
   const sections = document.querySelectorAll('section[id], header[id]');
   const dots = document.querySelectorAll('#dot-nav .dot');
@@ -283,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   window.addEventListener('scroll', updateDots);
   updateDots();
-
+ 
   /* ================= PWA SERVICE WORKER ================= */
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
