@@ -35,8 +35,10 @@ body{
   line-height: 1.6;
   overflow-x: hidden;
   background-image:
-    radial-gradient(circle at 15% 20%, rgba(212,175,55,0.06), transparent 40%),
-    radial-gradient(circle at 85% 75%, rgba(212,175,55,0.05), transparent 45%);
+    radial-gradient(circle at 15% 20%, rgba(212,175,55,0.07), transparent 40%),
+    radial-gradient(circle at 85% 75%, rgba(212,175,55,0.06), transparent 45%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cg fill='none' stroke='%23D4AF37' stroke-width='1' opacity='0.05'%3E%3Cpath d='M42 4 L80 42 L42 80 L4 42 Z'/%3E%3Ccircle cx='42' cy='42' r='16'/%3E%3Cpath d='M42 26 L58 42 L42 58 L26 42 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: auto, auto, 84px 84px;
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -51,13 +53,14 @@ button{ font-family: var(--font-utility); cursor:pointer; border:none; backgroun
 .gold-foil{
   font-family: var(--font-display);
   font-weight: 600;
-  background: linear-gradient(100deg, #9C7A1E 20%, #F4E5A1 35%, #FFFDF0 45%, #D4AF37 55%, #9C7A1E 75%);
+  background: linear-gradient(100deg, #9C7A1E 15%, #F4E5A1 32%, #FFFDF0 42%, #D4AF37 52%, #9C7A1E 68%, #F4E5A1 85%);
   background-size: 250% auto;
   -webkit-background-clip: text;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
   color: transparent;
-  animation: shimmer 6s linear infinite;
-  text-shadow: 0 2px 20px rgba(212,175,55,0.25);
+  animation: shimmer 7s linear infinite;
+  filter: drop-shadow(0 3px 2px rgba(0,0,0,0.55)) drop-shadow(0 0 26px rgba(212,175,55,0.35));
 }
 @keyframes shimmer{
   0%{ background-position: 0% center; }
@@ -85,9 +88,11 @@ button{ font-family: var(--font-utility); cursor:pointer; border:none; backgroun
 .section-title::after{
   content:"";
   display:block;
-  width: 70px; height: 2px;
-  margin: 0.9rem auto 0;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  width: 90px; height: 12px;
+  margin: 1rem auto 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 12'%3E%3Cg stroke='%23D4AF37' stroke-width='1' fill='%23D4AF37'%3E%3Cline x1='0' y1='6' x2='36' y2='6'/%3E%3Cline x1='54' y1='6' x2='90' y2='6'/%3E%3Cpath d='M45 0 L51 6 L45 12 L39 6 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .section-note{ text-align:center; opacity:.65; font-size:.9rem; font-family: var(--font-utility); margin-bottom: 2rem;}
@@ -95,17 +100,14 @@ button{ font-family: var(--font-utility); cursor:pointer; border:none; backgroun
 
 /* ---------- KOLAM DIVIDER ---------- */
 .kolam-divider{
-  width: 90px; height: 90px;
-  margin: 0 auto 1.2rem;
-  background-image: radial-gradient(circle, var(--gold) 0 3px, transparent 4px);
-  background-size: 15px 15px;
+  width: 130px; height: 60px;
+  margin: 0 auto 1.4rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 260 120'%3E%3Cg fill='none' stroke='%23D4AF37' stroke-width='2'%3E%3Cpath d='M20 60 Q50 10 80 60 Q110 110 140 60 Q170 10 200 60 Q220 90 240 60'/%3E%3Ccircle cx='20' cy='60' r='4' fill='%23D4AF37' stroke='none'/%3E%3Ccircle cx='80' cy='60' r='4' fill='%23D4AF37' stroke='none'/%3E%3Ccircle cx='140' cy='60' r='4' fill='%23D4AF37' stroke='none'/%3E%3Ccircle cx='200' cy='60' r='4' fill='%23D4AF37' stroke='none'/%3E%3Ccircle cx='240' cy='60' r='4' fill='%23D4AF37' stroke='none'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.55;
-  border-radius: 50%;
-  border: 1px dashed rgba(212,175,55,0.4);
-  animation: spin-slow 40s linear infinite;
+  background-size: contain;
+  opacity: 0.75;
 }
-@keyframes spin-slow{ to{ transform: rotate(360deg); } }
 
 .section{
   position: relative;
@@ -119,6 +121,8 @@ button{ font-family: var(--font-utility); cursor:pointer; border:none; backgroun
    ========================================================= */
 #temple-doors{
   position: fixed; inset: 0;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
   z-index: 9999;
   background: var(--maroon-deep);
   display:flex; align-items:center; justify-content:center;
@@ -150,13 +154,16 @@ button{ font-family: var(--font-utility); cursor:pointer; border:none; backgroun
 .door-carving{
   position:absolute; inset: 6% 10%;
   border: 2px solid var(--gold);
-  opacity:.55;
+  opacity:.7;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' stroke='%23D4AF37' stroke-width='1.5' opacity='0.6'%3E%3Ccircle cx='30' cy='30' r='14'/%3E%3Cpath d='M30 6 L30 54 M6 30 L54 30 M12 12 L48 48 M48 12 L12 48'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 60px 60px;
+  background-repeat: repeat;
 }
 .door-carving::before, .door-carving::after{
   content:"";
-  position:absolute; inset: 12%;
+  position:absolute; inset: 10%;
   border: 1px solid var(--gold);
-  opacity: .6;
+  opacity: .8;
 }
 .door-handle{
   position:absolute; top:50%; width:16px; height:16px;
@@ -244,27 +251,49 @@ body.doors-open #temple-doors{ pointer-events: none; }
    ========================================================= */
 #hero{
   position: relative;
-  min-height: 100svh;
+  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
   display:flex; align-items:center; justify-content:center;
   text-align:center;
   padding: 2rem;
   overflow:hidden;
   background:
-    radial-gradient(ellipse at center 30%, rgba(212,175,55,0.10), transparent 60%),
+    radial-gradient(ellipse at center 30%, rgba(212,175,55,0.12), transparent 60%),
     var(--maroon-deep);
 }
 #hero::before{
   content:"";
   position:absolute; inset:0;
-  background-image: repeating-linear-gradient(45deg, rgba(212,175,55,0.025) 0 2px, transparent 2px 40px);
+  background-image: repeating-linear-gradient(45deg, rgba(212,175,55,0.03) 0 2px, transparent 2px 40px);
   pointer-events:none;
 }
-.hero-content{ position:relative; z-index:2; max-width: 640px; }
-.hero-content h1{ font-size: clamp(2.6rem, 8vw, 5rem); margin: .6rem 0 .3rem; line-height:1; }
+.hero-content{
+  position:relative; z-index:2; max-width: 640px;
+  padding: 3rem 2.2rem;
+}
+.hero-content::before, .hero-content::after{
+  content:"";
+  position:absolute; top:0; bottom:0; left:0; right:0;
+  border: 1px solid rgba(212,175,55,0.55);
+  pointer-events:none;
+}
+.hero-content::before{ inset: 0; }
+.hero-content::after{ inset: 10px; border-color: rgba(212,175,55,0.28); }
+.hero-content{
+  background-image:
+    radial-gradient(circle, var(--gold) 0 3px, transparent 4px),
+    radial-gradient(circle, var(--gold) 0 3px, transparent 4px),
+    radial-gradient(circle, var(--gold) 0 3px, transparent 4px),
+    radial-gradient(circle, var(--gold) 0 3px, transparent 4px);
+  background-repeat: no-repeat;
+  background-position: 10px 10px, calc(100% - 10px) 10px, 10px calc(100% - 10px), calc(100% - 10px) calc(100% - 10px);
+  background-size: 8px 8px;
+}
+.hero-content h1{ font-size: clamp(2.9rem, 9vw, 5.4rem); margin: .6rem 0 .3rem; line-height:1; }
 .hero-content h1 .amp{ font-family: var(--font-script); font-size: 0.7em; opacity:.9; }
 .hero-sub{
   font-family: var(--font-script);
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   color: var(--ivory);
   opacity:.9;
 }
@@ -327,11 +356,28 @@ body.doors-open #temple-doors{ pointer-events: none; }
 @media (max-width:700px){ .countdown-grid{ grid-template-columns: 1fr; } }
 
 .countdown-card{
-  background: linear-gradient(160deg, rgba(212,175,55,0.08), rgba(212,175,55,0.02));
-  border: 1px solid rgba(212,175,55,0.35);
-  border-radius: 10px;
-  padding: 2rem 1.5rem;
+  background: linear-gradient(160deg, rgba(212,175,55,0.09), rgba(212,175,55,0.02));
+  border: 1px solid rgba(212,175,55,0.4);
+  border-top: none;
+  border-radius: 90px 90px 10px 10px;
+  padding: 2.6rem 1.5rem 2rem;
   text-align:center;
+  position: relative;
+}
+.countdown-card::before{
+  content:"";
+  position:absolute; top:-1px; left:-1px; right:-1px; height: 90px;
+  border: 1px solid rgba(212,175,55,0.4);
+  border-bottom:none;
+  border-radius: 90px 90px 0 0;
+  pointer-events:none;
+}
+.countdown-card::after{
+  content:"";
+  position:absolute; top: 12px; left:50%; transform:translateX(-50%);
+  width: 8px; height:8px; border-radius:50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(212,175,55,0.7);
 }
 .countdown-card h3{ font-family: var(--font-display); color: var(--gold-light); font-size:1.3rem; letter-spacing:1px; }
 .cd-sub{ font-family: var(--font-utility); font-size:.8rem; opacity:.65; margin: .3rem 0 1.2rem; }
@@ -376,10 +422,20 @@ body.doors-open #temple-doors{ pointer-events: none; }
 @media (max-width:700px){ .events-grid{ grid-template-columns: 1fr; } }
 .event-card{
   text-align:center;
-  background: rgba(212,175,55,0.05);
-  border: 1px solid rgba(212,175,55,0.3);
-  border-radius: 10px;
-  padding: 2.4rem 1.5rem;
+  background: rgba(212,175,55,0.06);
+  border: 1px solid rgba(212,175,55,0.35);
+  border-top: none;
+  border-radius: 90px 90px 10px 10px;
+  padding: 3rem 1.5rem 2.2rem;
+  position: relative;
+}
+.event-card::before{
+  content:"";
+  position:absolute; top:-1px; left:-1px; right:-1px; height: 90px;
+  border: 1px solid rgba(212,175,55,0.35);
+  border-bottom:none;
+  border-radius: 90px 90px 0 0;
+  pointer-events:none;
 }
 .event-icon{ font-size: 2.2rem; display:block; margin-bottom: .6rem; }
 .event-card h3{ font-family: var(--font-display); color: var(--gold-light); margin-bottom:.4rem; }
@@ -434,8 +490,10 @@ body.doors-open #temple-doors{ pointer-events: none; }
 @media (max-width:480px){ .gallery-grid{ grid-template-columns: 1fr; } }
 
 .gallery-item{
-  overflow:hidden; border-radius: 8px;
-  border: 1px solid rgba(212,175,55,0.3);
+  overflow:hidden; border-radius: 6px;
+  border: 1px solid rgba(212,175,55,0.4);
+  outline: 1px solid rgba(212,175,55,0.15);
+  outline-offset: 4px;
   aspect-ratio: 4/5;
   cursor:pointer;
   background: linear-gradient(160deg, rgba(212,175,55,0.15), rgba(212,175,55,0.03));
@@ -480,10 +538,12 @@ body.doors-open #temple-doors{ pointer-events: none; }
 
 .venue-qr{
   text-align:center;
-  background: rgba(212,175,55,0.05);
-  border: 1px solid rgba(212,175,55,0.3);
-  border-radius: 10px;
-  padding: 2rem 1.5rem;
+  background: rgba(212,175,55,0.06);
+  border: 1px solid rgba(212,175,55,0.4);
+  border-radius: 6px;
+  outline: 1px solid rgba(212,175,55,0.15);
+  outline-offset: 5px;
+  padding: 2.2rem 1.5rem;
   display:flex; flex-direction:column; align-items:center; gap: 1rem;
 }
 .venue-qr h3{ font-family: var(--font-display); color: var(--gold-light); font-size:1.1rem; }
