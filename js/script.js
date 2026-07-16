@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   
-  // ==========================================================================
-  // 1. SAFE DATA DEFAULTS & GLOBAL CONFIG CHECKS
-  // ==========================================================================
-  const weddingConfig = (window.weddingConfig) ? window.weddingConfig : {
+  // Safe Fallback Configurations
+  const config = (window.weddingConfig) ? window.weddingConfig : {
     coupleNames: "Meera & Arjun",
     wedding: { dateISO: "2026-12-14T07:00:00+05:30", venueName: "Sri Meenakshi Kalyana Mandapam, Chennai" },
     reception: { dateISO: "2026-12-14T19:00:00+05:30", venueName: "The Grand Ballroom, Taj Coromandel, Chennai" },
@@ -12,37 +10,92 @@ document.addEventListener('DOMContentLoaded', () => {
     gallery: ["photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg", "photo5.jpg", "photo6.jpg"]
   };
 
-  // ==========================================================================
-  // 2. KICKSTART & AUDIO HANDLING VIA TEMPLE DOOR INTERACTION
-  // ==========================================================================
   const templeDoors = document.getElementById('temple-doors');
   const soundToggle = document.getElementById('sound-toggle');
   const bgm = document.getElementById('bgm');
   const mutedIcon = document.getElementById('icon-muted');
   const unmutedIcon = document.getElementById('icon-unmuted');
 
-  const openCelebration = () => {
-    if (!templeDoors.classList.contains('open-doors')) {
-      templeDoors.classList.add('open-doors');
-      
-      // Initialize layout integrations via AOS inside the safe timeline window
-      if (window.AOS) {
-        window.AOS.init({ duration: 1000, once: true, offset: 100 });
-      }
+  // Set initial state of hero content for animation
+  gsap.set("#hero .eyebrow, #hero-names, #hero .hero-sub, #hero .hero-date, #hero .scroll-cue", {
+    opacity: 0,
+    y: 40
+  });
 
-      // Try autoplaying systemic background score safely inside click scopes
-      bgm.play().then(() => {
-        mutedIcon.style.display = 'none';
-        unmutedIcon.style.display = 'block';
-      }).catch(err => console.warn("Audio engine awaiting explicit unmuting action:", err));
+  // ==========================================================================
+  // 1. CINEMATIC DOOR SPLIT & NAME REVEAL ANIMATION (GSAP)
+  // ==========================================================================
+  const openCelebration = () => {
+    if (templeDoors.classList.contains('opened')) return;
+    templeDoors.classList.add('opened');
+
+    // Attempt to play music within user interaction scope
+    bgm.play().then(() => {
+      mutedIcon.style.display = 'none';
+      unmutedIcon.style.display = 'block';
+    }).catch(err => console.log("Audio awaiting activation:", err));
+
+    // Master Entrance Timeline
+    const tl = gsap.timeline();
+
+    tl.to(".gopuram, .preloader-caption", {
+      opacity: 0,
+      scale: 0.9,
+      duration: 0.6,
+      ease: "power2.out"
+    })
+    .to(".door-left", {
+      xPercent: -100,
+      duration: 1.6,
+      ease: "power3.inOut"
+    }, "-=0.2")
+    .to(".door-right", {
+      xPercent: 100,
+      duration: 1.6,
+      ease: "power3.inOut"
+    }, "-=1.6")
+    .to(templeDoors, {
+      opacity: 0,
+      display: "none",
+      duration: 0.5
+    })
+    // Grand Bride & Groom Reveal Sequence
+    .to("#hero .eyebrow", {
+      opacity: 0.8,
+      y: 0,
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.4")
+    .to("#hero-names", {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 1.2,
+      ease: "back.out(1.2)"
+    }, "-=0.6")
+    .to("#hero .hero-sub, #hero .hero-date", {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.2,
+      ease: "power3.out"
+    }, "-=0.8")
+    .to("#hero .scroll-cue", {
+      opacity: 1,
+      y: 0,
+      duration: 0.5
+    }, "-=0.2");
+
+    if (window.AOS) {
+      setTimeout(() => { window.AOS.init({ duration: 1000, once: true }); }, 1500);
     }
   };
 
-  // Triggers entry when clicking anywhere on the overlay/preloader frame
   templeDoors.addEventListener('click', openCelebration);
 
+  // Audio FAB
   soundToggle.addEventListener('click', (e) => {
-    e.stopPropagation(); // Avoid refiring window configurations
+    e.stopPropagation();
     if (bgm.paused) {
       bgm.play();
       mutedIcon.style.display = 'none';
@@ -55,12 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ==========================================================================
-  // 3. JASMINE & ROSE FALLING PETALS CANVAS LOGIC
+  // 2. ULTRA-REALISTIC 3D FLUTTERING PETALS (CANVAS)
   // ==========================================================================
   const canvas = document.getElementById('petals-canvas');
   const ctx = canvas.getContext('2d');
-  let petalPool = [];
-  const maxPetals = 45;
+  let petals = [];
+  const petalCount = 35; // Balanced for high performance and visual elegance
 
   const resizeCanvas = () => {
     canvas.width = window.innerWidth;
@@ -69,34 +122,43 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
 
-  class FallingPetal {
+  class PremiumPetal {
     constructor() {
       this.reset();
-      this.y = Math.random() * canvas.height; // Stagger deployment coordinates initially
+      this.y = Math.random() * canvas.height;
     }
 
     reset() {
       this.x = Math.random() * canvas.width;
-      this.y = -20;
-      this.size = Math.random() * 8 + 6;
-      this.speedY = Math.random() * 1.2 + 0.8;
-      this.speedX = Math.random() * 1 - 0.5;
-      // 60/40 Split between Pink Rose Petals and Off-White Elegant Jasmine Blooms
-      this.isRose = Math.random() > 0.4;
-      this.color = this.isRose ? 'rgba(255, 154, 162, 0.75)' : 'rgba(255, 255, 240, 0.85)';
-      this.swingWeight = Math.random() * 0.02 + 0.01;
-      this.swingCounter = Math.random() * 100;
+      this.y = -40;
+      this.size = Math.random() * 10 + 8;
+      this.speedY = Math.random() * 1.0 + 0.6;
+      this.speedX = Math.random() * 0.8 - 0.4;
+      this.isRose = Math.random() > 0.5;
+      
+      // Luxury Color Gradients (Cream Jasmine vs. Rich Rose Pink)
+      this.colorGrad = this.isRose ? ['#FF9AA2', '#E85D75'] : ['#FFFFF0', '#F4E5A1'];
+      
       this.rotation = Math.random() * 360;
-      this.spinSpeed = Math.random() * 2 - 1;
+      this.rotationSpeed = Math.random() * 1.5 - 0.75;
+      this.flutter = Math.random() * 0.03 + 0.01;
+      this.flutterPhase = Math.random() * 100;
+      this.opacity = Math.random() * 0.3 + 0.6;
+      
+      // 3D fold simulation
+      this.foldScale = Math.random() * 0.4 + 0.6;
     }
 
     update() {
       this.y += this.speedY;
-      this.swingCounter += this.swingWeight;
-      this.x += this.speedX + Math.sin(this.swingCounter) * 0.4;
-      this.rotation += this.spinSpeed;
+      this.flutterPhase += this.flutter;
+      this.x += this.speedX + Math.sin(this.flutterPhase) * 0.6;
+      this.rotation += this.rotationSpeed;
 
-      if (this.y > canvas.height + 20 || this.x < -20 || this.x > canvas.width + 20) {
+      // Simulate folding/unfolding spin cycle
+      this.foldScale = Math.sin(this.flutterPhase * 1.5) * 0.4 + 0.6;
+
+      if (this.y > canvas.height + 40 || this.x < -40 || this.x > canvas.width + 40) {
         this.reset();
       }
     }
@@ -105,226 +167,130 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.save();
       ctx.translate(this.x, this.y);
       ctx.rotate(this.rotation * Math.PI / 180);
-      ctx.fillStyle = this.color;
+      ctx.scale(1, this.foldScale); // Generates a realistic 3D twisting look
+
+      // Elegant gradient structure for depths
+      let grad = ctx.createRadialGradient(0, 0, 1, 0, 0, this.size);
+      grad.addColorStop(0, this.colorGrad[0]);
+      grad.addColorStop(1, this.colorGrad[1]);
+
+      ctx.fillStyle = grad;
+      ctx.globalAlpha = this.opacity;
+      
       ctx.beginPath();
-      
       if (this.isRose) {
-        // Classic elliptical drop curve for Rose petal models
-        ctx.ellipse(0, 0, this.size, this.size * 0.75, 0, 0, 2 * Math.PI);
+        // Heart-shaped/Curved Rose petal
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(-this.size, -this.size, -this.size * 1.5, this.size/2, 0, this.size * 1.2);
+        ctx.bezierCurveTo(this.size * 1.5, this.size/2, this.size, -this.size, 0, 0);
       } else {
-        // Star-elongated slender loop path for delicate Jasmine petals
-        ctx.ellipse(0, 0, this.size * 1.2, this.size * 0.4, 0, 0, 2 * Math.PI);
+        // Sleek Jasmine petal shape
+        ctx.ellipse(0, 0, this.size * 1.3, this.size * 0.45, 0, 0, 2 * Math.PI);
       }
-      
       ctx.fill();
       ctx.restore();
     }
   }
 
-  for (let i = 0; i < maxPetals; i++) {
-    petalPool.push(new FallingPetal());
-  }
+  for (let i = 0; i < petalCount; i++) petals.push(new PremiumPetal());
 
-  const runPetalEngine = () => {
+  const animate = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    petalPool.forEach(p => {
+    petals.forEach(p => {
       p.update();
       p.draw();
     });
-    requestAnimationFrame(runPetalEngine);
+    requestAnimationFrame(animate);
   };
-  runPetalEngine();
+  animate();
 
   // ==========================================================================
-  // 4. LIVE MULTI-EVENT COUNTDOWN SYSTEM
+  // 3. SECURE COUNTDOWNS
   // ==========================================================================
-  const manageCountdown = (elementId, targetISO) => {
-    const timerContainer = document.getElementById(elementId);
-    if (!timerContainer) return;
+  const makeCountdown = (elemId, isoDate) => {
+    const container = document.getElementById(elemId);
+    if (!container) return;
 
-    const targetTime = new Date(targetISO).getTime();
-    const dayNode = timerContainer.querySelectorAll('.num')[0];
-    const hrNode = timerContainer.querySelectorAll('.num')[1];
-    const minNode = timerContainer.querySelectorAll('.num')[2];
-    const secNode = timerContainer.querySelectorAll('.num')[3];
+    const target = new Date(isoDate).getTime();
+    const [days, hrs, mins, secs] = container.querySelectorAll('.num');
 
-    const recalculate = () => {
+    const update = () => {
       const now = new Date().getTime();
-      const delta = targetTime - now;
+      const diff = target - now;
 
-      if (delta <= 0) {
-        timerContainer.innerHTML = `<div class="gold-foil" style="grid-column: span 4; font-size:1.2rem; padding:10px;">Event Has Begun</div>`;
+      if (diff <= 0) {
+        container.innerHTML = `<div class="event-started gold-foil">Celebrations Have Begun!</div>`;
         return;
       }
 
-      const d = Math.floor(delta / (1000 * 60 * 60 * 24));
-      const h = Math.floor((delta % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const m = Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60));
-      const s = Math.floor((delta % (1000 * 60)) / 1000);
-
-      dayNode.textContent = String(d).padStart(2, '0');
-      hrNode.textContent = String(h).padStart(2, '0');
-      minNode.textContent = String(m).padStart(2, '0');
-      secNode.textContent = String(s).padStart(2, '0');
+      days.textContent = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+      hrs.textContent = String(Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+      mins.textContent = String(Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+      secs.textContent = String(Math.floor((diff % (1000 * 60)) / 1000)).padStart(2, '0');
     };
 
-    recalculate();
-    setInterval(recalculate, 1000);
+    update();
+    setInterval(update, 1000);
   };
 
-  manageCountdown('timer-wedding', weddingConfig.wedding.dateISO);
-  manageCountdown('timer-reception', weddingConfig.reception.dateISO);
+  makeCountdown('timer-wedding', config.wedding.dateISO);
+  makeCountdown('timer-reception', config.reception.dateISO);
 
   // ==========================================================================
-  // 5. RESPONSIVE PARALLAX & DOT SCROLL SYNCING
+  // 4. PARALLAX EFFECT & NAV DOTS
   // ==========================================================================
   const parallaxBg = document.querySelector('.parallax-bg');
-  const trackingSections = document.querySelectorAll('header, section');
-  const trackingDots = document.querySelectorAll('#dot-nav .dot');
+  const sections = document.querySelectorAll('header, section');
+  const dots = document.querySelectorAll('#dot-nav .dot');
 
   window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
-    
-    // Parallax background offset calculations
+
     if (parallaxBg) {
-      const parentSection = parallaxBg.parentElement;
-      const offsetTop = parentSection.offsetTop;
-      const viewHeight = window.innerHeight;
-      
-      if (scrolled + viewHeight >= offsetTop && scrolled <= offsetTop + parentSection.offsetHeight) {
-        const translateValue = (scrolled - offsetTop) * 0.3; // Parallax dynamic ratio scaling
-        parallaxBg.style.transform = `translate3d(0, ${translateValue}px, 0)`;
+      const parent = parallaxBg.parentElement;
+      const speed = parseFloat(parallaxBg.getAttribute('data-speed')) || 0.3;
+      if (scrolled + window.innerHeight >= parent.offsetTop) {
+        const yPos = (scrolled - parent.offsetTop) * speed;
+        parallaxBg.style.transform = `translate3d(0, ${yPos}px, 0)`;
       }
     }
 
-    // Dynamic Navigation Dot Active Highlighter Sync
-    let activeId = "";
-    trackingSections.forEach(sec => {
-      const top = sec.offsetTop - 300;
-      if (scrolled >= top) {
-        activeId = sec.getAttribute('id');
+    let currentSection = "";
+    sections.forEach(sec => {
+      if (scrolled >= (sec.offsetTop - 350)) {
+        currentSection = sec.getAttribute('id');
       }
     });
 
-    trackingDots.forEach(dot => {
+    dots.forEach(dot => {
       dot.classList.remove('active');
-      if (dot.getAttribute('href') === `#${activeId}`) {
+      if (dot.getAttribute('href') === `#${currentSection}`) {
         dot.classList.add('active');
       }
     });
   });
 
   // ==========================================================================
-  // 6. PHOTO GALLERY GENERATION & POP-UP LIGHTBOX
+  // 5. PREVENTING DUPLICATE QR CODE RENDER
   // ==========================================================================
-  const galleryGrid = document.getElementById('gallery-grid');
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img');
-  const lightboxClose = document.getElementById('lightbox-close');
-
-  if (galleryGrid && weddingConfig.gallery.length > 0) {
-    weddingConfig.gallery.forEach(fileName => {
-      const wrapper = document.createElement('div');
-      wrapper.className = 'gallery-item';
-      wrapper.setAttribute('data-aos', 'fade-up');
-      
-      const imageNode = document.createElement('img');
-      imageNode.src = `assets/photos/${fileName}`;
-      imageNode.alt = "Wedding Celebration Moment";
-      
-      // Graceful fallback display logic if target local source file path is broken
-      imageNode.onerror = () => {
-        wrapper.style.display = 'flex';
-        wrapper.style.alignItems = 'center';
-        wrapper.style.justifyContent = 'center';
-        wrapper.style.background = 'rgba(255,255,255,0.05)';
-        wrapper.innerHTML = `<span style="font-size:0.8rem; color:var(--text-light); opacity:0.6;">${fileName}</span>`;
-      };
-
-      wrapper.appendChild(imageNode);
-      galleryGrid.appendChild(wrapper);
-
-      wrapper.addEventListener('click', () => {
-        if(imageNode.src) {
-          lightboxImg.src = imageNode.src;
-          lightbox.classList.add('active');
-        }
-      });
-    });
-  }
-
-  if (lightboxClose) {
-    lightboxClose.addEventListener('click', () => lightbox.classList.remove('active'));
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) lightbox.classList.remove('active');
-    });
-  }
-
-  // ==========================================================================
-  // 7. CALENDAR SCHEDULING INTERFACES (.ICS ENGINE)
-  // ==========================================================================
-  const createICSFile = (title, startISO, location) => {
-    const formatDate = (isoStr) => {
-      const d = new Date(isoStr);
-      return d.toISOString().replace(/-|:|\.\d\d\d/g, "");
-    };
-
-    const startTime = formatDate(startISO);
-    // Automatically buffer session block length duration by +3 hours
-    const endTime = formatDate(new Date(new Date(startISO).getTime() + (3 * 60 * 60 * 1000)).toISOString());
-
-    const icsContent = [
-      "BEGIN:VCALENDAR",
-      "VERSION:2.0",
-      "BEGIN:VEVENT",
-      `SUMMARY:${title}`,
-      `DTSTART:${startTime}`,
-      `DTEND:${endTime}`,
-      `LOCATION:${location}`,
-      "DESCRIPTION:We look forward to having you bless us on our special day!",
-      "END:VEVENT",
-      "END:VCALENDAR"
-    ].join("\n");
-
-    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `${title.toLowerCase().replace(/\s+/g, "_")}.ics`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  document.querySelectorAll('.add-to-cal').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const type = btn.getAttribute('data-event');
-      if (type === 'wedding') {
-        createICSFile(`${weddingConfig.coupleNames} - Muhurtham`, weddingConfig.wedding.dateISO, weddingConfig.wedding.venueName);
-      } else if (type === 'reception') {
-        createICSFile(`${weddingConfig.coupleNames} - Wedding Reception`, weddingConfig.reception.dateISO, weddingConfig.reception.venueName);
-      }
-    });
-  });
-
-  // ==========================================================================
-  // 8. AUTOMATED SYSTEM QR CODE & WHATSAPP SOCIAL INLINE GENERATOR
-  // ==========================================================================
-  const qrContainer = document.getElementById('qrcode');
-  if (qrContainer && window.QRCode) {
-    new QRCode(qrContainer, {
-      text: weddingConfig.siteUrl,
-      width: 140,
-      height: 140,
+  const qrBox = document.getElementById('qrcode');
+  if (qrBox && window.QRCode) {
+    qrBox.innerHTML = ''; // Safeguard: Clear out any pre-existing renders
+    new QRCode(qrBox, {
+      text: config.siteUrl,
+      width: 150,
+      height: 150,
       colorDark: "#3D0A11",
-      colorLight: "#ffffff"
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
     });
   }
 
-  const whatsappBtn = document.getElementById('whatsapp-share');
-  if (whatsappBtn) {
-    whatsappBtn.addEventListener('click', () => {
-      const textMessage = encodeURIComponent(`You are cordially invited to celebrate the wedding of ${weddingConfig.coupleNames}! Open our digital invitation here: ${weddingConfig.siteUrl}`);
-      window.open(`https://api.whatsapp.com/send?text=${textMessage}`, '_blank');
+  const shareBtn = document.getElementById('whatsapp-share');
+  if (shareBtn) {
+    shareBtn.addEventListener('click', () => {
+      const msg = encodeURIComponent(`You are cordially invited to celebrate our wedding! Access our dynamic invitation here: ${config.siteUrl}`);
+      window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
     });
   }
 });
