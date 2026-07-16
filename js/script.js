@@ -1,337 +1,330 @@
-/* =========================================================
-   MEERA & ARJUN — WEDDING INVITATION
-   Vanilla JS + GSAP + AOS. All content driven by js/config.js
-   ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
-
-  /* ---------------- mobile viewport height fix ----------------
-     Mobile browsers resize their address bar, causing 100vh/100svh
-     to misbehave and push content out of view. We compute the real
-     visible height in JS and expose it as --vh for CSS to consume. */
-  function setVH() {
-    document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-  }
-  setVH();
-  window.addEventListener('resize', setVH);
-  window.addEventListener('orientationchange', setVH);
-
-  const cfg = window.WEDDING_CONFIG || {
-    coupleNames: "The Couple", heroDateText: "Save the Date",
-    wedding: { label: "Wedding", dateISO: new Date(Date.now() + 30 * 86400000).toISOString(), dateDisplay: "TBA", venueName: "TBA" },
-    reception: { label: "Reception", dateISO: new Date(Date.now() + 30 * 86400000).toISOString(), dateDisplay: "TBA", venueName: "TBA" },
-    primaryVenueMapsQuery: "", siteUrl: window.location.href,
-    whatsapp: { number: "", rsvpMessage: "", shareMessage: "" }, gallery: []
+  
+  // ==========================================================================
+  // 1. SAFE DATA DEFAULTS & GLOBAL CONFIG CHECKS
+  // ==========================================================================
+  const weddingConfig = (window.weddingConfig) ? window.weddingConfig : {
+    coupleNames: "Meera & Arjun",
+    wedding: { dateISO: "2026-12-14T07:00:00+05:30", venueName: "Sri Meenakshi Kalyana Mandapam, Chennai" },
+    reception: { dateISO: "2026-12-14T19:00:00+05:30", venueName: "The Grand Ballroom, Taj Coromandel, Chennai" },
+    whatsapp: { number: "919999999999" },
+    siteUrl: window.location.href,
+    gallery: ["photo1.jpg", "photo2.jpg", "photo3.jpg", "photo4.jpg", "photo5.jpg", "photo6.jpg"]
   };
 
-  /* ---------------- populate content from config ---------------- */
-  const setText = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+  // ==========================================================================
+  // 2. KICKSTART & AUDIO HANDLING VIA TEMPLE DOOR INTERACTION
+  // ==========================================================================
+  const templeDoors = document.getElementById('temple-doors');
+  const soundToggle = document.getElementById('sound-toggle');
+  const bgm = document.getElementById('bgm');
+  const mutedIcon = document.getElementById('icon-muted');
+  const unmutedIcon = document.getElementById('icon-unmuted');
 
-  setText('hero-date-text', cfg.heroDateText);
-  setText('cd-wedding-label', cfg.wedding.label);
-  setText('cd-wedding-sub', cfg.wedding.dateDisplay);
-  setText('cd-reception-label', cfg.reception.label);
-  setText('cd-reception-sub', cfg.reception.dateDisplay);
-  setText('ev-wedding-label', cfg.wedding.label);
-  setText('ev-wedding-date', cfg.wedding.dateDisplay);
-  setText('ev-wedding-venue', cfg.wedding.venueName);
-  setText('ev-reception-label', cfg.reception.label);
-  setText('ev-reception-date', cfg.reception.dateDisplay);
-  setText('ev-reception-venue', cfg.reception.venueName);
+  const openCelebration = () => {
+    if (!templeDoors.classList.contains('open-doors')) {
+      templeDoors.classList.add('open-doors');
+      
+      // Initialize layout integrations via AOS inside the safe timeline window
+      if (window.AOS) {
+        window.AOS.init({ duration: 1000, once: true, offset: 100 });
+      }
 
-  document.getElementById('timer-wedding').dataset.target = cfg.wedding.dateISO;
-  document.getElementById('timer-reception').dataset.target = cfg.reception.dateISO;
+      // Try autoplaying systemic background score safely inside click scopes
+      bgm.play().then(() => {
+        mutedIcon.style.display = 'none';
+        unmutedIcon.style.display = 'block';
+      }).catch(err => console.warn("Audio engine awaiting explicit unmuting action:", err));
+    }
+  };
 
-  const mapsEmbed = document.querySelector('.venue-map iframe');
-  if (mapsEmbed) mapsEmbed.src = `https://www.google.com/maps?q=${encodeURIComponent(cfg.primaryVenueMapsQuery)}&output=embed`;
-  const dirLink = document.getElementById('directions-link');
-  if (dirLink) dirLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cfg.primaryVenueMapsQuery)}`;
+  // Triggers entry when clicking anywhere on the overlay/preloader frame
+  templeDoors.addEventListener('click', openCelebration);
 
-  const rsvpLink = document.querySelector('#rsvp a.btn-gold');
-  if (rsvpLink) rsvpLink.href = `https://wa.me/${cfg.whatsapp.number}?text=${encodeURIComponent(cfg.whatsapp.rsvpMessage)}`;
+  soundToggle.addEventListener('click', (e) => {
+    e.stopPropagation(); // Avoid refiring window configurations
+    if (bgm.paused) {
+      bgm.play();
+      mutedIcon.style.display = 'none';
+      unmutedIcon.style.display = 'block';
+    } else {
+      bgm.pause();
+      mutedIcon.style.display = 'block';
+      unmutedIcon.style.display = 'none';
+    }
+  });
 
-  /* ================= TEMPLE DOOR OPENING ANIMATION ================= */
-  function forceOpenDoors() {
-    const doors = document.getElementById('temple-doors');
-    if (!doors || doors.style.display === 'none') return;
-    doors.style.transition = 'opacity 0.6s ease';
-    doors.style.opacity = '0';
-    setTimeout(() => {
-      doors.style.display = 'none';
-      document.body.classList.add('doors-open');
-    }, 600);
-  }
-
-  // Absolute safety net: no matter what happens with GSAP/CDNs,
-  // the doors are forced open after 4.5s so the page is never stuck.
-  const safetyTimer = setTimeout(forceOpenDoors, 6000);
-
-  try {
-    if (typeof gsap === 'undefined') throw new Error('GSAP not loaded');
-    const tl = gsap.timeline({ delay: 0.3 });
-    tl.to('.gopuram', { y: -30, opacity: 1, duration: 0.9, ease: 'power2.out' }, 0)
-      .from('.gopuram', { y: -60, opacity: 0, duration: 0.9 }, 0)
-      .from('.gopuram-svg .flame-outer', { scale: 0, transformOrigin: 'center', duration: 0.6, ease: 'back.out(3)' }, 0.5)
-      .to('.door-left', { xPercent: -100, duration: 1.6, ease: 'power3.inOut' }, 1.2)
-      .to('.door-right', { xPercent: 100, duration: 1.6, ease: 'power3.inOut' }, 1.2)
-      .to('.preloader-caption', { opacity: 0, y: -10, duration: 0.4 }, 1.2)
-      .fromTo('#hero', { filter: 'brightness(1)' }, { filter: 'brightness(1.6)', duration: 0.3, yoyo: true, repeat: 1, ease: 'power1.inOut' }, 1.9)
-      .to('#temple-doors', {
-        opacity: 0, duration: 0.5, onComplete: () => {
-          clearTimeout(safetyTimer);
-          document.getElementById('temple-doors').style.display = 'none';
-          document.body.classList.add('doors-open');
-        }
-      }, 2.6);
-  } catch (err) {
-    // GSAP unavailable (blocked CDN, offline, etc.) — open doors immediately with a plain CSS fade.
-    clearTimeout(safetyTimer);
-    forceOpenDoors();
-  }
-
-  /* ================= FALLING PETALS ================= */
+  // ==========================================================================
+  // 3. JASMINE & ROSE FALLING PETALS CANVAS LOGIC
+  // ==========================================================================
   const canvas = document.getElementById('petals-canvas');
   const ctx = canvas.getContext('2d');
-  let W, H;
-  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-  resize();
-  window.addEventListener('resize', resize);
+  let petalPool = [];
+  const maxPetals = 45;
 
-  const PETAL_COUNT = window.innerWidth < 700 ? 18 : 32;
-  const colors = ['#FFF8E7', '#FFE3EC', '#FFC1D6', '#FFD86B'];
-  const petals = Array.from({ length: PETAL_COUNT }, () => makePetal());
+  const resizeCanvas = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  };
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
 
-  function makePetal() {
-    return {
-      x: Math.random() * W,
-      y: Math.random() * -H,
-      size: 6 + Math.random() * 8,
-      speedY: 0.6 + Math.random() * 1.2,
-      speedX: Math.sin(Math.random() * Math.PI),
-      rot: Math.random() * 360,
-      rotSpeed: (Math.random() - 0.5) * 2,
-      sway: Math.random() * 2 * Math.PI,
-      swaySpeed: 0.01 + Math.random() * 0.02,
-      color: colors[Math.floor(Math.random() * colors.length)]
-    };
+  class FallingPetal {
+    constructor() {
+      this.reset();
+      this.y = Math.random() * canvas.height; // Stagger deployment coordinates initially
+    }
+
+    reset() {
+      this.x = Math.random() * canvas.width;
+      this.y = -20;
+      this.size = Math.random() * 8 + 6;
+      this.speedY = Math.random() * 1.2 + 0.8;
+      this.speedX = Math.random() * 1 - 0.5;
+      // 60/40 Split between Pink Rose Petals and Off-White Elegant Jasmine Blooms
+      this.isRose = Math.random() > 0.4;
+      this.color = this.isRose ? 'rgba(255, 154, 162, 0.75)' : 'rgba(255, 255, 240, 0.85)';
+      this.swingWeight = Math.random() * 0.02 + 0.01;
+      this.swingCounter = Math.random() * 100;
+      this.rotation = Math.random() * 360;
+      this.spinSpeed = Math.random() * 2 - 1;
+    }
+
+    update() {
+      this.y += this.speedY;
+      this.swingCounter += this.swingWeight;
+      this.x += this.speedX + Math.sin(this.swingCounter) * 0.4;
+      this.rotation += this.spinSpeed;
+
+      if (this.y > canvas.height + 20 || this.x < -20 || this.x > canvas.width + 20) {
+        this.reset();
+      }
+    }
+
+    draw() {
+      ctx.save();
+      ctx.translate(this.x, this.y);
+      ctx.rotate(this.rotation * Math.PI / 180);
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      
+      if (this.isRose) {
+        // Classic elliptical drop curve for Rose petal models
+        ctx.ellipse(0, 0, this.size, this.size * 0.75, 0, 0, 2 * Math.PI);
+      } else {
+        // Star-elongated slender loop path for delicate Jasmine petals
+        ctx.ellipse(0, 0, this.size * 1.2, this.size * 0.4, 0, 0, 2 * Math.PI);
+      }
+      
+      ctx.fill();
+      ctx.restore();
+    }
   }
 
-  function drawPetal(p) {
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.rotate((p.rot * Math.PI) / 180);
-    ctx.fillStyle = p.color;
-    ctx.beginPath();
-    ctx.moveTo(0, -p.size);
-    ctx.bezierCurveTo(p.size, -p.size, p.size, p.size, 0, p.size);
-    ctx.bezierCurveTo(-p.size, p.size, -p.size, -p.size, 0, -p.size);
-    ctx.fill();
-    ctx.restore();
+  for (let i = 0; i < maxPetals; i++) {
+    petalPool.push(new FallingPetal());
   }
 
-  let animating = true;
-  function animatePetals() {
-    if (!animating) return;
-    ctx.clearRect(0, 0, W, H);
-    petals.forEach(p => {
-      p.sway += p.swaySpeed;
-      p.y += p.speedY;
-      p.x += Math.sin(p.sway) * 0.6;
-      p.rot += p.rotSpeed;
-      if (p.y > H + 20) { Object.assign(p, makePetal(), { y: -20 }); }
-      drawPetal(p);
+  const runPetalEngine = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    petalPool.forEach(p => {
+      p.update();
+      p.draw();
     });
-    requestAnimationFrame(animatePetals);
-  }
-  animatePetals();
-  document.addEventListener('visibilitychange', () => {
-    animating = !document.hidden;
-    if (animating) animatePetals();
-  });
+    requestAnimationFrame(runPetalEngine);
+  };
+  runPetalEngine();
 
-  /* ================= SOUND TOGGLE ================= */
-  const bgm = document.getElementById('bgm');
-  const soundBtn = document.getElementById('sound-toggle');
-  const iconMuted = document.getElementById('icon-muted');
-  const iconUnmuted = document.getElementById('icon-unmuted');
-  let playing = false;
+  // ==========================================================================
+  // 4. LIVE MULTI-EVENT COUNTDOWN SYSTEM
+  // ==========================================================================
+  const manageCountdown = (elementId, targetISO) => {
+    const timerContainer = document.getElementById(elementId);
+    if (!timerContainer) return;
 
-  soundBtn.addEventListener('click', () => {
-    if (!bgm.src || bgm.readyState === 0) bgm.load();
-    if (playing) {
-      bgm.pause();
-      playing = false;
-    } else {
-      bgm.play().catch(() => { /* file missing or blocked — silently ignore */ });
-      playing = true;
-    }
-    iconMuted.style.display = playing ? 'none' : 'block';
-    iconUnmuted.style.display = playing ? 'block' : 'none';
-  });
+    const targetTime = new Date(targetISO).getTime();
+    const dayNode = timerContainer.querySelectorAll('.num')[0];
+    const hrNode = timerContainer.querySelectorAll('.num')[1];
+    const minNode = timerContainer.querySelectorAll('.num')[2];
+    const secNode = timerContainer.querySelectorAll('.num')[3];
 
-  /* ================= COUNTDOWN TIMERS ================= */
-  function startTimer(el) {
-    const target = new Date(el.dataset.target).getTime();
-    const nums = el.querySelectorAll('.num');
-    function tick() {
-      const now = Date.now();
-      let diff = Math.max(0, target - now);
-      const d = Math.floor(diff / 86400000);
-      const h = Math.floor((diff % 86400000) / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-      const vals = [d, h, m, s];
-      nums.forEach((n, i) => { n.textContent = String(vals[i]).padStart(2, '0'); });
-    }
-    tick();
-    setInterval(tick, 1000);
-  }
-  document.querySelectorAll('.timer').forEach(startTimer);
+    const recalculate = () => {
+      const now = new Date().getTime();
+      const delta = targetTime - now;
 
-  /* ================= GALLERY ================= */
-  const galleryGrid = document.getElementById('gallery-grid');
-  cfg.gallery.forEach((src, i) => {
-    const item = document.createElement('div');
-    item.className = 'gallery-item';
-    item.setAttribute('data-aos', 'fade-up');
-    item.setAttribute('data-aos-delay', String((i % 3) * 100));
-    const img = document.createElement('img');
-    img.src = src;
-    img.alt = 'Wedding moment ' + (i + 1);
-    img.loading = 'lazy';
-    img.onerror = () => {
-      img.remove();
-      const fb = document.createElement('div');
-      fb.className = 'fallback';
-      fb.textContent = 'Add ' + src.split('/').pop();
-      item.appendChild(fb);
+      if (delta <= 0) {
+        timerContainer.innerHTML = `<div class="gold-foil" style="grid-column: span 4; font-size:1.2rem; padding:10px;">Event Has Begun</div>`;
+        return;
+      }
+
+      const d = Math.floor(delta / (1000 * 60 * 60 * 24));
+      const h = Math.floor((delta % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((delta % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((delta % (1000 * 60)) / 1000);
+
+      dayNode.textContent = String(d).padStart(2, '0');
+      hrNode.textContent = String(h).padStart(2, '0');
+      minNode.textContent = String(m).padStart(2, '0');
+      secNode.textContent = String(s).padStart(2, '0');
     };
-    item.appendChild(img);
-    item.addEventListener('click', () => openLightbox(src));
-    galleryGrid.appendChild(item);
+
+    recalculate();
+    setInterval(recalculate, 1000);
+  };
+
+  manageCountdown('timer-wedding', weddingConfig.wedding.dateISO);
+  manageCountdown('timer-reception', weddingConfig.reception.dateISO);
+
+  // ==========================================================================
+  // 5. RESPONSIVE PARALLAX & DOT SCROLL SYNCING
+  // ==========================================================================
+  const parallaxBg = document.querySelector('.parallax-bg');
+  const trackingSections = document.querySelectorAll('header, section');
+  const trackingDots = document.querySelectorAll('#dot-nav .dot');
+
+  window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    
+    // Parallax background offset calculations
+    if (parallaxBg) {
+      const parentSection = parallaxBg.parentElement;
+      const offsetTop = parentSection.offsetTop;
+      const viewHeight = window.innerHeight;
+      
+      if (scrolled + viewHeight >= offsetTop && scrolled <= offsetTop + parentSection.offsetHeight) {
+        const translateValue = (scrolled - offsetTop) * 0.3; // Parallax dynamic ratio scaling
+        parallaxBg.style.transform = `translate3d(0, ${translateValue}px, 0)`;
+      }
+    }
+
+    // Dynamic Navigation Dot Active Highlighter Sync
+    let activeId = "";
+    trackingSections.forEach(sec => {
+      const top = sec.offsetTop - 300;
+      if (scrolled >= top) {
+        activeId = sec.getAttribute('id');
+      }
+    });
+
+    trackingDots.forEach(dot => {
+      dot.classList.remove('active');
+      if (dot.getAttribute('href') === `#${activeId}`) {
+        dot.classList.add('active');
+      }
+    });
   });
 
+  // ==========================================================================
+  // 6. PHOTO GALLERY GENERATION & POP-UP LIGHTBOX
+  // ==========================================================================
+  const galleryGrid = document.getElementById('gallery-grid');
   const lightbox = document.getElementById('lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
-  function openLightbox(src) {
-    lightboxImg.src = src;
-    lightbox.classList.add('active');
-  }
-  document.getElementById('lightbox-close').addEventListener('click', () => lightbox.classList.remove('active'));
-  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('active'); });
+  const lightboxClose = document.getElementById('lightbox-close');
 
-  /* ================= ADD TO CALENDAR ================= */
-  function pad(n) { return String(n).padStart(2, '0'); }
-  function toICSDate(iso) {
-    const d = new Date(iso);
-    return d.getUTCFullYear() + pad(d.getUTCMonth() + 1) + pad(d.getUTCDate()) + 'T' + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + '00Z';
-  }
-  function buildEvent(key) {
-    const e = cfg[key];
-    const start = new Date(e.dateISO);
-    const end = new Date(start.getTime() + 3 * 60 * 60 * 1000); // 3hr default
-    return { title: `${cfg.coupleNames} — ${e.label}`, start, end, venue: e.venueName, iso: e.dateISO };
-  }
-  function googleCalUrl(ev) {
-    const s = toICSDate(ev.start.toISOString());
-    const en = toICSDate(ev.end.toISOString());
-    const params = new URLSearchParams({
-      action: 'TEMPLATE', text: ev.title, dates: `${s}/${en}`,
-      details: `Join us for the ${ev.title}`, location: ev.venue
+  if (galleryGrid && weddingConfig.gallery.length > 0) {
+    weddingConfig.gallery.forEach(fileName => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'gallery-item';
+      wrapper.setAttribute('data-aos', 'fade-up');
+      
+      const imageNode = document.createElement('img');
+      imageNode.src = `assets/photos/${fileName}`;
+      imageNode.alt = "Wedding Celebration Moment";
+      
+      // Graceful fallback display logic if target local source file path is broken
+      imageNode.onerror = () => {
+        wrapper.style.display = 'flex';
+        wrapper.style.alignItems = 'center';
+        wrapper.style.justifyContent = 'center';
+        wrapper.style.background = 'rgba(255,255,255,0.05)';
+        wrapper.innerHTML = `<span style="font-size:0.8rem; color:var(--text-light); opacity:0.6;">${fileName}</span>`;
+      };
+
+      wrapper.appendChild(imageNode);
+      galleryGrid.appendChild(wrapper);
+
+      wrapper.addEventListener('click', () => {
+        if(imageNode.src) {
+          lightboxImg.src = imageNode.src;
+          lightbox.classList.add('active');
+        }
+      });
     });
-    return `https://calendar.google.com/calendar/render?${params.toString()}`;
   }
-  function downloadICS(ev) {
-    const ics = [
-      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Wedding Invite//EN', 'BEGIN:VEVENT',
-      `UID:${Date.now()}@wedding`,
-      `DTSTAMP:${toICSDate(new Date().toISOString())}`,
-      `DTSTART:${toICSDate(ev.start.toISOString())}`,
-      `DTEND:${toICSDate(ev.end.toISOString())}`,
-      `SUMMARY:${ev.title}`,
-      `LOCATION:${ev.venue}`,
-      'END:VEVENT', 'END:VCALENDAR'
-    ].join('\r\n');
-    const blob = new Blob([ics], { type: 'text/calendar' });
+
+  if (lightboxClose) {
+    lightboxClose.addEventListener('click', () => lightbox.classList.remove('active'));
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) lightbox.classList.remove('active');
+    });
+  }
+
+  // ==========================================================================
+  // 7. CALENDAR SCHEDULING INTERFACES (.ICS ENGINE)
+  // ==========================================================================
+  const createICSFile = (title, startISO, location) => {
+    const formatDate = (isoStr) => {
+      const d = new Date(isoStr);
+      return d.toISOString().replace(/-|:|\.\d\d\d/g, "");
+    };
+
+    const startTime = formatDate(startISO);
+    // Automatically buffer session block length duration by +3 hours
+    const endTime = formatDate(new Date(new Date(startISO).getTime() + (3 * 60 * 60 * 1000)).toISOString());
+
+    const icsContent = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "BEGIN:VEVENT",
+      `SUMMARY:${title}`,
+      `DTSTART:${startTime}`,
+      `DTEND:${endTime}`,
+      `LOCATION:${location}`,
+      "DESCRIPTION:We look forward to having you bless us on our special day!",
+      "END:VEVENT",
+      "END:VCALENDAR"
+    ].join("\n");
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = ev.title.replace(/\s+/g, '_') + '.ics';
+    link.download = `${title.toLowerCase().replace(/\s+/g, "_")}.ics`;
+    document.body.appendChild(link);
     link.click();
-  }
+    document.body.removeChild(link);
+  };
 
   document.querySelectorAll('.add-to-cal').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      document.querySelectorAll('.cal-menu').forEach(m => m.remove());
-      const ev = buildEvent(btn.dataset.event);
-      const menu = document.createElement('div');
-      menu.className = 'cal-menu';
-      const rect = btn.getBoundingClientRect();
-      menu.style.top = (window.scrollY + rect.bottom + 8) + 'px';
-      menu.style.left = (window.scrollX + rect.left) + 'px';
-      const gLink = document.createElement('a');
-      gLink.href = googleCalUrl(ev); gLink.target = '_blank'; gLink.rel = 'noopener';
-      gLink.textContent = 'Google Calendar';
-      const iBtn = document.createElement('button');
-      iBtn.textContent = 'Download .ics (Apple/Outlook)';
-      iBtn.addEventListener('click', () => { downloadICS(ev); menu.remove(); });
-      menu.appendChild(gLink); menu.appendChild(iBtn);
-      document.body.appendChild(menu);
-      setTimeout(() => {
-        document.addEventListener('click', function closeMenu(ev2) {
-          if (!menu.contains(ev2.target)) { menu.remove(); document.removeEventListener('click', closeMenu); }
-        });
-      }, 10);
-      e.stopPropagation();
+    btn.addEventListener('click', () => {
+      const type = btn.getAttribute('data-event');
+      if (type === 'wedding') {
+        createICSFile(`${weddingConfig.coupleNames} - Muhurtham`, weddingConfig.wedding.dateISO, weddingConfig.wedding.venueName);
+      } else if (type === 'reception') {
+        createICSFile(`${weddingConfig.coupleNames} - Wedding Reception`, weddingConfig.reception.dateISO, weddingConfig.reception.venueName);
+      }
     });
   });
 
-  /* ================= QR CODE ================= */
-  if (window.QRCode) {
-    new QRCode(document.getElementById('qrcode'), {
-      text: cfg.siteUrl,
-      width: 150, height: 150,
-      colorDark: '#5C0511',
-      colorLight: '#ffffff'
+  // ==========================================================================
+  // 8. AUTOMATED SYSTEM QR CODE & WHATSAPP SOCIAL INLINE GENERATOR
+  // ==========================================================================
+  const qrContainer = document.getElementById('qrcode');
+  if (qrContainer && window.QRCode) {
+    new QRCode(qrContainer, {
+      text: weddingConfig.siteUrl,
+      width: 140,
+      height: 140,
+      colorDark: "#3D0A11",
+      colorLight: "#ffffff"
     });
   }
 
-  /* ================= WHATSAPP SHARE ================= */
-  document.getElementById('whatsapp-share').addEventListener('click', () => {
-    const msg = `${cfg.whatsapp.shareMessage} ${cfg.siteUrl}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
-  });
-
-  /* ================= AOS + SCROLL / PARALLAX ================= */
-  if (typeof AOS !== 'undefined') {
-    AOS.init({ duration: 800, once: true, offset: 60, easing: 'ease-out-cubic' });
-  } else {
-    // AOS blocked/unavailable — make sure scroll-reveal content is still visible.
-    document.querySelectorAll('[data-aos]').forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
-  }
-
-  if (window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.to('.parallax-bg', {
-      yPercent: 20,
-      ease: 'none',
-      scrollTrigger: { trigger: '.parallax-section', start: 'top bottom', end: 'bottom top', scrub: true }
-    });
-  }
-
-  /* ================= DOT NAV ACTIVE STATE ================= */
-  const sections = document.querySelectorAll('section[id], header[id]');
-  const dots = document.querySelectorAll('#dot-nav .dot');
-  function updateDots() {
-    let current = sections[0].id;
-    sections.forEach(s => { if (window.scrollY + window.innerHeight * 0.5 >= s.offsetTop) current = s.id; });
-    dots.forEach(d => d.classList.toggle('active', d.getAttribute('href') === '#' + current));
-  }
-  window.addEventListener('scroll', updateDots);
-  updateDots();
-
-  /* ================= PWA SERVICE WORKER ================= */
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
+  const whatsappBtn = document.getElementById('whatsapp-share');
+  if (whatsappBtn) {
+    whatsappBtn.addEventListener('click', () => {
+      const textMessage = encodeURIComponent(`You are cordially invited to celebrate the wedding of ${weddingConfig.coupleNames}! Open our digital invitation here: ${weddingConfig.siteUrl}`);
+      window.open(`https://api.whatsapp.com/send?text=${textMessage}`, '_blank');
     });
   }
 });
