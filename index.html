@@ -179,7 +179,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
     }
     
     .single-countdown-card {
@@ -197,10 +197,10 @@
       letter-spacing: 1px;
     }
     .premium-card p {
-      font-size: 1rem;
+      font-size: 1.1rem;
       line-height: 1.7;
       color: #ffffff;
-      margin-bottom: 25px;
+      margin-bottom: 0;
     }
 
     /* ==========================================================================
@@ -336,7 +336,7 @@
   <div id="temple-doors">
     <div class="door door-left"></div>
     <div class="door-content-wrapper" id="door-info">
-      <!-- Local ganesha.png Image Implemented in Curtain Screen -->
+      <!-- Local Ganesha.png Image Implemented in Curtain Screen -->
       <img class="ganesha-img" src="Ganesha.png" alt="Lord Ganesha">
       <div class="door-instruction">TAP TO ENTER INVITATION</div>
     </div>
@@ -345,7 +345,7 @@
 
   <!-- Main Hero Context Interface Area -->
   <header id="hero">
-    <!-- Local ganesha.png Image Implemented on First Page Base Layer -->
+    <!-- Local Ganesha.png Image Implemented on First Page Base Layer -->
     <img class="ganesha-img reveal-hidden" src="Ganesha.png" alt="Lord Ganesha" style="margin-bottom: 25px;">
     
     <div class="hero-eyebrow reveal-hidden delay-1">Together with our Families</div>
@@ -374,7 +374,7 @@
     <h2 class="section-title">Celebrations</h2>
 
     <!-- Combined Shared Wedding & Reception Live Counter Box -->
-    <div class="premium-card single-countdown-card">
+    <div class="premium-card single-countdown-card" style="margin-bottom: 50px;">
       <h3>Time Until Celebrations Begin</h3>
       <p style="font-size: 0.95rem; opacity: 0.85; margin-bottom: 10px;">Counting down to December 14, 2026</p>
       <div class="countdown-display" id="unified-timer">
@@ -386,24 +386,16 @@
     </div>
 
     <div class="venue-grid">
-      <!-- Event 1: The Sacred Wedding Ceremony -->
+      <!-- Event 1: The Reception Celebration (Now First) -->
       <div class="premium-card">
-        <div>
-          <h3>The Wedding</h3>
-          <p>Monday, December 14, 2026<br>7:00 AM onwards</p>
-          <p style="font-style: italic; font-size: 0.95rem; color: var(--text-light); margin-bottom: 20px;">Sri Meenakshi Kalyana Mandapam, Chennai</p>
-        </div>
-        <a href="https://maps.app.goo.gl/QQxxedGjsjvB81QB7" target="_blank" class="gold-btn">View Route Map</a>
+        <h3>The Reception</h3>
+        <p>Monday, December 14, 2026<br>7:00 PM onwards</p>
       </div>
 
-      <!-- Event 2: The Reception Celebration -->
+      <!-- Event 2: The Sacred Wedding Ceremony (Now Second) -->
       <div class="premium-card">
-        <div>
-          <h3>The Reception</h3>
-          <p>Monday, December 14, 2026<br>7:00 PM onwards</p>
-          <p style="font-style: italic; font-size: 0.95rem; color: var(--text-light); margin-bottom: 20px;">The Grand Ballroom, Taj Coromandel, Chennai</p>
-        </div>
-        <a href="https://maps.app.goo.gl/QQxxedGjsjvB81QB7" target="_blank" class="gold-btn">View Route Map</a>
+        <h3>The Wedding</h3>
+        <p>Monday, December 14, 2026<br>7:00 AM onwards</p>
       </div>
     </div>
   </section>
@@ -434,7 +426,7 @@
       <!-- Isolated QR Component Container block -->
       <div class="premium-card">
         <h3>Scan to Share</h3>
-        <p style="font-size: 0.95rem; opacity:0.85;">Scan to open or share this dynamic luxury invitation page instantly</p>
+        <p style="font-size: 0.95rem; opacity:0.85; margin-bottom: 15px;">Scan to open or share this dynamic luxury invitation page instantly</p>
         <div id="qrcode"></div>
         <button id="whatsapp-share" class="gold-btn" style="margin-top: 20px;">Share via WhatsApp</button>
       </div>
