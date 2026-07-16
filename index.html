@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Meera &amp; Arjun — Wedding Invitation</title>
+<meta name="description" content="Join us in celebrating the wedding of Meera & Arjun">
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#5C0511">
+<link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Cinzel:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=Mrs+Saint+Delafield&display=swap" rel="stylesheet">
+
+<!-- AOS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================= TEMPLE DOOR PRELOADER ================= -->
+<div id="temple-doors" aria-hidden="true">
+  <div class="gopuram">
+    <svg viewBox="0 0 400 140" class="gopuram-svg">
+      <polygon points="200,0 60,140 340,140" fill="url(#goldGrad)"/>
+      <polygon points="200,20 90,140 310,140" fill="#5C0511"/>
+      <circle cx="200" cy="70" r="14" fill="#D4AF37"/>
+      <polygon points="200,45 208,68 232,68 212,82 220,105 200,90 180,105 188,82 168,68 192,68" fill="#FFCB6B"/>
+    </svg>
+    <defs>
+      <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#F4E5A1"/>
+        <stop offset="50%" stop-color="#D4AF37"/>
+        <stop offset="100%" stop-color="#9C7A1E"/>
+      </linearGradient>
+    </defs>
+  </div>
+  <div class="door door-left">
+    <div class="door-panel">
+      <div class="door-carving"></div>
+      <div class="door-handle"></div>
+    </div>
+  </div>
+  <div class="door door-right">
+    <div class="door-panel">
+      <div class="door-carving"></div>
+      <div class="door-handle"></div>
+    </div>
+  </div>
+  <div class="preloader-caption">
+    <span>Meera &amp; Arjun</span>
+    <small>the doors of celebration are opening…</small>
+  </div>
+</div>
+
+<!-- ================= PETALS CANVAS ================= -->
+<canvas id="petals-canvas"></canvas>
+
+<!-- ================= SOUND CONTROL ================= -->
+<button id="sound-toggle" aria-label="Toggle background music">
+  <svg id="icon-muted" viewBox="0 0 24 24"><path d="M3 10v4h4l5 5V5L7 10H3z"/><line x1="16" y1="9" x2="22" y2="15" stroke="currentColor" stroke-width="2"/><line x1="22" y1="9" x2="16" y2="15" stroke="currentColor" stroke-width="2"/></svg>
+  <svg id="icon-unmuted" viewBox="0 0 24 24" style="display:none"><path d="M3 10v4h4l5 5V5L7 10H3z"/><path d="M16 8a5 5 0 0 1 0 8" stroke="currentColor" stroke-width="2" fill="none"/><path d="M18.5 5.5a9 9 0 0 1 0 13" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+</button>
+<audio id="bgm" loop preload="none">
+  <source src="assets/audio/bgm.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ================= NAV DOTS ================= -->
+<nav id="dot-nav">
+  <a href="#hero" class="dot active" data-label="Home"></a>
+  <a href="#countdown" class="dot" data-label="Countdown"></a>
+  <a href="#story" class="dot" data-label="Our Story"></a>
+  <a href="#events" class="dot" data-label="Events"></a>
+  <a href="#gallery" class="dot" data-label="Gallery"></a>
+  <a href="#venue" class="dot" data-label="Venue"></a>
+  <a href="#rsvp" class="dot" data-label="RSVP"></a>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header id="hero">
+  <div class="vilakku vilakku-left" aria-hidden="true">
+    <svg viewBox="0 0 100 220">
+      <ellipse cx="50" cy="205" rx="34" ry="8" fill="#3a2a05" opacity=".35"/>
+      <path d="M20 200 L80 200 L65 178 L35 178 Z" fill="url(#lampGrad)"/>
+      <rect x="46" y="70" width="8" height="112" fill="url(#lampGrad)"/>
+      <path d="M18 70 L82 70 L60 50 L40 50 Z" fill="url(#lampGrad)"/>
+      <ellipse cx="50" cy="50" rx="20" ry="6" fill="#D4AF37"/>
+      <g class="flame-group">
+        <ellipse class="flame-outer" cx="50" cy="24" rx="10" ry="20" fill="#FF9E2C"/>
+        <ellipse class="flame-inner" cx="50" cy="30" rx="5" ry="11" fill="#FFE082"/>
+      </g>
+      <circle class="glow" cx="50" cy="26" r="30" fill="#FFCB6B" opacity=".25"/>
+      <defs>
+        <linearGradient id="lampGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#F4E5A1"/>
+          <stop offset="100%" stop-color="#B8860B"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <p class="eyebrow" data-aos="fade-down">With the blessings of our families</p>
+    <h1 class="gold-foil" id="hero-names" data-aos="fade-up" data-aos-delay="150">Meera <span class="amp">&amp;</span> Arjun</h1>
+    <p class="hero-sub" data-aos="fade-up" data-aos-delay="300">are tying the knot</p>
+    <div class="hero-date" data-aos="fade-up" data-aos-delay="450">
+      <span id="hero-date-text">14th December 2026 · Chennai</span>
+    </div>
+    <a href="#countdown" class="scroll-cue" aria-label="Scroll down">
+      <span></span>
+    </a>
+  </div>
+
+  <div class="vilakku vilakku-right" aria-hidden="true">
+    <svg viewBox="0 0 100 220">
+      <ellipse cx="50" cy="205" rx="34" ry="8" fill="#3a2a05" opacity=".35"/>
+      <path d="M20 200 L80 200 L65 178 L35 178 Z" fill="url(#lampGrad2)"/>
+      <rect x="46" y="70" width="8" height="112" fill="url(#lampGrad2)"/>
+      <path d="M18 70 L82 70 L60 50 L40 50 Z" fill="url(#lampGrad2)"/>
+      <ellipse cx="50" cy="50" rx="20" ry="6" fill="#D4AF37"/>
+      <g class="flame-group">
+        <ellipse class="flame-outer" cx="50" cy="24" rx="10" ry="20" fill="#FF9E2C"/>
+        <ellipse class="flame-inner" cx="50" cy="30" rx="5" ry="11" fill="#FFE082"/>
+      </g>
+      <circle class="glow" cx="50" cy="26" r="30" fill="#FFCB6B" opacity=".25"/>
+      <defs>
+        <linearGradient id="lampGrad2" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#F4E5A1"/>
+          <stop offset="100%" stop-color="#B8860B"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+</header>
+
+<!-- ================= COUNTDOWN ================= -->
+<section id="countdown" class="section">
+  <div class="kolam-divider" aria-hidden="true"></div>
+  <h2 class="section-title" data-aos="fade-up">The Auspicious Hours Await</h2>
+
+  <div class="countdown-grid">
+    <div class="countdown-card" data-aos="zoom-in">
+      <h3 id="cd-wedding-label">Muhurtham</h3>
+      <p class="cd-sub" id="cd-wedding-sub">14 Dec 2026 · 7:00 AM</p>
+      <div class="timer" id="timer-wedding" data-target="2026-12-14T07:00:00+05:30">
+        <div><span class="num">00</span><label>Days</label></div>
+        <div><span class="num">00</span><label>Hrs</label></div>
+        <div><span class="num">00</span><label>Min</label></div>
+        <div><span class="num">00</span><label>Sec</label></div>
+      </div>
+    </div>
+    <div class="countdown-card" data-aos="zoom-in" data-aos-delay="150">
+      <h3 id="cd-reception-label">Reception</h3>
+      <p class="cd-sub" id="cd-reception-sub">14 Dec 2026 · 7:00 PM</p>
+      <div class="timer" id="timer-reception" data-target="2026-12-14T19:00:00+05:30">
+        <div><span class="num">00</span><label>Days</label></div>
+        <div><span class="num">00</span><label>Hrs</label></div>
+        <div><span class="num">00</span><label>Min</label></div>
+        <div><span class="num">00</span><label>Sec</label></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OUR STORY / PARALLAX ================= -->
+<section id="story" class="section parallax-section">
+  <div class="parallax-bg" data-speed="0.4"></div>
+  <div class="story-content">
+    <p class="eyebrow" data-aos="fade-up">Our Story</p>
+    <h2 class="section-title light" data-aos="fade-up">Two Families, One Beginning</h2>
+    <p class="story-text" data-aos="fade-up" data-aos-delay="150">
+      What began as a quiet introduction has blossomed into a lifetime promise.
+      We are overjoyed to begin this new chapter surrounded by the people we love most —
+      and we would be honoured to have you bless us as we do.
+    </p>
+  </div>
+</section>
+
+<!-- ================= EVENTS ================= -->
+<section id="events" class="section">
+  <div class="kolam-divider" aria-hidden="true"></div>
+  <h2 class="section-title" data-aos="fade-up">Celebrations</h2>
+  <div class="events-grid">
+    <div class="event-card" data-aos="fade-up">
+      <span class="event-icon">🪔</span>
+      <h3 id="ev-wedding-label">Muhurtham</h3>
+      <p id="ev-wedding-date">14 December 2026 &middot; 7:00 AM</p>
+      <p class="event-venue" id="ev-wedding-venue">Sri Meenakshi Kalyana Mandapam, Chennai</p>
+      <button class="btn-outline add-to-cal" data-event="wedding">+ Add to Calendar</button>
+    </div>
+    <div class="event-card" data-aos="fade-up" data-aos-delay="150">
+      <span class="event-icon">💍</span>
+      <h3 id="ev-reception-label">Reception</h3>
+      <p id="ev-reception-date">14 December 2026 &middot; 7:00 PM</p>
+      <p class="event-venue" id="ev-reception-venue">The Grand Ballroom, Taj Coromandel, Chennai</p>
+      <button class="btn-outline add-to-cal" data-event="reception">+ Add to Calendar</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALLERY ================= -->
+<section id="gallery" class="section">
+  <div class="kolam-divider" aria-hidden="true"></div>
+  <h2 class="section-title" data-aos="fade-up">Moments We Cherish</h2>
+  <p class="section-note" data-aos="fade-up">Replace the images in <code>assets/photos</code> with your own — same filenames, any aspect ratio.</p>
+  <div class="gallery-grid" id="gallery-grid">
+    <!-- populated by JS -->
+  </div>
+</section>
+
+<!-- lightbox -->
+<div id="lightbox" class="lightbox">
+  <button id="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- ================= VENUE ================= -->
+<section id="venue" class="section">
+  <div class="kolam-divider" aria-hidden="true"></div>
+  <h2 class="section-title" data-aos="fade-up">Find Us</h2>
+  <div class="venue-grid">
+    <div class="venue-map" data-aos="fade-right">
+      <iframe
+        title="Venue location"
+        src="https://www.google.com/maps?q=Taj+Coromandel+Chennai&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+      <a class="btn-gold" id="directions-link" href="https://www.google.com/maps/search/?api=1&query=Taj+Coromandel+Chennai" target="_blank" rel="noopener">Get Directions</a>
+    </div>
+    <div class="venue-qr" data-aos="fade-left">
+      <h3>Scan to Open This Invite</h3>
+      <div id="qrcode"></div>
+      <p>Share this page instantly with anyone by scanning the code.</p>
+      <button id="whatsapp-share" class="btn-outline">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1-.1.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.2-.4.1-.2 0-.3 0-.5s-.6-1.5-.9-2c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.6 1.4 5.2L2 22l4.9-1.3C8.4 21.5 10.1 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.3c-1.7 0-3.3-.5-4.7-1.3l-.3-.2-3.5.9.9-3.4-.2-.3C3.5 14.6 3 13.3 3 12c0-5 4-9 9-9s9 4 9 9-4 9-9 9z"/></svg>
+        Share on WhatsApp
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RSVP / FOOTER ================= -->
+<section id="rsvp" class="section rsvp-section">
+  <div class="kolam-divider" aria-hidden="true"></div>
+  <h2 class="section-title" data-aos="fade-up">We Can't Wait to Celebrate With You</h2>
+  <p class="rsvp-sub" data-aos="fade-up">Kindly confirm your presence at your earliest convenience.</p>
+  <a href="https://wa.me/919999999999?text=I%27m%20delighted%20to%20confirm%20my%20presence%20at%20Meera%20%26%20Arjun%27s%20wedding!" target="_blank" rel="noopener" class="btn-gold" data-aos="zoom-in">RSVP via WhatsApp</a>
+  <footer>
+    <p class="footer-quote">"Wherever you go, whatever you do, I will be right here waiting for you."</p>
+    <p class="footer-names">Meera &amp; Arjun · 14.12.2026</p>
+  </footer>
+</section>
+
+<!-- ================= SCRIPTS ================= -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
