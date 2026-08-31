@@ -125,6 +125,7 @@
     .music-button.is-off { animation:music-jiggle 3.2s ease-in-out infinite; }
     .music-symbol { font-family:"Cormorant Garamond",serif; font-size:1.6rem; line-height:1; }
     .music-label { display:none; }
+    .music-hint { position:absolute; right:0; bottom:61px; width:max-content; padding:8px 11px; border:1px solid rgba(166,122,45,.35); border-radius:7px; background:rgba(255,250,240,.94); color:var(--wine); box-shadow:0 5px 14px rgba(61,15,23,.10); font:600 .65rem Cinzel,serif; letter-spacing:.06em; text-transform:uppercase; white-space:nowrap; }
     @keyframes appear { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } } @keyframes pulse { 50% { opacity:.48; } } @keyframes music-jiggle { 0%,82%,100% { transform:rotate(0); } 86% { transform:rotate(-8deg); } 90% { transform:rotate(7deg); } 94% { transform:rotate(-4deg); } 97% { transform:rotate(2deg); } }
     @media (max-width:650px) { .hero { min-height:780px; } .event-grid,.map-share { grid-template-columns:1fr; } .event + .event { border-left:0; border-top:1px solid rgba(239,216,144,.28); } .section { padding:65px 20px; } .welcome-section { padding-top:40px; padding-bottom:52px; } .story-section,#celebrations,.gallery-section,.gallery-section + .section { padding-top:52px; } .gallery { grid-template-columns:1fr; } .gallery figure { min-height:360px; } .map-share > div + div { border-left:0; border-top:1px solid #ecdfc7; } }
     @media (prefers-reduced-motion:reduce) { * { animation-duration:.01ms!important; scroll-behavior:auto!important; } }
@@ -136,7 +137,7 @@
        ======================================================================= -->
   <canvas id="petals" aria-hidden="true"></canvas>
   <audio id="bgm" src="bgm.mp3" loop preload="none"></audio>
-  <button class="music-button is-off" id="music-button" type="button" aria-label="Play background music" aria-pressed="false"><span class="music-symbol" aria-hidden="true">♪</span><span class="music-label">Music Off</span></button>
+  <button class="music-button is-off" id="music-button" type="button" aria-label="Play background music" aria-pressed="false"><span class="music-hint" aria-hidden="true">Tap to Turn On</span><span class="music-symbol" aria-hidden="true">♪</span><span class="music-label">Music Off</span></button>
   <div class="entry" id="entry" role="button" tabindex="0" aria-label="Open wedding invitation">
     <div class="door left"></div><div class="door right"></div>
     <div class="entry-center"><img src="Ganesha.png" alt="Lord Ganesha"><p>Tap to open the invitation</p></div>
@@ -226,7 +227,7 @@
        1. OPENING CURTAIN & MUSIC CONTROL
        ======================================================================= */
     const entry = document.getElementById('entry'), bgm = document.getElementById('bgm'), musicButton = document.getElementById('music-button');
-    const setMusicState = playing => { musicButton.querySelector('.music-symbol').textContent = playing ? '♫' : '♪'; musicButton.querySelector('.music-label').textContent = playing ? 'Music On' : 'Music Off'; musicButton.classList.toggle('is-off', !playing); musicButton.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music'); musicButton.setAttribute('aria-pressed', playing); };
+    const setMusicState = playing => { musicButton.querySelector('.music-symbol').textContent = playing ? '♫' : '♪'; musicButton.querySelector('.music-label').textContent = playing ? 'Music On' : 'Music Off'; musicButton.querySelector('.music-hint').textContent = playing ? 'Tap to Turn Off' : 'Tap to Turn On'; musicButton.classList.toggle('is-off', !playing); musicButton.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music'); musicButton.setAttribute('aria-pressed', playing); };
     const openInvitation = () => { entry.classList.add('open'); document.body.classList.remove('no-scroll'); bgm.play().then(() => setMusicState(true)).catch(() => setMusicState(false)); setTimeout(() => entry.remove(), 1300); };
     document.body.classList.add('no-scroll'); entry.addEventListener('click', openInvitation); entry.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openInvitation(); });
     musicButton.addEventListener('click', () => { if (bgm.paused) bgm.play().then(() => setMusicState(true)).catch(() => setMusicState(false)); else { bgm.pause(); setMusicState(false); } });
