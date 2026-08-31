@@ -24,14 +24,20 @@
        2. OPENING INVITATION CURTAIN
        ======================================================================== */
     .entry { position:fixed; z-index:100; inset:0; display:grid; place-items:center; overflow:hidden; cursor:pointer; background:#4a0c18; transition:visibility .1s linear 1.25s; }
+    .entry::before { content:""; position:absolute; z-index:1; inset:20px; border:1px solid rgba(220,180,74,.55); border-radius:3px; box-shadow:inset 0 0 0 9px rgba(83,10,22,.32),inset 0 0 55px rgba(220,180,74,.10); pointer-events:none; }
+    .entry::after { content:""; position:absolute; z-index:1; left:50%; top:50%; width:min(460px,65vw); height:min(460px,65vw); border-radius:50%; transform:translate(-50%,-50%); background:radial-gradient(circle,rgba(231,191,85,.13) 0,rgba(231,191,85,.04) 38%,transparent 68%); pointer-events:none; }
     .entry.open { visibility:hidden; }
-    .door { position:absolute; inset:0 auto 0 0; width:50.1%; background:linear-gradient(90deg,#460914,#6c1624); border:2px solid #b98a33; transition:transform 1.2s cubic-bezier(.77,0,.18,1); }
-    .door.right { left:auto; right:0; background:linear-gradient(90deg,#6c1624,#460914); }
+    .door { position:absolute; z-index:0; inset:0 auto 0 0; width:50.1%; overflow:hidden; background:radial-gradient(ellipse at 78% 45%,rgba(211,164,57,.12),transparent 42%),linear-gradient(90deg,#3c0812,#741827); border:2px solid #b98a33; box-shadow:inset 0 0 90px rgba(0,0,0,.24); transition:transform 1.2s cubic-bezier(.77,0,.18,1); }
+    .door.right { left:auto; right:0; background:radial-gradient(ellipse at 22% 45%,rgba(211,164,57,.12),transparent 42%),linear-gradient(90deg,#741827,#3c0812); }
+    .door::before { content:""; position:absolute; inset:30px; border:1px solid rgba(239,207,113,.26); border-radius:110px 16px 16px 110px; box-shadow:inset 0 0 42px rgba(211,164,57,.07); }
+    .door.right::before { border-radius:16px 110px 110px 16px; }
+    .door::after { content:"✦  •  ✦  •  ✦"; position:absolute; top:42px; left:0; width:100%; color:rgba(239,207,113,.32); font:600 1rem Cinzel,serif; letter-spacing:1.1em; text-align:center; white-space:nowrap; }
     .entry.open .door.left { transform:translateX(-100%); } .entry.open .door.right { transform:translateX(100%); }
-    .entry-center { position:relative; z-index:2; color:#f6df99; text-align:center; transition:opacity .35s ease; }
+    .entry-center { position:relative; z-index:3; color:#f6df99; text-align:center; transition:opacity .35s ease; }
     .entry.open .entry-center { opacity:0; }
-    .entry-center img { width:120px; filter:drop-shadow(0 12px 18px rgba(0,0,0,.35)); }
-    .entry-center p { margin:20px 0 0; font:600 clamp(1.15rem,2.5vw,1.5rem)/1.1 "Cormorant Garamond",serif; letter-spacing:.1em; text-transform:uppercase; animation:pulse 1.9s infinite; }
+    .entry-center::before { content:""; position:absolute; z-index:-1; top:-28px; left:50%; width:205px; height:205px; border:1px solid rgba(239,207,113,.48); border-radius:50%; transform:translateX(-50%); box-shadow:0 0 0 13px rgba(211,164,57,.05),0 0 42px rgba(211,164,57,.20); }
+    .entry-center img { display:block; width:145px; margin:0 auto; filter:drop-shadow(0 14px 20px rgba(0,0,0,.42)); }
+    .entry-center p { display:inline-block; margin:29px 0 0; padding:13px 28px; border:1px solid rgba(249,231,167,.72); border-radius:999px; background:linear-gradient(90deg,#500b17,#741827,#500b17); box-shadow:0 7px 18px rgba(0,0,0,.22); font:600 clamp(1.05rem,2.5vw,1.38rem)/1.1 "Cormorant Garamond",serif; letter-spacing:.1em; text-transform:uppercase; animation:pulse 1.9s infinite; }
 
     /* ========================================================================
        3. HERO INVITATION
@@ -42,11 +48,11 @@
     .hero::after { content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(to bottom,transparent 0%,transparent 64%,rgba(255,250,240,.45) 78%,var(--paper) 100%),linear-gradient(90deg,rgba(255,250,240,.08),rgba(255,250,240,.52) 24%,rgba(255,250,240,.68) 50%,rgba(255,250,240,.52) 76%,rgba(255,250,240,.08)); pointer-events:none; }
     .hero-card { width:min(600px,100%); text-align:center; padding:28px 18px; animation:appear 1s ease-out both; }
     .hero-ganesha { width:clamp(70px,9vw,112px); height:auto; display:block; margin:0 auto 17px; filter:drop-shadow(0 8px 10px rgba(74,12,24,.18)); }
-    .eyebrow, .date { color:var(--wine); letter-spacing:.17em; font-family:Cinzel,serif; font-size:.79rem; font-weight:600; text-transform:uppercase; }
-    .blessing { margin:24px auto 14px; color:var(--gold); font-family:"Cormorant Garamond",serif; font-size:clamp(1.25rem,3vw,1.65rem); font-style:italic; font-weight:600; }
+    .eyebrow, .date { color:#681721; letter-spacing:.17em; font-family:Cinzel,serif; font-size:.79rem; font-weight:700; text-shadow:0 0 10px rgba(255,250,240,.95); text-transform:uppercase; }
+    .blessing { margin:24px auto 14px; color:#7b4a0c; font-family:"Cormorant Garamond",serif; font-size:clamp(1.25rem,3vw,1.65rem); font-style:italic; font-weight:700; text-shadow:0 1px 0 rgba(255,255,255,.95),0 0 13px rgba(255,250,240,.98); }
     h1 { margin:0; color:var(--wine); font-family:"Cormorant Garamond",serif; font-size:clamp(3rem,8vw,7rem); font-weight:700; line-height:.87; letter-spacing:-.045em; }
     .groom, .bride { display:block; white-space:nowrap; }
-    .amp { display:block; color:var(--gold); font-family:Sacramento,cursive; font-size:.82em; font-weight:400; line-height:.75; margin:.12em 0; }
+    .amp { display:block; color:#9b691d; font-family:Cinzel,serif; font-size:.5em; font-weight:600; line-height:1; margin:.2em 0; text-shadow:0 1px 0 rgba(255,255,255,.8); }
     .invite-line { max-width:440px; margin:25px auto 0; font-size:clamp(1.05rem,2.1vw,1.22rem); line-height:1.6; }
     .hero-scroll { position:absolute; bottom:26px; color:var(--wine); font-family:Cinzel,serif; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; text-decoration:none; }
     .hero-scroll::after { content:"↓"; display:block; margin-top:8px; font-size:1.2rem; }
@@ -140,7 +146,7 @@
   <button class="music-button is-off" id="music-button" type="button" aria-label="Play background music" aria-pressed="false"><span class="music-hint" aria-hidden="true">Tap to Turn On</span><span class="music-symbol" aria-hidden="true">♪</span><span class="music-label">Music Off</span></button>
   <div class="entry" id="entry" role="button" tabindex="0" aria-label="Open wedding invitation">
     <div class="door left"></div><div class="door right"></div>
-    <div class="entry-center"><img src="Ganesha.png" alt="Lord Ganesha"><p>Tap to open the invitation</p></div>
+    <div class="entry-center"><img src="Ganesha.png" alt="Lord Ganesha"><p>Tap to unveil our invitation</p></div>
   </div>
   <main class="page">
     <!-- =====================================================================
@@ -220,7 +226,7 @@
     <!-- =====================================================================
          FOOTER
          ===================================================================== -->
-    <footer><p class="kicker">With love</p><h2>We can’t wait to celebrate with you</h2><p>Karthikeyan &amp; Swathika · 14.12.2026</p></footer>
+    <footer><p class="kicker">With love</p><h2>We can’t wait to celebrate with you</h2><p>Karthikeyan &amp; Swathika · 13.11.2026</p></footer>
   </main>
   <script>
     /* =======================================================================
