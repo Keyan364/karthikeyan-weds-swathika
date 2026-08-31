@@ -179,8 +179,8 @@
     <section class="section section--wine" id="celebrations" aria-labelledby="celebrations-title">
       <p class="kicker">Save the date</p><h2 id="celebrations-title">The celebrations</h2><div class="rule"></div>
       <div class="event-grid">
-        <article class="event"><p class="event-label">Evening celebration</p><h3>The Reception</h3><p>Monday, 14 December 2026<br>7:00 PM onwards</p></article>
-        <article class="event"><p class="event-label">Morning ceremony</p><h3>The Wedding</h3><p>Monday, 14 December 2026<br>7:00 AM onwards</p></article>
+        <article class="event"><p class="event-label">Evening celebration</p><h3>The Reception</h3><p>Thursday, 12 November 2026<br>7:00 PM onwards</p></article>
+        <article class="event"><p class="event-label">Morning ceremony</p><h3>The Wedding</h3><p>Friday, 13 November 2026<br>Muhurtham 6:30 AM to 7:00 AM onwards</p></article>
       </div>
       <div class="countdown" id="countdown" aria-label="Countdown to the wedding"><div class="count"><b>--</b><span>Days</span></div><div class="count"><b>--</b><span>Hours</span></div><div class="count"><b>--</b><span>Minutes</span></div><div class="count"><b>--</b><span>Seconds</span></div></div>
     </section>
@@ -234,7 +234,7 @@
     /* =======================================================================
        2. LIVE WEDDING COUNTDOWN
        ======================================================================= */
-    const target = new Date('2026-12-14T07:00:00+05:30').getTime(), units = document.querySelectorAll('#countdown b');
+    const target = new Date('2026-11-13T07:00:00+05:30').getTime(), units = document.querySelectorAll('#countdown b');
     const tick = () => { let delta = Math.max(0, target - Date.now()); const values = [Math.floor(delta/86400000),Math.floor(delta%86400000/3600000),Math.floor(delta%3600000/60000),Math.floor(delta%60000/1000)]; units.forEach((unit,i) => unit.textContent=String(values[i]).padStart(2,'0')); }; tick(); setInterval(tick,1000);
     if (window.QRCode) new QRCode(document.getElementById('qrcode'), { text: location.href, width:150, height:150, colorDark:'#6b1623', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.H });
     document.getElementById('whatsapp').addEventListener('click', e => { e.preventDefault(); window.open('https://api.whatsapp.com/send?text='+encodeURIComponent('Karthikeyan & Swathika invite you to celebrate their wedding: '+location.href),'_blank','noopener'); });
