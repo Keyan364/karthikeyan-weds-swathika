@@ -28,7 +28,7 @@
     .page { width:100%; min-height:100svh; margin:0; background:var(--paper); overflow:hidden; }
     .hero { min-height:min(900px,100svh); position:relative; isolation:isolate; display:grid; place-items:center; padding:54px 22px; background:#f7ead1; }
     .hero::before { content:""; position:absolute; inset:0; z-index:-2; background:url("mandapam-hero.png") center top/cover no-repeat; }
-    .hero::after { content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(90deg,rgba(255,250,240,.08),rgba(255,250,240,.52) 24%,rgba(255,250,240,.68) 50%,rgba(255,250,240,.52) 76%,rgba(255,250,240,.08)); pointer-events:none; }
+    .hero::after { content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(to bottom,transparent 0%,transparent 64%,rgba(255,250,240,.45) 78%,var(--paper) 100%),linear-gradient(90deg,rgba(255,250,240,.08),rgba(255,250,240,.52) 24%,rgba(255,250,240,.68) 50%,rgba(255,250,240,.52) 76%,rgba(255,250,240,.08)); pointer-events:none; }
     .hero-card { width:min(600px,100%); text-align:center; padding:28px 18px; animation:appear 1s ease-out both; }
     .hero-ganesha { width:clamp(70px,9vw,112px); height:auto; display:block; margin:0 auto 17px; filter:drop-shadow(0 8px 10px rgba(74,12,24,.18)); }
     .eyebrow, .date { color:var(--wine); letter-spacing:.17em; font-family:Cinzel,serif; font-size:.79rem; font-weight:600; text-transform:uppercase; }
