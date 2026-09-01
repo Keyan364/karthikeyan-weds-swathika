@@ -30,8 +30,6 @@
     .entry.open::before, .entry.open::after { opacity:0; }
     .door { position:absolute; z-index:0; inset:0 auto 0 0; width:50.1%; overflow:hidden; background:radial-gradient(ellipse at 78% 45%,rgba(211,164,57,.12),transparent 42%),linear-gradient(90deg,#3c0812,#741827); border:2px solid #b98a33; box-shadow:inset 0 0 90px rgba(0,0,0,.24); transition:transform 1.2s cubic-bezier(.77,0,.18,1); }
     .door.right { left:auto; right:0; background:radial-gradient(ellipse at 22% 45%,rgba(211,164,57,.12),transparent 42%),linear-gradient(90deg,#741827,#3c0812); }
-    .door::before { content:""; position:absolute; inset:30px; border:1px solid rgba(239,207,113,.26); border-radius:110px 16px 16px 110px; box-shadow:inset 0 0 42px rgba(211,164,57,.07); }
-    .door.right::before { border-radius:16px 110px 110px 16px; }
     .door::after { content:"✦  •  ✦  •  ✦"; position:absolute; top:42px; left:0; width:100%; color:rgba(239,207,113,.32); font:600 1rem Cinzel,serif; letter-spacing:1.1em; text-align:center; white-space:nowrap; }
     .entry.open .door.left { transform:translateX(-100%); } .entry.open .door.right { transform:translateX(100%); }
     .entry-center { position:relative; z-index:3; color:#f6df99; text-align:center; transition:opacity .35s ease; }
@@ -54,7 +52,7 @@
     h1 { margin:0; color:var(--wine); font-family:"Cormorant Garamond",serif; font-size:clamp(3rem,8vw,7rem); font-weight:700; line-height:.87; letter-spacing:-.045em; }
     .groom, .bride { display:block; white-space:nowrap; }
     .amp { display:block; color:#9b691d; font-family:Cinzel,serif; font-size:.5em; font-weight:600; line-height:1; margin:.2em 0; text-shadow:0 1px 0 rgba(255,255,255,.8); }
-    .invite-line { max-width:440px; margin:25px auto 0; font-size:clamp(1.05rem,2.1vw,1.22rem); line-height:1.6; }
+    .invite-line { max-width:470px; margin:25px auto 0; color:#59362f; font:600 clamp(1.22rem,2.4vw,1.48rem)/1.48 "Cormorant Garamond",serif; }
     .hero-scroll { position:absolute; bottom:26px; color:var(--wine); font-family:Cinzel,serif; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; text-decoration:none; }
     .hero-scroll::after { content:"↓"; display:block; margin-top:8px; font-size:1.2rem; }
 
@@ -72,10 +70,10 @@
     .gallery-section { padding-top:60px; }
     .gallery-section + .section { padding-top:60px; background:linear-gradient(to bottom,rgba(166,122,45,0),rgba(166,122,45,.02) 50%,rgba(166,122,45,0)); }
     .section--wine h2 { color:var(--wine); }
-    .kicker { margin:0 0 14px; color:#d9b965; font-family:Cinzel,serif; font-size:.76rem; letter-spacing:.18em; font-weight:600; text-transform:uppercase; }
+    .kicker { display:inline-block; margin:0 0 18px; padding:6px 14px; border-top:1px solid rgba(166,122,45,.55); border-bottom:1px solid rgba(166,122,45,.55); color:#9a6517; font-family:Cinzel,serif; font-size:.82rem; letter-spacing:.16em; font-weight:700; text-shadow:0 1px 0 rgba(255,255,255,.85); text-transform:uppercase; }
     h2 { margin:0; font:700 clamp(2.3rem,5vw,3.8rem)/1 "Cormorant Garamond",serif; }
     .rule { width:92px; height:1px; margin:23px auto 28px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
-    .intro { max-width:670px; margin:auto; color:var(--muted); font:600 italic 1.25rem/1.65 "Cormorant Garamond",serif; }
+    .intro { max-width:700px; margin:auto; color:#59362f; font:600 clamp(1.22rem,2.4vw,1.48rem)/1.48 "Cormorant Garamond",serif; }
     .story { max-width:720px; margin:0 auto; }
     .story p { margin:0; color:var(--muted); font:1.1rem/1.8 "DM Sans",sans-serif; }
     .story p + p { margin-top:17px; }
@@ -141,8 +139,6 @@
     @media (max-width:650px) {
       .entry::before { inset:6px; box-shadow:inset 0 0 0 5px rgba(83,10,22,.32),inset 0 0 38px rgba(220,180,74,.10); }
       .entry::after { width:min(94vw,430px); height:min(94vw,430px); }
-      .door::before { inset:48px 34px; border-radius:95px 18px 18px 95px; }
-      .door.right::before { border-radius:18px 95px 95px 18px; }
       .door::after { top:64px; font-size:.75rem; letter-spacing:.7em; }
       .entry-center::before { top:-48px; width:min(80vw,340px); height:min(80vw,340px); box-shadow:0 0 0 14px rgba(211,164,57,.05),0 0 48px rgba(211,164,57,.22); }
       .entry-center img { width:min(61vw,250px); }
@@ -169,7 +165,7 @@
   <button class="music-button is-off" id="music-button" type="button" aria-label="Play background music" aria-pressed="false"><span class="music-hint" aria-hidden="true">Tap to Turn On</span><span class="music-symbol" aria-hidden="true">♪</span><span class="music-label">Music Off</span></button>
   <div class="entry" id="entry" role="button" tabindex="0" aria-label="Open wedding invitation">
     <div class="door left"></div><div class="door right"></div>
-    <div class="entry-center"><img src="Ganesha.png" alt="Lord Ganesha"><p>Tap to unveil our invitation</p></div>
+    <div class="entry-center"><img src="Ganesha.png" alt="Lord Ganesha"><p>Tap to enter our celebration</p></div>
   </div>
   <main class="page">
     <!-- =====================================================================
@@ -257,7 +253,7 @@
        ======================================================================= */
     const entry = document.getElementById('entry'), bgm = document.getElementById('bgm'), musicButton = document.getElementById('music-button');
     const setMusicState = playing => { musicButton.querySelector('.music-symbol').textContent = playing ? '♫' : '♪'; musicButton.querySelector('.music-label').textContent = playing ? 'Music On' : 'Music Off'; musicButton.querySelector('.music-hint').textContent = playing ? 'Tap to Turn Off' : 'Tap to Turn On'; musicButton.classList.toggle('is-off', !playing); musicButton.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music'); musicButton.setAttribute('aria-pressed', playing); };
-    const openInvitation = () => { entry.classList.add('open'); document.body.classList.remove('no-scroll'); bgm.play().then(() => setMusicState(true)).catch(() => setMusicState(false)); setTimeout(() => entry.remove(), 1300); };
+    const openInvitation = () => { entry.classList.add('open'); document.body.classList.remove('no-scroll'); setMusicState(false); setTimeout(() => entry.remove(), 1300); };
     document.body.classList.add('no-scroll'); entry.addEventListener('click', openInvitation); entry.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openInvitation(); });
     musicButton.addEventListener('click', () => { if (bgm.paused) bgm.play().then(() => setMusicState(true)).catch(() => setMusicState(false)); else { bgm.pause(); setMusicState(false); } });
 
