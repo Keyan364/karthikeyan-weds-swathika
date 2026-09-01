@@ -49,8 +49,17 @@
     .eyebrow, .date { color:#681721; letter-spacing:.17em; font-family:Cinzel,serif; font-size:.79rem; font-weight:700; text-shadow:0 0 10px rgba(255,250,240,.95); text-transform:uppercase; }
     .blessing { margin:24px auto 14px; color:#7b4a0c; font-family:"Cormorant Garamond",serif; font-size:clamp(1.25rem,3vw,1.65rem); font-style:italic; font-weight:700; text-shadow:0 1px 0 rgba(255,255,255,.95),0 0 13px rgba(255,250,240,.98); }
     h1 { margin:0; color:var(--wine); font-family:"Cormorant Garamond",serif; font-size:clamp(3rem,8vw,7rem); font-weight:700; line-height:.87; letter-spacing:-.045em; }
-    .groom, .bride { display:block; white-space:nowrap; }
-    .amp { display:block; color:#9b691d; font-family:Cinzel,serif; font-size:.5em; font-weight:600; line-height:1; margin:.2em 0; text-shadow:0 1px 0 rgba(255,255,255,.8); }
+    .couple-journey { position:fixed; z-index:19; inset:0; pointer-events:none; opacity:0; transition:opacity .8s ease; }
+    body.invitation-open .couple-journey { opacity:1; }
+    body.footer-reached .couple-journey { opacity:0; }
+    .couple-journey img { position:absolute; top:0; left:0; width:auto; height:clamp(108px,12vw,178px); object-fit:contain; filter:drop-shadow(0 8px 10px rgba(74,12,24,.20)); transition:transform .7s cubic-bezier(.22,.8,.25,1); will-change:transform; }
+    .groom, .bride { display:block; white-space:nowrap; opacity:0; will-change:transform,opacity; }
+    .groom { transform:translateX(-55vw); }
+    .bride { transform:translateX(55vw); }
+    .amp { display:block; color:#9b691d; font-family:Cinzel,serif; font-size:.5em; font-weight:600; line-height:1; margin:.2em 0; opacity:0; transform:scale(.3) rotate(-20deg); text-shadow:0 1px 0 rgba(255,255,255,.8); }
+    body.invitation-open .groom { animation:groom-arrives 1.15s cubic-bezier(.22,.85,.3,1) .72s both; }
+    body.invitation-open .bride { animation:bride-arrives 1.15s cubic-bezier(.22,.85,.3,1) .84s both; }
+    body.invitation-open .amp { animation:amp-arrives .42s ease-out 1.55s both; }
     .invite-line { max-width:470px; margin:25px auto 0; color:#59362f; font:600 clamp(1.22rem,2.4vw,1.48rem)/1.48 "Cormorant Garamond",serif; }
     .hero-scroll { position:absolute; bottom:26px; color:var(--wine); font-family:Cinzel,serif; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; text-decoration:none; }
     .hero-scroll::after { content:"↓"; display:block; margin-top:8px; font-size:1.2rem; }
@@ -132,7 +141,13 @@
     /* ========================================================================
        7. FOOTER, MUSIC & RESPONSIVE RULES
        ======================================================================== */
-    footer { padding:82px 22px 58px; background:linear-gradient(to bottom,var(--paper),#f4ead9 42%); text-align:center; }
+    footer { padding:40px 22px 58px; background:linear-gradient(to bottom,var(--paper),#f4ead9 42%); text-align:center; }
+    .footer-couple { display:flex; align-items:end; justify-content:center; height:192px; margin:0 auto 15px; overflow:hidden; pointer-events:none; }
+    .footer-couple img { width:auto; height:clamp(108px,12vw,178px); object-fit:contain; opacity:0; filter:drop-shadow(0 8px 10px rgba(74,12,24,.18)); will-change:transform,opacity; }
+    .footer-couple .footer-groom { transform:translateX(-75vw); }
+    .footer-couple .footer-bride { margin-left:-52px; transform:translateX(75vw); }
+    body.footer-reached .footer-couple .footer-groom { animation:footer-groom-arrives 2.1s cubic-bezier(.22,.75,.22,1) both; }
+    body.footer-reached .footer-couple .footer-bride { animation:footer-bride-arrives 2.1s cubic-bezier(.22,.75,.22,1) .16s both; }
     footer h2 { color:var(--wine); font-size:clamp(1.8rem,4vw,2.6rem); }
     footer p { color:var(--muted); margin:17px 0 0; font-size:.92rem; }
     .music-button { position:fixed; z-index:40; right:20px; bottom:20px; display:grid; place-items:center; width:50px; height:50px; padding:0; border:1px solid #d5b45d; border-radius:50%; background:var(--wine); color:#f9e7a7; box-shadow:0 6px 18px rgba(61,15,23,.18); cursor:pointer; transition:transform .2s,background .2s,box-shadow .2s; }
@@ -141,7 +156,7 @@
     .music-symbol { font-family:"Cormorant Garamond",serif; font-size:1.6rem; line-height:1; }
     .music-label { display:none; }
     .music-hint { position:absolute; right:0; bottom:61px; width:max-content; padding:8px 11px; border:1px solid rgba(166,122,45,.35); border-radius:7px; background:rgba(255,250,240,.94); color:var(--wine); box-shadow:0 5px 14px rgba(61,15,23,.10); font:600 .65rem Cinzel,serif; letter-spacing:.06em; text-transform:uppercase; white-space:nowrap; }
-    @keyframes appear { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } } @keyframes knock { 0%,66%,100% { transform:translateY(0); } 72% { transform:translateY(3px); } 78% { transform:translateY(0); } 84% { transform:translateY(3px); } 90% { transform:translateY(0); } } @keyframes music-jiggle { 0%,82%,100% { transform:rotate(0); } 86% { transform:rotate(-8deg); } 90% { transform:rotate(7deg); } 94% { transform:rotate(-4deg); } 97% { transform:rotate(2deg); } }
+    @keyframes appear { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } } @keyframes groom-arrives { from { opacity:0; transform:translateX(-55vw); } 78% { opacity:1; transform:translateX(1.5vw); } to { opacity:1; transform:translateX(0); } } @keyframes bride-arrives { from { opacity:0; transform:translateX(55vw); } 78% { opacity:1; transform:translateX(-1.5vw); } to { opacity:1; transform:translateX(0); } } @keyframes amp-arrives { from { opacity:0; transform:scale(.3) rotate(-20deg); } to { opacity:1; transform:scale(1) rotate(0); } } @keyframes footer-groom-arrives { from { opacity:0; transform:translateX(-75vw); } 78% { opacity:1; transform:translateX(5px); } to { opacity:1; transform:translateX(0); } } @keyframes footer-bride-arrives { from { opacity:0; transform:translateX(75vw); } 78% { opacity:1; transform:translateX(-5px); } to { opacity:1; transform:translateX(0); } } @keyframes knock { 0%,66%,100% { transform:translateY(0); } 72% { transform:translateY(3px); } 78% { transform:translateY(0); } 84% { transform:translateY(3px); } 90% { transform:translateY(0); } } @keyframes music-jiggle { 0%,82%,100% { transform:rotate(0); } 86% { transform:rotate(-8deg); } 90% { transform:rotate(7deg); } 94% { transform:rotate(-4deg); } 97% { transform:rotate(2deg); } }
     /* ========================================================================
        MOBILE OPENING SCREEN — portrait composition
        ======================================================================== */
@@ -151,6 +166,9 @@
       .entry-center img { width:min(33vw,140px); }
       .entry-center p { max-width:calc(100vw - 52px); margin-top:23px; padding:13px 18px; font-size:clamp(.92rem,3.8vw,1.16rem); letter-spacing:.065em; }
       .hero { min-height:780px; }
+      .couple-journey img { width:auto; height:clamp(78px,23vw,108px); }
+      .footer-couple { height:122px; margin-bottom:10px; }
+      .footer-couple img { width:auto; height:clamp(78px,23vw,108px); }
       .event-grid,.map-share { grid-template-columns:1fr; }
       .event + .event { border-left:0; border-top:1px solid rgba(239,216,144,.28); }
       .section { padding:65px 20px; }
@@ -175,6 +193,7 @@
     <div class="door left"></div><div class="door right"></div>
     <div class="entry-center"><img src="Ganesha.png" alt="Lord Ganesha"><p>Knock to open the invitation</p></div>
   </div>
+  <div class="couple-journey" aria-hidden="true"><img class="journey-groom" src="groom-ornament.png" alt=""><img class="journey-bride" src="bride-ornament.png" alt=""></div>
   <main class="page">
     <!-- =====================================================================
          HERO INVITATION
@@ -253,7 +272,7 @@
     <!-- =====================================================================
          FOOTER
          ===================================================================== -->
-    <footer><p class="kicker">With love</p><h2>We can’t wait to celebrate with you</h2><p>Karthikeyan &amp; Swathika · 13.11.2026</p></footer>
+    <footer><div class="footer-couple" aria-hidden="true"><img class="footer-groom" src="groom-ornament.png" alt=""><img class="footer-bride" src="bride-ornament.png" alt=""></div><p class="kicker">With love</p><h2>We can’t wait to celebrate with you</h2><p>Karthikeyan &amp; Swathika · 13.11.2026</p></footer>
   </main>
   <!-- =======================================================================
        GALLERY PHOTO VIEWER
@@ -265,9 +284,36 @@
        ======================================================================= */
     const entry = document.getElementById('entry'), bgm = document.getElementById('bgm'), musicButton = document.getElementById('music-button');
     const setMusicState = playing => { musicButton.querySelector('.music-symbol').textContent = playing ? '♫' : '♪'; musicButton.querySelector('.music-label').textContent = playing ? 'Music On' : 'Music Off'; musicButton.querySelector('.music-hint').textContent = playing ? 'Tap to Turn Off' : 'Tap to Turn On'; musicButton.classList.toggle('is-off', !playing); musicButton.setAttribute('aria-label', playing ? 'Pause background music' : 'Play background music'); musicButton.setAttribute('aria-pressed', playing); };
-    const openInvitation = () => { entry.classList.add('open'); document.body.classList.remove('no-scroll'); setMusicState(false); setTimeout(() => entry.remove(), 1300); };
+    const openInvitation = () => { entry.classList.add('open'); document.body.classList.remove('no-scroll'); document.body.classList.add('invitation-open'); setMusicState(false); setTimeout(() => entry.remove(), 1300); };
     document.body.classList.add('no-scroll'); entry.addEventListener('click', openInvitation); entry.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openInvitation(); });
     musicButton.addEventListener('click', () => { if (bgm.paused) bgm.play().then(() => setMusicState(true)).catch(() => setMusicState(false)); else { bgm.pause(); setMusicState(false); } });
+
+    /* =======================================================================
+       2. COUPLE'S SCROLL JOURNEY
+       ======================================================================= */
+    const journeyGroom = document.querySelector('.journey-groom'), journeyBride = document.querySelector('.journey-bride'), invitationFooter = document.querySelector('footer');
+    const clamp = (value, minimum, maximum) => Math.min(Math.max(value, minimum), maximum);
+    let previousJourneyScroll = window.scrollY;
+    const updateCoupleJourney = () => {
+      const width = window.innerWidth, height = window.innerHeight;
+      const maximumScroll = Math.max(1, document.documentElement.scrollHeight - height);
+      const progress = clamp(window.scrollY / maximumScroll, 0, 1);
+      const figureWidth = clamp(width * .08, 70, 128);
+      const mobileWidth = clamp(width * .16, 52, 76);
+      const size = width <= 650 ? mobileWidth : figureWidth;
+      const sideGap = width <= 650 ? 8 : 28;
+      const travelY = height * (.16 + .66 * progress);
+      const footerTop = invitationFooter.getBoundingClientRect().top;
+      const scrollingUp = window.scrollY < previousJourneyScroll;
+      const hasReachedFooter = !scrollingUp && footerTop <= height * 1.35;
+      document.body.classList.toggle('footer-reached', hasReachedFooter);
+      previousJourneyScroll = window.scrollY;
+      journeyGroom.style.transform = `translate3d(${sideGap}px, ${travelY}px, 0)`;
+      journeyBride.style.transform = `translate3d(${width - size - sideGap}px, ${travelY}px, 0)`;
+    };
+    window.addEventListener('scroll', updateCoupleJourney, { passive:true });
+    window.addEventListener('resize', updateCoupleJourney);
+    updateCoupleJourney();
 
     /* =======================================================================
        2. LIVE WEDDING COUNTDOWN
