@@ -149,8 +149,9 @@
       .section { padding:65px 20px; }
       .welcome-section { padding-top:40px; padding-bottom:52px; }
       .story-section,#celebrations,.gallery-section,.gallery-section + .section { padding-top:52px; }
-      .gallery { grid-template-columns:1fr; }
-      .gallery figure { min-height:360px; }
+      .gallery { display:flex; grid-template-columns:none; gap:16px; margin-left:-20px; margin-right:-20px; padding:0 20px 8px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
+      .gallery::-webkit-scrollbar { display:none; }
+      .gallery figure { flex:0 0 82vw; min-height:0; height:clamp(390px,112vw,560px); scroll-snap-align:start; }
       .map-share > div + div { border-left:0; border-top:1px solid #ecdfc7; }
     }
     @media (prefers-reduced-motion:reduce) { * { animation-duration:.01ms!important; scroll-behavior:auto!important; } }
