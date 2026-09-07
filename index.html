@@ -53,9 +53,11 @@
     .groom { transform:translateX(-55vw); }
     .bride { transform:translateX(55vw); }
     .amp { display:block; color:#9b691d; font-family:Cinzel,serif; font-size:.5em; font-weight:600; line-height:1; margin:.2em 0; opacity:0; transform:scale(.3) rotate(-20deg); text-shadow:0 1px 0 rgba(255,255,255,.8); }
+    .parent-line { display:block; margin:12px auto 0; color:#6a483d; font:600 clamp(1rem,2vw,1.18rem)/1.38 "Cormorant Garamond",serif; letter-spacing:0; opacity:0; text-shadow:0 1px 0 rgba(255,255,255,.8); transform:translateY(8px); white-space:normal; }
     body.invitation-open .groom { animation:groom-arrives 1.15s cubic-bezier(.22,.85,.3,1) .72s both; }
     body.invitation-open .bride { animation:bride-arrives 1.15s cubic-bezier(.22,.85,.3,1) .84s both; }
     body.invitation-open .amp { animation:amp-arrives .42s ease-out 1.55s both; }
+    body.invitation-open .parent-line { animation:parent-arrives .72s ease-out 1.95s both; }
     .invite-line { max-width:470px; margin:25px auto 0; color:#59362f; font:600 clamp(1.22rem,2.4vw,1.48rem)/1.48 "Cormorant Garamond",serif; }
     .hero-scroll { position:absolute; bottom:26px; color:var(--wine); font-family:Cinzel,serif; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; text-decoration:none; }
     .hero-scroll::after { content:"↓"; display:block; margin-top:8px; font-size:1.2rem; }
@@ -152,7 +154,7 @@
     .music-symbol { font-family:"Cormorant Garamond",serif; font-size:1.6rem; line-height:1; }
     .music-label { display:none; }
     .music-hint { position:absolute; right:0; bottom:61px; width:max-content; padding:8px 11px; border:1px solid rgba(166,122,45,.35); border-radius:7px; background:rgba(255,250,240,.94); color:var(--wine); box-shadow:0 5px 14px rgba(61,15,23,.10); font:600 .65rem Cinzel,serif; letter-spacing:.06em; text-transform:uppercase; white-space:nowrap; }
-    @keyframes appear { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } } @keyframes groom-arrives { from { opacity:0; transform:translateX(-55vw); } 78% { opacity:1; transform:translateX(1.5vw); } to { opacity:1; transform:translateX(0); } } @keyframes bride-arrives { from { opacity:0; transform:translateX(55vw); } 78% { opacity:1; transform:translateX(-1.5vw); } to { opacity:1; transform:translateX(0); } } @keyframes amp-arrives { from { opacity:0; transform:scale(.3) rotate(-20deg); } to { opacity:1; transform:scale(1) rotate(0); } } @keyframes footer-groom-arrives { from { opacity:0; transform:translateX(-75vw); } 78% { opacity:1; transform:translateX(5px); } to { opacity:1; transform:translateX(0); } } @keyframes footer-bride-arrives { from { opacity:0; transform:translateX(75vw); } 78% { opacity:1; transform:translateX(-5px); } to { opacity:1; transform:translateX(0); } } @keyframes knock { 0%,66%,100% { transform:translateY(0); } 72% { transform:translateY(3px); } 78% { transform:translateY(0); } 84% { transform:translateY(3px); } 90% { transform:translateY(0); } } @keyframes music-jiggle { 0%,82%,100% { transform:rotate(0); } 86% { transform:rotate(-8deg); } 90% { transform:rotate(7deg); } 94% { transform:rotate(-4deg); } 97% { transform:rotate(2deg); } }
+    @keyframes appear { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } } @keyframes groom-arrives { from { opacity:0; transform:translateX(-55vw); } 78% { opacity:1; transform:translateX(1.5vw); } to { opacity:1; transform:translateX(0); } } @keyframes bride-arrives { from { opacity:0; transform:translateX(55vw); } 78% { opacity:1; transform:translateX(-1.5vw); } to { opacity:1; transform:translateX(0); } } @keyframes amp-arrives { from { opacity:0; transform:scale(.3) rotate(-20deg); } to { opacity:1; transform:scale(1) rotate(0); } } @keyframes parent-arrives { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } } @keyframes footer-groom-arrives { from { opacity:0; transform:translateX(-75vw); } 78% { opacity:1; transform:translateX(5px); } to { opacity:1; transform:translateX(0); } } @keyframes footer-bride-arrives { from { opacity:0; transform:translateX(75vw); } 78% { opacity:1; transform:translateX(-5px); } to { opacity:1; transform:translateX(0); } } @keyframes knock { 0%,66%,100% { transform:translateY(0); } 72% { transform:translateY(3px); } 78% { transform:translateY(0); } 84% { transform:translateY(3px); } 90% { transform:translateY(0); } } @keyframes music-jiggle { 0%,82%,100% { transform:rotate(0); } 86% { transform:rotate(-8deg); } 90% { transform:rotate(7deg); } 94% { transform:rotate(-4deg); } 97% { transform:rotate(2deg); } }
     /* ========================================================================
        MOBILE OPENING SCREEN — portrait composition
        ======================================================================== */
@@ -162,6 +164,7 @@
       .entry-center img { width:min(33vw,140px); }
       .entry-center p { max-width:calc(100vw - 52px); margin-top:23px; padding:13px 18px; font-size:clamp(.92rem,3.8vw,1.16rem); letter-spacing:.065em; }
       .hero { min-height:780px; }
+      .parent-line { max-width:330px; margin-top:9px; font-size:clamp(.92rem,3.8vw,1.05rem); line-height:1.35; }
       .footer-couple { height:122px; margin-bottom:10px; }
       .footer-couple img { width:auto; height:clamp(78px,23vw,108px); }
       .footer-couple .footer-bride { margin-left:-22px; }
@@ -198,7 +201,7 @@
         <img class="hero-ganesha" src="Ganesha.png" alt="Lord Ganesha">
         <p class="eyebrow">With the blessings of the Almighty</p>
         <p class="blessing">With immense joy, we invite you to celebrate</p>
-        <h1><span class="groom">Karthikeyan R</span><span class="amp">&amp;</span><span class="bride">Swathika M</span></h1>
+        <h1><span class="groom">Karthikeyan R<span class="parent-line">S/o Mr. Rajendiran B &amp; Mrs. Kannika Parameshwari R</span></span><span class="amp">&amp;</span><span class="bride">Swathika M<span class="parent-line">D/o Mr. Manohar L (Late) &amp; Mrs. Lalitha M</span></span></h1>
         <p class="invite-line">We warmly invite our family and friends to share in the joy of our wedding and bless the beginning of our forever.</p>
         <p class="date" style="margin-top:30px">Friday · 13 November 2026</p>
       </div>
