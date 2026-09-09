@@ -53,12 +53,15 @@
     .groom { transform:translateX(-55vw); }
     .bride { transform:translateX(55vw); }
     .amp { display:block; color:#9b691d; font-family:Cinzel,serif; font-size:.5em; font-weight:600; line-height:1; margin:.2em 0; opacity:0; transform:scale(.3) rotate(-20deg); text-shadow:0 1px 0 rgba(255,255,255,.8); }
-    .parent-line { display:block; margin:12px auto 0; color:#6a483d; font:600 clamp(1rem,2vw,1.18rem)/1.38 "Cormorant Garamond",serif; letter-spacing:0; opacity:0; text-shadow:0 1px 0 rgba(255,255,255,.8); transform:translateY(8px); white-space:normal; }
+    .parent-line { display:block; width:fit-content; max-width:min(90vw,720px); margin:10px auto 5px; padding:0 14px; background:none; color:#8d6217; font:600 clamp(.78rem,1.3vw,1rem)/1.55 Cinzel,serif; letter-spacing:.045em; opacity:0; text-shadow:0 1px 0 rgba(255,255,255,.95); transform:translateY(8px); white-space:normal; }
+    .parent-line::before { content:"✦"; display:block; margin:0 auto 2px; color:#b88629; font:600 .48em Cinzel,serif; letter-spacing:.28em; text-align:center; text-shadow:none; }
+    .parent-relation { display:block; color:#8d6217; font:700 1.06em/1.2 "Cormorant Garamond",serif; font-style:italic; letter-spacing:.035em; text-transform:none; }
+    .parent-names { display:block; margin-top:2px; color:#734337; font:700 clamp(1rem,1.75vw,1.16rem)/1.35 "Cormorant Garamond",serif; letter-spacing:.01em; text-transform:none; }
     body.invitation-open .groom { animation:groom-arrives 1.15s cubic-bezier(.22,.85,.3,1) .72s both; }
     body.invitation-open .bride { animation:bride-arrives 1.15s cubic-bezier(.22,.85,.3,1) .84s both; }
     body.invitation-open .amp { animation:amp-arrives .42s ease-out 1.55s both; }
     body.invitation-open .parent-line { animation:parent-arrives .72s ease-out 1.95s both; }
-    .invite-line { max-width:470px; margin:25px auto 0; color:#59362f; font:600 clamp(1.22rem,2.4vw,1.48rem)/1.48 "Cormorant Garamond",serif; }
+    .invite-line { max-width:470px; margin:42px auto 0; color:#59362f; font:600 clamp(1.22rem,2.4vw,1.48rem)/1.48 "Cormorant Garamond",serif; }
     .hero-scroll { position:absolute; bottom:26px; color:var(--wine); font-family:Cinzel,serif; font-size:.8rem; letter-spacing:.15em; text-transform:uppercase; text-decoration:none; }
     .hero-scroll::after { content:"↓"; display:block; margin-top:8px; font-size:1.2rem; }
 
@@ -68,10 +71,8 @@
     .section { padding:82px 22px; text-align:center; }
     .section > * { position:relative; z-index:1; }
     .section--wine { background:linear-gradient(to bottom,rgba(166,122,45,0),rgba(166,122,45,.025) 50%,rgba(166,122,45,0)); color:var(--ink); position:relative; isolation:isolate; }
-    .story-section { padding-bottom:0; }
     /* The page remains one continuous ivory canvas; wine is reserved for emphasis. */
-    .welcome-section { padding-top:48px; padding-bottom:64px; }
-    .story-section { padding-top:64px; }
+    .welcome-section, .story-section { padding-top:64px; padding-bottom:64px; }
     #celebrations { padding-top:60px; }
     .gallery-section { padding-top:60px; }
     .gallery-section + .section { padding-top:60px; background:linear-gradient(to bottom,rgba(166,122,45,0),rgba(166,122,45,.02) 50%,rgba(166,122,45,0)); }
@@ -80,19 +81,19 @@
     h2 { margin:0; font:700 clamp(2.3rem,5vw,3.8rem)/1 "Cormorant Garamond",serif; }
     .rule { width:92px; height:1px; margin:23px auto 28px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
     .intro { max-width:700px; margin:auto; color:#59362f; font:600 clamp(1.22rem,2.4vw,1.48rem)/1.48 "Cormorant Garamond",serif; }
-    .story { max-width:720px; margin:0 auto; }
-    .story p { margin:0; color:var(--muted); font:1.1rem/1.8 "DM Sans",sans-serif; }
-    .story p + p { margin-top:17px; }
-    .story strong { color:var(--wine); font-family:"Cormorant Garamond",serif; font-size:1.23em; }
+    .story { max-width:700px; margin:0 auto; }
+    .story p { margin:0; color:#59362f; font:600 clamp(1.22rem,2.4vw,1.48rem)/1.48 "Cormorant Garamond",serif; }
+    .story p + p { margin-top:22px; }
+    .story strong { color:var(--wine); font:inherit; font-weight:700; }
 
     /* ========================================================================
        5. CELEBRATIONS & COUNTDOWN
        ======================================================================== */
-    .event-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); max-width:820px; margin:43px auto 0; overflow:hidden; background:linear-gradient(135deg,#7a2633,#6b1623); border:1px solid rgba(201,162,74,.65); border-radius:20px; box-shadow:0 8px 18px rgba(107,22,35,.09); }
-    .event { padding:37px 24px; }
+    .event-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); max-width:1020px; margin:43px auto 0; overflow:hidden; background:linear-gradient(135deg,#7a2633,#6b1623); border:1px solid rgba(201,162,74,.65); border-radius:20px; box-shadow:0 8px 18px rgba(107,22,35,.09); }
+    .event { padding:37px 18px; }
     .event + .event { border-left:1px solid rgba(239,216,144,.28); }
     .event-label { color:#ffe7a5; letter-spacing:.16em; font-family:Cinzel,serif; font-size:.75rem; text-transform:uppercase; }
-    .event h3 { margin:13px 0 10px; color:#ffe7a5; font:700 2rem "Cormorant Garamond",serif; }
+    .event h3 { margin:13px 0 10px; color:#ffe7a5; font:700 clamp(1.7rem,2.5vw,2rem) "Cormorant Garamond",serif; }
     .event p { margin:0; color:#ffffff; font-weight:500; line-height:1.75; }
     .countdown { display:flex; justify-content:center; flex-wrap:wrap; gap:9px; margin:32px auto 0; }
     .count { min-width:84px; padding:14px 9px 12px; background:#762330; border:1px solid rgba(201,162,74,.75); border-radius:10px; color:#fffdf6; box-shadow:0 4px 10px rgba(107,22,35,.08); }
@@ -139,7 +140,9 @@
     /* ========================================================================
        7. FOOTER, MUSIC & RESPONSIVE RULES
        ======================================================================== */
-    footer { padding:40px 22px 58px; background:linear-gradient(to bottom,var(--paper),#f4ead9 42%); text-align:center; }
+    footer { position:relative; isolation:isolate; overflow:hidden; padding:40px 22px 58px; background:var(--paper); text-align:center; }
+    footer::before { content:""; position:absolute; z-index:0; inset:0; background:url("mandapam-hero.png") center bottom/cover no-repeat; opacity:.46; -webkit-mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.58) 42%,transparent 100%); mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.58) 42%,transparent 100%); pointer-events:none; }
+    footer > * { position:relative; z-index:1; }
     .footer-couple { display:flex; align-items:end; justify-content:center; height:192px; margin:0 auto 15px; overflow:hidden; pointer-events:none; }
     .footer-couple img { width:auto; height:clamp(108px,12vw,178px); object-fit:contain; opacity:0; filter:drop-shadow(0 8px 10px rgba(74,12,24,.18)); will-change:transform,opacity; }
     .footer-couple .footer-groom { transform:translateX(-75vw); }
@@ -164,15 +167,17 @@
       .entry-center img { width:min(33vw,140px); }
       .entry-center p { max-width:calc(100vw - 52px); margin-top:23px; padding:13px 18px; font-size:clamp(.92rem,3.8vw,1.16rem); letter-spacing:.065em; }
       .hero { min-height:780px; }
-      .parent-line { max-width:330px; margin-top:9px; font-size:clamp(.92rem,3.8vw,1.05rem); line-height:1.35; }
+      .parent-line { max-width:calc(100vw - 44px); margin:10px auto 6px; padding:0 8px; font-size:clamp(.72rem,2.9vw,.9rem); line-height:1.5; }
+      .parent-names { font-size:clamp(.98rem,3.8vw,1.1rem); }
+      .invite-line { margin-top:32px; }
       .footer-couple { height:122px; margin-bottom:10px; }
       .footer-couple img { width:auto; height:clamp(78px,23vw,108px); }
       .footer-couple .footer-bride { margin-left:-22px; }
       .event-grid,.map-share { grid-template-columns:1fr; }
       .event + .event { border-left:0; border-top:1px solid rgba(239,216,144,.28); }
       .section { padding:65px 20px; }
-      .welcome-section { padding-top:40px; padding-bottom:52px; }
-      .story-section,#celebrations,.gallery-section,.gallery-section + .section { padding-top:52px; }
+      .welcome-section,.story-section { padding-top:52px; padding-bottom:52px; }
+      #celebrations,.gallery-section,.gallery-section + .section { padding-top:52px; }
       .gallery { display:flex; grid-template-columns:none; gap:16px; margin-left:-20px; margin-right:-20px; padding:0 20px 8px; overflow-x:auto; scroll-snap-type:x mandatory; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
       .gallery::-webkit-scrollbar { display:none; }
       .gallery figure { flex:0 0 82vw; min-height:0; height:clamp(390px,112vw,560px); scroll-snap-align:start; }
@@ -200,9 +205,9 @@
       <div class="hero-card">
         <img class="hero-ganesha" src="Ganesha.png" alt="Lord Ganesha">
         <p class="eyebrow">With the blessings of the Almighty</p>
-        <p class="blessing">With immense joy, we invite you to celebrate</p>
-        <h1><span class="groom">Karthikeyan R<span class="parent-line">S/o Mr. Rajendiran B &amp; Mrs. Kannika Parameshwari R</span></span><span class="amp">&amp;</span><span class="bride">Swathika M<span class="parent-line">D/o Mr. Manohar L (Late) &amp; Mrs. Lalitha M</span></span></h1>
-        <p class="invite-line">We warmly invite our family and friends to share in the joy of our wedding and bless the beginning of our forever.</p>
+        <p class="blessing">With immense joy, we request the honour of your presence at the wedding of</p>
+        <h1><span class="groom">Karthikeyan R<span class="parent-line"><span class="parent-relation">Son of</span><span class="parent-names">Mr. Rajendiran B &amp; Mrs. Kannika Parameshwari R</span></span></span><span class="amp">&amp;</span><span class="bride">Swathika M<span class="parent-line"><span class="parent-relation">Daughter of</span><span class="parent-names">Mr. Manohar L (Late) &amp; Mrs. Lalitha M</span></span></span></h1>
+        <p class="invite-line">As two families come together, a beautiful new chapter begins.</p>
         <p class="date" style="margin-top:30px">Friday · 13 November 2026</p>
       </div>
       <a class="hero-scroll" href="#celebrations">View celebration details</a>
@@ -212,8 +217,8 @@
          COUPLE'S WELCOME MESSAGE
          ===================================================================== -->
     <section class="section welcome-section" aria-labelledby="welcome-title">
-      <p class="kicker">A warm invitation</p><h2 id="welcome-title">Join us in celebration</h2><div class="rule"></div>
-      <p class="intro">We are so grateful to have the love of our family and friends around us. Please join us as we begin our new chapter together and make this day even more memorable with your blessings.</p>
+      <p class="kicker">A shared beginning</p><h2 id="welcome-title">A day made brighter by your presence</h2><div class="rule"></div>
+      <p class="intro">From the first welcome to the final blessing, every moment will be more meaningful with the love of those who have shaped our journey.</p>
     </section>
 
     <!-- =====================================================================
@@ -230,6 +235,7 @@
     <section class="section section--wine" id="celebrations" aria-labelledby="celebrations-title">
       <p class="kicker">Save the date</p><h2 id="celebrations-title">The celebrations</h2><div class="rule"></div>
       <div class="event-grid">
+        <article class="event"><p class="event-label">Pre-wedding ceremony</p><h3>Pandhakkaal</h3><p>Wednesday, 11 November 2026<br>5:30 AM to 6:30 AM</p></article>
         <article class="event"><p class="event-label">Evening celebration</p><h3>The Reception</h3><p>Thursday, 12 November 2026<br>7:00 PM onwards</p></article>
         <article class="event"><p class="event-label">Morning ceremony</p><h3>The Wedding</h3><p>Friday, 13 November 2026<br>Muhurtham 6:30 AM to 7:00 AM onwards</p></article>
       </div>
