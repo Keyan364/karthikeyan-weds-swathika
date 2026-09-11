@@ -146,7 +146,8 @@
     .footer-couple { display:flex; align-items:end; justify-content:center; height:192px; margin:0 auto 15px; overflow:hidden; pointer-events:none; }
     .footer-couple img { width:auto; height:clamp(108px,12vw,178px); object-fit:contain; opacity:0; filter:drop-shadow(0 8px 10px rgba(74,12,24,.18)); will-change:transform,opacity; }
     .footer-couple .footer-groom { transform:translateX(-75vw); }
-    .footer-couple .footer-bride { margin-left:-52px; transform:translateX(75vw); }
+    /* Keep the hand-overlap proportional to the figure height at every viewport. */
+    .footer-couple .footer-bride { margin-left:clamp(-52px,-3.5vw,-32px); transform:translateX(75vw); }
     body.footer-reached .footer-couple .footer-groom { animation:footer-groom-arrives 2.1s cubic-bezier(.22,.75,.22,1) both; }
     body.footer-reached .footer-couple .footer-bride { animation:footer-bride-arrives 2.1s cubic-bezier(.22,.75,.22,1) .16s both; }
     footer h2 { color:var(--wine); font-size:clamp(1.8rem,4vw,2.6rem); }
@@ -173,7 +174,7 @@
       .invite-line { margin-top:32px; }
       .footer-couple { height:122px; margin-bottom:10px; }
       .footer-couple img { width:auto; height:clamp(78px,23vw,108px); }
-      .footer-couple .footer-bride { margin-left:-22px; }
+      .footer-couple .footer-bride { margin-left:clamp(-32px,-6.7vw,-23px); }
       .event-grid,.map-share { grid-template-columns:1fr; }
       .event + .event { border-left:0; border-top:1px solid rgba(239,216,144,.28); }
       .section { padding:65px 20px; }
@@ -236,9 +237,9 @@
     <section class="section section--wine" id="celebrations" aria-labelledby="celebrations-title">
       <p class="kicker">Save the date</p><h2 id="celebrations-title">The celebrations</h2><div class="rule"></div>
       <div class="event-grid">
-        <article class="event"><p class="event-label">Pre-wedding ceremony</p><h3>Pandhakkaal</h3><p>Wednesday, 11 November 2026<br>5:30 AM to 6:30 AM</p></article>
-        <article class="event"><p class="event-label">Evening celebration</p><h3>The Reception</h3><p>Thursday, 12 November 2026<br>7:00 PM onwards</p></article>
-        <article class="event"><p class="event-label">Morning ceremony</p><h3>The Wedding</h3><p>Friday, 13 November 2026<br>Muhurtham 6:30 AM to 7:00 AM onwards</p></article>
+        <article class="event"><p class="event-label">Pre-wedding ceremony</p><h3>Pandhakkaal</h3><p>Wednesday, 11 November 2026<br>5:00 AM to 6:00 AM</p></article>
+        <article class="event"><p class="event-label">Evening celebration</p><h3>The Reception</h3><p>Thursday, 12 November 2026<br>6:00 PM onwards</p></article>
+        <article class="event"><p class="event-label">Morning ceremony</p><h3>The Wedding</h3><p>Friday, 13 November 2026<br>Muhurtham between 6:00 AM and 7:30 AM</p></article>
       </div>
       <div class="countdown" id="countdown" aria-label="Countdown to the wedding"><div class="count"><b>--</b><span>Days</span></div><div class="count"><b>--</b><span>Hours</span></div><div class="count"><b>--</b><span>Minutes</span></div><div class="count"><b>--</b><span>Seconds</span></div></div>
     </section>
@@ -261,8 +262,8 @@
     <section class="section" aria-labelledby="schedule-title">
       <p class="kicker">A day to remember</p><h2 id="schedule-title">Wedding day</h2><div class="rule"></div>
       <div class="timeline">
-        <div><time>07:00 PM ONWARDS</time><h3>Reception</h3><p>Celebrate with dinner, laughter, and cherished company.</p></div><span class="dot" aria-hidden="true"></span><span></span>
-        <div><time>07:00 AM ONWARDS</time><h3>Wedding ceremony</h3><p>Join us for the sacred rituals and exchange of vows.</p></div><span class="dot" aria-hidden="true"></span><span></span>
+        <div><time>EVENING 06:00 PM ONWARDS</time><h3>Reception</h3><p>Celebrate the evening filled with laughter, joy, cherished memories and dinner.</p></div><span class="dot" aria-hidden="true"></span><span></span>
+        <div><time>MORNING 06:00 AM ONWARDS</time><h3>Wedding ceremony</h3><p>Join us for the sacred rituals and exchange of vows.</p></div><span class="dot" aria-hidden="true"></span><span></span>
       </div>
     </section>
 
