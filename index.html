@@ -310,8 +310,11 @@
        ======================================================================= */
     const target = new Date('2026-11-13T07:00:00+05:30').getTime(), units = document.querySelectorAll('#countdown b');
     const tick = () => { let delta = Math.max(0, target - Date.now()); const values = [Math.floor(delta/86400000),Math.floor(delta%86400000/3600000),Math.floor(delta%3600000/60000),Math.floor(delta%60000/1000)]; units.forEach((unit,i) => unit.textContent=String(values[i]).padStart(2,'0')); }; tick(); setInterval(tick,1000);
-    if (window.QRCode) new QRCode(document.getElementById('qrcode'), { text: location.href, width:150, height:150, colorDark:'#6b1623', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.H });
-    document.getElementById('whatsapp').addEventListener('click', e => { e.preventDefault(); window.open('https://api.whatsapp.com/send?text='+encodeURIComponent('Karthikeyan & Swathika invite you to celebrate their wedding: '+location.href),'_blank','noopener'); });
+    // Share the clean invitation address only. This prevents a current scroll
+    // position such as #celebrations from being included in the shared link.
+    const shareUrl = window.location.origin + window.location.pathname;
+    if (window.QRCode) new QRCode(document.getElementById('qrcode'), { text: shareUrl, width:150, height:150, colorDark:'#6b1623', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.H });
+    document.getElementById('whatsapp').addEventListener('click', e => { e.preventDefault(); window.open('https://api.whatsapp.com/send?text='+encodeURIComponent('Karthikeyan & Swathika invite you to celebrate their wedding: '+shareUrl),'_blank','noopener'); });
 
     /* =======================================================================
        3. GALLERY PHOTO VIEWER
